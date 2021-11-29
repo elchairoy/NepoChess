@@ -5,6 +5,7 @@
 */
 
 int main() {
-    printf("hello world!");
+    char x = 0x1a;
+    printf("%d",4 >> (x << 4));
     return 0;
 }
