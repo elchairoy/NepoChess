@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <board_and_pIeces.h>
+#include <board_struct.h>
 /*
   Created by Elchairoy Meir on 29/11/2021.
 */
