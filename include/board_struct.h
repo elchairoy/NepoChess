@@ -1,6 +1,5 @@
 /*
- Created by Elchairoy Meir on 29/11/2021.
- This is the header file for the board and the squares' definition.
+ Created by meir on 29/11/2021.
 */
 
 #include <math.h>
@@ -9,21 +8,11 @@
 #define number_of_columns 8 /* Number of columns in the chess board. */
 
 enum types {empty,white_knight,white_rook,white_queen,white_king,white_pawn,white_bishop,black_knight,black_rook,black_queen,black_king,black_pawn,black_bishop}; /* What cat be on a square. */
-enum columns {a,b,c,d,e,f,g,h};
+enum columns {a,b,c,d,e,f,g,h}; /* The columns there are. */
 
 typedef struct {
-    unsigned column_in_the_board : 3; /* The number of the column where the square is. */
-    unsigned row_in_the_board : 3; /* The number of the row where the square is. */
-
-    unsigned type_of_piece : 4; /* What piece is on the square (form enum types). */
-
-    unsigned can_en_passant_right : 1; /* Can it eat something with en passant to the right? (only relevant for pawns), 0 if can't, 1 if he can. */
-    unsigned can_en_passant_left : 1; /* Can it eat something with en passant to the left? (only relevant for pawns), 0 if can't, 1 if he can. */
-
-}square;
-
-typedef struct {
-    square squares[number_of_rows * number_of_columns]; /* List of all the squares in the board. */
+    char squares[number_of_rows * number_of_columns / 2]; /* List of all the squares in the board.
+                                                        Each square represented by half a char. */
 
     unsigned can_black_castle_long : 1; /* 0 if can't, 1 if he can. */
     unsigned can_black_castle_short : 1; /* 0 if can't, 1 if he can. */
@@ -31,4 +20,11 @@ typedef struct {
     unsigned can_white_castle_short : 1; /* 0 if can't, 1 if he can. */
 
     unsigned whose_turn : 1; /* 0 if it's white turn, 1 if it's black turn. */
+
+    /* To read about en passant - https://www.chess.com/terms/en-passant. */
+    unsigned pawn1_en_passant : 7; /* The square of the pawn that can en passant (if no pawns can en passant, it's -1)  */
+    unsigned side_of_pawn1_en_passant: 1; /* If the en passant is to the right - it's 0, left - 1; */
+    unsigned pawn2_en_passant : 7; /* The square of the other pawn that can en passant (if no other pawns can en passant, it's -1)  */
+    unsigned side_of_pawn2_en_passant: 1; /* If the en passant is to the right - it's 0, left - 1; */
+
 }board;
