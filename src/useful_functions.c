@@ -8,7 +8,8 @@
 #define mask_for_first_half 0xf0 /* A mask to clear the first half of the byte. */
 #define mask_for_second_half 0x0f /* A mask to clear the second half of the byte. */
 
-/* Gives the piece in the given square. */
+/* Gives the piece in the given square.
+   If there is an error - returns -1. */
 char get_piece_in_square(board *b ,unsigned char square_number) {
     if (square_number >= 64 || b->squares == NULL) /* If there is an error: */
         return -1;
@@ -20,7 +21,8 @@ char get_piece_in_square(board *b ,unsigned char square_number) {
         return (b->squares[square_number/2] & mask_for_first_half) /* - clears the first half */ >> 4 /* - shifts it to the first half. */;
 }
 
-/* Change the piece in the given square to the given piece. */
+/* Change the piece in the given square to the given piece.
+   If there is an error - returns -1. */
 char change_the_square(board *b,unsigned char square_number ,char new_piece) {
     if (square_number >= 64 || b->squares == NULL) /* If there is an error: */
         return -1;
