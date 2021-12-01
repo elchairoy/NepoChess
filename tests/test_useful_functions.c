@@ -1,7 +1,4 @@
-#include "useful_functions.h"
-#include <stdio.h>
-
-
+#include "../include/test_useful_functions.h"
 /* This function tests the functions get_piece_in_square and change_the_square.
    If there is and error, prints an error message and returns 1, otherwise returns 0. */
 int test_useful_functions() {
@@ -25,6 +22,12 @@ int test_useful_functions() {
     change_the_square(&b, 4, 5);
     if (get_piece_in_square(&b,4) != 5) {
         printf("Error in change_the_square.");
+        return 1;
+    }
+
+
+    if (create_a_move(1,2,3,1,0) != 0x7081) {
+        printf("Error in create a move.");
         return 1;
     }
 

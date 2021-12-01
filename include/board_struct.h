@@ -4,14 +4,16 @@
 
 #include <math.h>
 
-#define number_of_rows 8 /* Number of rows in the chess board. */
-#define number_of_columns 8 /* Number of columns in the chess board. */
+#define NUMBER_OF_ROWS 8 /* Number of rows in the chess board. */
+#define NUMBER_OF_COLUMNS 8 /* Number of columns in the chess board. */
+
+#define NUMBER_OF_SQUARES (NUMBER_OF_COLUMNS * NUMBER_OF_ROWS)
 
 enum types {empty,white_knight,white_rook,white_queen,white_king,white_pawn,white_bishop,black_knight,black_rook,black_queen,black_king,black_pawn,black_bishop}; /* What cat be on a square. */
 enum columns {a,b,c,d,e,f,g,h}; /* The columns there are. */
 
 typedef struct {
-    char squares[number_of_rows * number_of_columns / 2]; /* List of all the squares in the board.
+    char squares[NUMBER_OF_SQUARES / 2]; /* List of all the squares in the board.
                                                         Each square represented by half a char. */
 
     unsigned can_black_castle_long : 1; /* 0 if can't, 1 if he can. */
