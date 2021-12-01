@@ -31,7 +31,7 @@ int test_useful_functions() {
         return 1;
     }
 
-    m = create_a_move(1,2,3,1,0);
+    move m = create_a_move(1,2,3,1,0);
 
     /* Test get_src_square */
     if (get_src_square(m) != 1) {
@@ -47,7 +47,7 @@ int test_useful_functions() {
 
     /* Test get_promotion_choice */
     if (get_promotion_choice(m) != 3) {
-        printf("Error in get_promotion_choice.");
+        printf("Error in get_promotion_choice.%d", get_promotion_choice(m));
         return -1;
     }
 
@@ -58,7 +58,7 @@ int test_useful_functions() {
     }
 
     /* Test get_is_short_castle */
-    if (get_is_short_castle(m) != 1) {
+    if (get_is_short_castle(m) != 0) {
         printf("Error in get_is_short_castle.");
         return -1;
     }
