@@ -25,11 +25,42 @@ int test_useful_functions() {
         return 1;
     }
 
-
+    /* Test create_a_move: */
     if (create_a_move(1,2,3,1,0) != 0x7081) {
-        printf("Error in create a move.");
+        printf("Error in create_a_move.");
         return 1;
     }
 
+    m = create_a_move(1,2,3,1,0);
+
+    /* Test get_src_square */
+    if (get_src_square(m) != 1) {
+        printf("Error in get_src_square.");
+        return -1;
+    }
+
+    /* Test get_dst_square */
+    if (get_dst_square(m) != 2) {
+        printf("Error in get_dst_square.");
+        return -1;
+    }
+
+    /* Test get_promotion_choice */
+    if (get_promotion_choice(m) != 3) {
+        printf("Error in get_promotion_choice.");
+        return -1;
+    }
+
+    /* Test get_is_long_castle */
+    if (get_is_long_castle(m) != 1) {
+        printf("Error in get_is_long_castle.");
+        return -1;
+    }
+
+    /* Test get_is_short_castle */
+    if (get_is_short_castle(m) != 1) {
+        printf("Error in get_is_short_castle.");
+        return -1;
+    }
     return 0;
 }

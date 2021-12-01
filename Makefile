@@ -29,6 +29,9 @@ test: clean ${BIN}/${TEST_EXECUTABLE}
 valgrind: ${BIN}/${EXECUTABLE}
 	${VALGRIND} ${VALGRIND_FLAGS} $<
 
+valgrindTest: ${BIN}/${TEST_EXECUTABLE}
+	${VALGRIND} ${VALGRIND_FLAGS} $<
+
 # We are compiling here the sources as well, because the tester code uses the c code.
 ${BIN}/${TEST_EXECUTABLE}: ${TESTS_SOURCES}
 	mkdir bin -p
