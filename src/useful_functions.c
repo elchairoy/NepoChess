@@ -4,6 +4,15 @@
 #include "useful_functions.h"
 
 #define MASK_FOR_A_HALF 0x0f /* A mask to get only a half of a byte. */
+#define MASK_FOR_6BITS 0x00fd /* A mask to get only 6 bits of a short. */
+#define MASK_FOR_2BITS 0xd0fd /* A mask to get only 2 bits of a short. */
+
+#define SRC_LOC_INDEX 0 /* The place of the source square in the short. */
+#define DST_LOC_INDEX 6 /* The place of the destination square in the short. */
+#define PROMOTE_TO_INDEX 12 /* The place of the 'promote to what' in the short. */
+#define IS_LONG_CASTLE 14 /* The place of the 'is long castle' in the short. */
+#define IS_SHORT_CASTLE 15 /* The place of the 'is short castle' in the short. */
+
 
 typedef unsigned short int move;
 
@@ -34,15 +43,44 @@ char change_the_square(board *b,unsigned char square_number ,char new_piece) {
     return 0;
 }
 
+/* This function gets the data needed for a move and returns a short representing the move.
+   If the data is invalid - returns -1. */
 short create_a_move(unsigned char src_loc,unsigned char dst_loc,unsigned char promote_to,unsigned char castle_long,unsigned char castle_short) {
     move result = 0;
-    if (src_loc >= NUMBER_OF_SQUARES || src_loc >= NUMBER_OF_SQUARES || promote_to >= 4 || castle_long >= 2 || castle_short >= 2) /* */
+
+    if (src_loc >= NUMBER_OF_SQUARES || src_loc >= NUMBER_OF_SQUARES || promote_to >= 4 || castle_long >= 2 || castle_short >= 2) /* If the data is invalid: */
         return -1;
-    result |= src_loc;
-    result |= (dst_loc << 6); /* Fill it in the next 6 bits. */
-    result |= (promote_to << 12);
-    result |= (castle_long << 14);
-    result |= (castle_short << 15);
+
+    result |= (src_loc << SRC_LOC_INDEX); /* Enters the src loc. */
+    result |= (dst_loc << DST_LOC_INDEX); /* Enters the dst loc. */
+    result |= (promote_to << PROMOTE_TO_INDEX); /* Enters the promotion choice. */
+    result |= (castle_long << IS_LONG_CASTLE); /* Enters if it's a long castle. */
+    result |= (castle_short << IS_SHORT_CASTLE); /* Enters if it's a short castle. */
 
     return result;
+}
+
+/* This function gets a move and returns the src square */
+char get_src_square(move m) {
+    return (m & (MASK_FOR_6BITS << SRC_LOC_INDEX)) >> SRC_LOC_INDEX;
+}
+
+/* This function gets a move and returns the src square */
+char get_dst_square(move m) {
+    return (m & (MASK_FOR_6BITS << DST_LOC_INDEX)) >> DST_LOC_INDEX;
+}
+
+/* This function gets a move and returns what to promote to */
+char get_promotion_choice(move m) {
+    return (m & (MASK_FOR_6BITS << PROMOTE_TO_INDEX)) >> PROMOTE_TO_INDEX;
+}
+
+/* This function gets a move and returns if it's a long castle */
+char get_is_long_castle(move m) {
+    return (m & (MASK_FOR_6BITS << IS_LONG_CASTLE)) >> IS_LONG_CASTLE;
+}
+
+/* This function gets a move and returns if it's a short castle */
+char get_is_short_castle(move m) {
+    return (m & (MASK_FOR_6BITS << IS_SHORT_CASTLE)) >> IS_SHORT_CASTLE;
 }
