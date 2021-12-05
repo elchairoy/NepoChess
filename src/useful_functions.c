@@ -4,7 +4,7 @@
 #include "useful_functions.h"
 
 #define MASK_FOR_A_HALF 0x0f /* A mask to get only a half of a byte. */
-#define MASK_FOR_6BITS 0x002f /* A mask to get only 6 bits of a short. */
+#define MASK_FOR_6BITS 0x003f /* A mask to get only 6 bits of a short. */
 #define MASK_FOR_2BITS 0x0003 /* A mask to get only 2 bits of a short. */
 
 #define SRC_LOC_INDEX 0 /* The place of the source square in the short. */
