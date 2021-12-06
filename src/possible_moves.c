@@ -1,5 +1,5 @@
 #include "possible_moves.h"
-
+char PIECES[13] = {'E','N','R','Q','K','P','B','n','r','q','k','p','b'};
 /*4 func to cal if peice is getting off board in hes move*/
 char pass_left(char src){
     if(get_column(src) == 0)
@@ -9,7 +9,7 @@ char pass_left(char src){
 
 
 char pass_right(char src){
-    if(get_column(src) == 7)
+    if(get_column(src) == NUMBER_OF_COLUMNS - 1)
         return 1;
     return 0;
 }
@@ -23,7 +23,7 @@ char pass_down(char src){
 
 
 char pass_up(char src){
-    if(get_row(src) == 7)
+    if(get_row(src) == NUMBER_OF_ROWS - 1)
         return 1;
     return 0;
 }
@@ -34,11 +34,11 @@ char colid_with_ally(char dst, board the_board, char color)
     char dst_piece = get_piece_in_square(&the_board, dst);
     if(color)
     {
-        if(dst_piece <= 6 && dst_piece != 0)
+        if(dst_piece <= NUM_OF_WHITE_PIECES && dst_piece != 0)
             return 1;
         return 0;
     }
-    if(dst_piece > 6)
+    if(dst_piece > NUM_OF_WHITE_PIECES)
         return 1;
     return 0;
 }
@@ -48,11 +48,11 @@ char colid_with_enemy(char src, board the_board, char color){
     char src_piece = get_piece_in_square(&the_board, src);
     if(color)
     {
-        if(src_piece > 6)
+        if(src_piece > NUM_OF_WHITE_PIECES)
             return 1;
         return 0;
     }
-    if(src_piece <= 6 && src_piece != 0)
+    if(src_piece <= NUM_OF_WHITE_PIECES && src_piece != 0)
         return 1;
     return 0;
 }
@@ -163,76 +163,67 @@ char move_down_right(char src, board the_board, char color){
 
 /*func to return for the rook and partly for the queen their move list in straight lines - left right up and down*/
 void move_in_straight_lines(char square, board the_board, char color, move *moves){
-    int i, move_num = 0;
+    int i = 0;
+    int move_num = 0;
     /*rook up*/
-    for(i = 0; i < MAX_MOVES;i++){
-        if(move_up(square + i*UP, the_board, color)){
-            moves[move_num] = create_a_move(square, square + (i+1)*UP, 0, 0, 0);
-            move_num ++;
-        }
-        else break;
+    while(move_up(square + i*UP, the_board, color)){
+        moves[move_num] = create_a_move(square, square + (i+1)*UP, 0, 0, 0);
+        i++;
+        move_num ++;
     }
     /*rook down*/
-    for(i = 0; i < MAX_MOVES;i++){
-        if(move_down(square + i*DOWN, the_board, color)){
-            moves[move_num] = create_a_move(square, square + (i+1)*DOWN, 0, 0, 0);
-            move_num ++;
-        }
-        else break;
+    i = 0;
+    while(move_down(square + i*DOWN, the_board, color)){
+        moves[move_num] = create_a_move(square, square + (i+1)*DOWN, 0, 0, 0);
+        i++;
+        move_num ++;
     }
     /*rook left*/
-    for(i = 0; i < MAX_MOVES;i++){
-        if(move_left(square + i*LEFT, the_board, color)){
-            moves[move_num] = create_a_move(square, square + (i+1)*LEFT, 0, 0, 0);
-            move_num ++;
-        }
-        else break;
+    i = 0;
+    while(move_left(square + i*LEFT, the_board, color)){
+        moves[move_num] = create_a_move(square, square + (i+1)*LEFT, 0, 0, 0);
+        i++;
+        move_num ++;
     }
     /*rook right*/
-    for(i = 0; i < MAX_MOVES;i++){
-        if(move_right(square + i*RIGHT, the_board, color)){
-            moves[move_num] = create_a_move(square, square + (i+1)*RIGHT, 0, 0, 0);
-            move_num ++;
-        }
-        else break;
+    i = 0;
+    while(move_right(square + i*RIGHT, the_board, color)){
+        moves[move_num] = create_a_move(square, square + (i+1)*RIGHT, 0, 0, 0);
+        i++;
+        move_num ++;
     }
     moves[move_num] = END;
 }
 
 /*this one returns the list of moves in diagonal lines - up_right up_left etc.*/
 void move_in_diagonal_lines(char square, board the_board, char color, move *moves){
-    int i, move_num = 0;
+    int i = 0;
+    int move_num = 0;
     /*bishop up left*/
-    for(i = 0; i < MAX_MOVES;i++){
-        if(move_up_left(square + i*UP_LEFT, the_board, color)){
-            moves[move_num] = create_a_move(square, square + (i+1)*UP_LEFT, 0, 0, 0);
-            move_num ++;
-        }
-        else break;
+    while(move_up_left(square + i*UP_LEFT, the_board, color)){
+        moves[move_num] = create_a_move(square, square + (i+1)*UP_LEFT, 0, 0, 0);
+        i++;
+        move_num ++;
     }
     /*bishop up right*/
-    for(i = 0; i < MAX_MOVES;i++){
-        if(move_up_right(square + i*UP_RIGHT, the_board, color)){
-            moves[move_num] = create_a_move(square, square + (i+1)*UP_RIGHT, 0, 0, 0);
-            move_num ++;
-        }
-        else break;
+    i = 0;
+    while(move_up_right(square + i*UP_RIGHT, the_board, color)){
+        moves[move_num] = create_a_move(square, square + (i+1)*UP_RIGHT, 0, 0, 0);
+        i++;
+        move_num ++;
     }
     /*bishop down right*/
-    for(i = 0; i < MAX_MOVES;i++){
-        if(move_down_right(square + i*DOWN_RIGHT, the_board, color)){
-            moves[move_num] = create_a_move(square, square + (i+1)*DOWN_RIGHT, 0, 0, 0);
-            move_num ++;
-        }
-        else break;
+    i = 0;
+    while(move_down_right(square + i*DOWN_RIGHT, the_board, color)){
+        moves[move_num] = create_a_move(square, square + (i+1)*DOWN_RIGHT, 0, 0, 0);
+        i++;
+        move_num ++;
     }
     /*bishop down left*/
-    for(i = 0; i < MAX_MOVES;i++){
-        if(move_down_left(square + i*DOWN_LEFT, the_board, color)){
-            moves[move_num] = create_a_move(square, square + (i+1)*DOWN_LEFT, 0, 0, 0);
-            move_num ++;
-        }
-        else break;
+    if(move_down_left(square + i*DOWN_LEFT, the_board, color)){
+        moves[move_num] = create_a_move(square, square + (i+1)*DOWN_LEFT, 0, 0, 0);
+        i++;
+        move_num ++;
     }
     moves[move_num] = END;
 }
@@ -312,57 +303,57 @@ void knight(char square, board the_board, char color, move *moves){
     int move_num = 0;
     /*knight up up right*/
     if(get_column(square) < 7 && get_row(square) < 6){
-        if(!colid_with_ally(square+N_UP_UP_RIGHT, the_board, color)){
-            moves[move_num] = create_a_move(square, square+N_UP_UP_RIGHT, 0, 0, 0);
+        if(!colid_with_ally(square+KNIGHT_UP_UP_RIGHT, the_board, color)){
+            moves[move_num] = create_a_move(square, square+KNIGHT_UP_UP_RIGHT, 0, 0, 0);
             move_num ++;
         }
     }
     /*knight up up left*/
     if(get_column(square) > 0 && get_row(square) < 6){
-        if(!colid_with_ally(square+N_UP_UP_LEFT, the_board, color)){
-            moves[move_num] = create_a_move(square, square+N_UP_UP_LEFT, 0, 0, 0);
+        if(!colid_with_ally(square+KNIGHT_UP_UP_LEFT, the_board, color)){
+            moves[move_num] = create_a_move(square, square+KNIGHT_UP_UP_LEFT, 0, 0, 0);
             move_num ++;
         }
     }
     /*knight up right right*/
     if(get_column(square) < 6 && get_row(square) < 7){
-        if(!colid_with_ally(square+N_UP_RIGHT_RIGHT, the_board, color)){
-            moves[move_num] = create_a_move(square, square+N_UP_RIGHT_RIGHT, 0, 0, 0);
+        if(!colid_with_ally(square+KNIGHT_UP_RIGHT_RIGHT, the_board, color)){
+            moves[move_num] = create_a_move(square, square+KNIGHT_UP_RIGHT_RIGHT, 0, 0, 0);
             move_num ++;
         }
     }
     /*knight up left left*/
     if(get_column(square) > 1 && get_row(square) < 7){
-        if(!colid_with_ally(square+N_UP_LEFT_LEFT, the_board, color)){
-            moves[move_num] = create_a_move(square, square+N_UP_LEFT_LEFT, 0, 0, 0);
+        if(!colid_with_ally(square+KNIGHT_UP_LEFT_LEFT, the_board, color)){
+            moves[move_num] = create_a_move(square, square+KNIGHT_UP_LEFT_LEFT, 0, 0, 0);
             move_num ++;
         }
     }
     /*knight down down right*/
     if(get_column(square) < 7 && get_row(square) > 1){
-        if(!colid_with_ally(square+N_DOWN_DOWN_RIGHT, the_board, color)){
-            moves[move_num] = create_a_move(square, square+N_DOWN_DOWN_RIGHT, 0, 0, 0);
+        if(!colid_with_ally(square+KNIGHT_DOWN_DOWN_RIGHT, the_board, color)){
+            moves[move_num] = create_a_move(square, square+KNIGHT_DOWN_DOWN_RIGHT, 0, 0, 0);
             move_num ++;
         }
     }
     /*knight down down left*/
     if(get_column(square) > 0 && get_row(square) > 1){
-        if(!colid_with_ally(square+N_DOWN_DOWN_LEFT, the_board, color)){
-            moves[move_num] = create_a_move(square, square+N_DOWN_DOWN_LEFT, 0, 0, 0);
+        if(!colid_with_ally(square+KNIGHT_DOWN_DOWN_LEFT, the_board, color)){
+            moves[move_num] = create_a_move(square, square+KNIGHT_DOWN_DOWN_LEFT, 0, 0, 0);
             move_num ++;
         }
     }
     /*knight down right right*/
     if(get_column(square) < 6 && get_row(square) > 0){
-        if(!colid_with_ally(square+N_DOWN_RIGHT_RIGHT, the_board, color)){
-            moves[move_num] = create_a_move(square, square+N_DOWN_RIGHT_RIGHT, 0, 0, 0);
+        if(!colid_with_ally(square+KNIGHT_DOWN_RIGHT_RIGHT, the_board, color)){
+            moves[move_num] = create_a_move(square, square+KNIGHT_DOWN_RIGHT_RIGHT, 0, 0, 0);
             move_num ++;
         }
     }
     /*knight down left left*/
     if(get_column(square) > 1 && get_row(square) > 0){
-        if(!colid_with_ally(square+N_DOWN_LEFT_LEFT, the_board, color)){
-            moves[move_num] = create_a_move(square, square+N_DOWN_LEFT_LEFT, 0, 0, 0);
+        if(!colid_with_ally(square+KNIGHT_DOWN_LEFT_LEFT, the_board, color)){
+            moves[move_num] = create_a_move(square, square+KNIGHT_DOWN_LEFT_LEFT, 0, 0, 0);
             move_num ++;
         }
     }
@@ -431,7 +422,6 @@ char return_piece(char square, board the_board){
 /*calls the right func for the peice it was asked to check*/
 char moves_of_piece(char square, board the_board, move * moves, char crown){
     char peice = return_piece(square, the_board);
-    printf("peice: %c\n", peice);
     switch (peice)
     {
     case 'N':
@@ -494,16 +484,17 @@ int func(){
     move moves [28];
     char initial_board[32] = {white_rook << 4|white_knight,white_bishop << 4|white_queen,white_king<<4|
     white_bishop,white_knight<<4|white_rook,white_pawn << 4|white_pawn,white_pawn<<4|white_pawn,white_pawn<<4|
-    white_pawn,white_pawn<<4|white_pawn,empty,empty<<4|white_pawn,empty,empty,empty,empty,empty,empty,empty,empty,white_queen<<4|empty,empty
-    ,empty,empty,empty,empty,empty << 4|black_pawn,black_pawn<<4|black_pawn,black_pawn<<4|black_pawn,black_pawn<<4|
+    white_pawn,white_pawn<<4|white_pawn,empty,empty<<4|white_pawn,empty,empty,empty,empty,empty,empty,empty,empty,empty,empty
+    ,empty,empty,empty,empty,black_pawn << 4|black_pawn,black_pawn<<4|black_pawn,black_pawn<<4|black_pawn,black_pawn<<4|
     black_pawn,black_rook << 4|black_knight,black_bishop << 4|black_queen,black_king<<4|black_bishop,black_knight<<4|black_rook};
-    int i;
+    int i = 0;
     char crown = 1;
-    for(i = 0;i<32;i++)
+
+    for(i;i<32;i++)
     {
         START_BOARD.squares[i] = initial_board[i];
     }
-    moves_of_piece(36, START_BOARD, moves, crown);
+    moves_of_piece(8, START_BOARD, moves, crown);
     i = 0;
     while(moves[i] != END){
         printf("from %d to %d\n", get_src_square(moves[i]), get_dst_square(moves[i]));

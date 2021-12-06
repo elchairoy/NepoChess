@@ -1,6 +1,5 @@
 #include "useful_functions.h"
 #include <stdio.h>
-char PIECES[13] = {'E','N','R','Q','K','P','B','n','r','q','k','p','b'};
 #define PAWN_MAX_MOVES 4 /*max squres pawn can go to in one turn*/
 #define QUEEN_MAX_MOVES 27 /*as well*/
 #define KING_MAX_MOVES 8 /*as well*/
@@ -8,29 +7,30 @@ char PIECES[13] = {'E','N','R','Q','K','P','B','n','r','q','k','p','b'};
 #define KNIGHT_MAX_MOVES 8 /*as well*/
 #define ROOK_MAX_MOVES 14 /*as well*/
 #define END create_a_move(0,0,0,0,0) /*sign for the end of the array*/
-#define get_column(square) (square % 8) /*get the column of a square*/
-#define get_row(square) (square / 8) /*get a row of a square*/
+#define get_column(square) (square % NUMBER_OF_COLUMNS) /*get the column of a square*/
+#define get_row(square) (square / NUMBER_OF_ROWS) /*get a row of a square*/
 #define UP 8 /*peice moves up*/
 #define DOWN -8 /*and down*/
 #define LEFT -1 /*to the left*/
 #define RIGHT 1 /*to the right*/
-#define UP_RIGHT 9 /*up in a diagonal to the left*/
-#define UP_LEFT 7 /*up... to the right*/
-#define DOWN_RIGHT -7 /*down...right*/
-#define DOWN_LEFT -9 /*down...left*/
+#define UP_RIGHT UP + RIGHT /*up in a diagonal to the left*/
+#define UP_LEFT UP + LEFT /*up... to the right*/
+#define DOWN_RIGHT DOWN + RIGHT /*down...right*/
+#define DOWN_LEFT DOWN + LEFT /*down...left*/
 #define MAX_MOVES 7/*max moves of a liner peice to any side*/
 #define WHITE 1 /*white is true*/
 #define BLACK 0 /*black is false (I know it's Racist but I don't care so live with it)*/
+#define NUM_OF_WHITE_PIECES 6
 /*every move of the knight the name is the move in squres - up up right means 1 up then another 1 up then to the left
 and the number is the cal of the amount of squares he passes*/
-#define N_UP_UP_RIGHT 17
-#define N_UP_UP_LEFT 15
-#define N_UP_RIGHT_RIGHT 10
-#define N_UP_LEFT_LEFT 6
-#define N_DOWN_DOWN_RIGHT -15
-#define N_DOWN_DOWN_LEFT -17
-#define N_DOWN_RIGHT_RIGHT -6
-#define N_DOWN_LEFT_LEFT -10
+#define KNIGHT_UP_UP_RIGHT UP + UP + RIGHT
+#define KNIGHT_UP_UP_LEFT UP + UP + LEFT
+#define KNIGHT_UP_RIGHT_RIGHT UP + RIGHT + RIGHT
+#define KNIGHT_UP_LEFT_LEFT UP + LEFT + LEFT
+#define KNIGHT_DOWN_DOWN_RIGHT DOWN + DOWN + RIGHT
+#define KNIGHT_DOWN_DOWN_LEFT DOWN + DOWN + LEFT
+#define KNIGHT_DOWN_RIGHT_RIGHT DOWN + RIGHT + RIGHT
+#define KNIGHT_DOWN_LEFT_LEFT DOWN + LEFT + LEFT
 
 /*4 func to cal if peice is getting off board in hes move*/
 char pass_left(char src);
