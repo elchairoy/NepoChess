@@ -1,0 +1,9 @@
+{
+    "files.associations": {
+        "test_useful_functions.h": "c",
+        "useful_functions.h": "c",
+        "stdlib.h": "c",
+        "board_struct.h": "c",
+        "type_traits": "c"
+    }
+}

@@ -11,6 +11,7 @@
 
 enum types {empty,white_knight,white_rook,white_queen,white_king,white_pawn,white_bishop,black_knight,black_rook,black_queen,black_king,black_pawn,black_bishop}; /* What cat be on a square. */
 enum columns {a,b,c,d,e,f,g,h}; /* The columns there are. */
+enum promotions {promote_to_queen, promote_to_rook, promote_to_knight, promote_to_bishop}; /* What can be promoted to */
 
 typedef struct {
     char squares[NUMBER_OF_SQUARES / 2]; /* List of all the squares in the board.
