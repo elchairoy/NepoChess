@@ -39,57 +39,57 @@ char pass_down(char src);
 char pass_up(char src);
 
 /*check if peice will get on a square that an ally is on which means he can't*/
-char colid_with_ally(char dst, board the_board, char color);
+char colid_with_ally(char dst, board *the_board, char color);
 
 /*check if peice is on a square that an enemy is on which means he can't continue*/
-char colid_with_enemy(char src, board the_board, char color);
+char colid_with_enemy(char src, board *the_board, char color);
 
 /*3 func to check if the pawn by his color can move and if so to where*/
-char pawn_straight(char src, board the_board, char color);
-char pawn_eat_left(char src, board the_board, char color);
-char pawn_eat_right(char src, board the_board, char color);
+char pawn_straight(char src, board *the_board, char color);
+char pawn_eat_left(char src, board *the_board, char color);
+char pawn_eat_right(char src, board *the_board, char color);
 
 /*8 func to return if the peice can move to any of his 8 sides (if the peice itself can of course)*/
-char move_up(char src, board the_board, char color);
-char move_down(char src, board the_board, char color);
-char move_left(char src, board the_board, char color);
-char move_right(char src, board the_board, char color);
-char move_up_left(char src, board the_board, char color);
-char move_up_right(char src, board the_board, char color);
-char move_down_left(char src, board the_board, char color);
-char move_down_right(char src, board the_board, char color);
+char move_up(char src, board *the_board, char color);
+char move_down(char src, board *the_board, char color);
+char move_left(char src, board *the_board, char color);
+char move_right(char src, board *the_board, char color);
+char move_up_left(char src, board *the_board, char color);
+char move_up_right(char src, board *the_board, char color);
+char move_down_left(char src, board *the_board, char color);
+char move_down_right(char src, board *the_board, char color);
 
 /*func to return for the rook and partly for the queen their move list in straight lines - left right up and down*/
-void move_in_straight_lines(char square, board the_board, char color, move *moves);
+void move_in_straight_lines(char square, board *the_board, char color, move *moves);
 
 /*this one returns the list of moves in diagonal lines - up_right up_left etc.*/
-void move_in_diagonal_lines(char square, board the_board, char color, move *moves);
+void move_in_diagonal_lines(char square, board *the_board, char color, move *moves);
 
 /*returns the rook moves list*/
-void rook(char square, board the_board, char color, move *moves);
+void rook(char square, board *the_board, char color, move *moves);
 
 /*returns the bishop moves list*/
-void bishop(char square, board the_board, char color, move *moves);
+void bishop(char square, board *the_board, char color, move *moves);
 
 /*creats 2 lists 1 for striaght lins and one for diagonal and conects them to one which is the final*/
-void queen(char square, board the_board, char color, move *moves);
+void queen(char square, board *the_board, char color, move *moves);
 
 /*checks every possible move of the king out of 8*/
-void king(char square, board the_board, char color, move *moves);
+void king(char square, board *the_board, char color, move *moves);
 
 /*checks every possible move of the king out of 8*/
-void knight(char square, board the_board, char color, move *moves);
+void knight(char square, board *the_board, char color, move *moves);
 
 /*checks every special move the pawn can do exept for the usual on which also gets checked but its minor, anyway there is 2 func
 because the pawn for each color moves only in one diriction and its the exact oppised of the other*/
-void whitepawn(char square, board the_board, move *moves, char crown);
-void blackpawn(char square, board the_board, move *moves, char crown);
+void whitepawn(char square, board *the_board, move *moves, char crown);
+void blackpawn(char square, board *the_board, move *moves, char crown);
 
 /*returns the name of the peice in a letter*/
-char return_piece(char square, board the_board);
+char return_piece(char square, board *the_board);
 
 /*calls the right func for the peice it was asked to check*/
-char moves_of_piece(char square, board the_board, move * moves, char crown);
+char moves_of_piece(char square, board *the_board, move * moves, char crown);
 
 /*main func*/
 int func();
