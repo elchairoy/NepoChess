@@ -84,118 +84,118 @@ char get_is_short_castle(move m) {
 }
 
 /* The function commit a short castle for white */
-    void commit_a_short_castle_for_white(board * board1){
-        change_the_square(board1, 4, empty); /* It changes the white king place to empty */ 
-        change_the_square(board1, 7, empty); /* It changes the white rook place to empty */
-        change_the_square(board1, 6, white_king); /* It puts the white king in his place */
-        change_the_square(board1, 5, white_rook); /* It puts the white rook in his place */
+    void commit_a_short_castle_for_white(board * b){
+        change_the_square(b, 4, empty); /* It changes the white king place to empty */ 
+        change_the_square(b, 7, empty); /* It changes the white rook place to empty */
+        change_the_square(b, 6, white_king); /* It puts the white king in his place */
+        change_the_square(b, 5, white_rook); /* It puts the white rook in his place */
     }
 
     /* The function commit a long castle for white */
-    void commit_a_long_castle_for_white(board * board1){
-        change_the_square(board1, 4, empty); /* It changes the white king place to empty */
-        change_the_square(board1, 0, empty); /* It changes the white rook place to empty */
-        change_the_square(board1, 2, white_king); /* It puts the white king in his place */
-        change_the_square(board1, 3, white_rook); /* It puts the white rook in his place */
+    void commit_a_long_castle_for_white(board * b){
+        change_the_square(b, 4, empty); /* It changes the white king place to empty */
+        change_the_square(b, 0, empty); /* It changes the white rook place to empty */
+        change_the_square(b, 2, white_king); /* It puts the white king in his place */
+        change_the_square(b, 3, white_rook); /* It puts the white rook in his place */
     }
 
     /* The function commit an en passant for white */
-    void commit_en_passant_for_white(board * board1, unsigned char src_loc, unsigned char dst_loc){
+    void commit_en_passant_for_white(board * b, unsigned char src_loc, unsigned char dst_loc){
 
-        change_the_square(board1, src_loc, empty); /* It changes the white pawn place to empty */
-        change_the_square(board1, dst_loc, white_pawn); /* It puts the white pawn in his place */ 
-        change_the_square(board1, dst_loc - 8, empty); /* It changes the black pawn place to empty */
+        change_the_square(b, src_loc, empty); /* It changes the white pawn place to empty */
+        change_the_square(b, dst_loc, white_pawn); /* It puts the white pawn in his place */ 
+        change_the_square(b, dst_loc - 8, empty); /* It changes the black pawn place to empty */
     }
 
     /* The function commit a promotion for white */
-    void commit_promotion_for_white(board * board1, unsigned char src_loc, unsigned char dst_loc, unsigned char what_to_promote_to){
-        change_the_square(board1, src_loc, empty); /* Change the src loc to empty */
-        if (what_to_promote_to == promote_to_queen) change_the_square(board1, dst_loc, white_queen); /* promote to queen */
-        else if (what_to_promote_to == promote_to_rook) change_the_square(board1, dst_loc, white_rook); /* promote to rook */
-        else if(what_to_promote_to == promote_to_knight) change_the_square(board1, dst_loc, white_knight); /* promote to knight */
-        else change_the_square(board1, dst_loc, white_bishop); /* promote to bishop */
+    void commit_promotion_for_white(board * b, unsigned char src_loc, unsigned char dst_loc, unsigned char what_to_promote_to){
+        change_the_square(b, src_loc, empty); /* Change the src loc to empty */
+        if (what_to_promote_to == promote_to_queen) change_the_square(b, dst_loc, white_queen); /* promote to queen */
+        else if (what_to_promote_to == promote_to_rook) change_the_square(b, dst_loc, white_rook); /* promote to rook */
+        else if(what_to_promote_to == promote_to_knight) change_the_square(b, dst_loc, white_knight); /* promote to knight */
+        else change_the_square(b, dst_loc, white_bishop); /* promote to bishop */
     }
 
     /* The function commit a short castle for black */
-    void commit_a_short_castle_for_black(board * board1){
-        change_the_square(board1, 60, empty); /* It changes the black king place to empty */
-        change_the_square(board1, 63, empty); /* It changes the black rook place to empty */
-        change_the_square(board1, 62, black_king); /* It puts the black king in his place */
-        change_the_square(board1, 61, black_rook); /* It puts the black rook in his place */
+    void commit_a_short_castle_for_black(board * b){
+        change_the_square(b, 60, empty); /* It changes the black king place to empty */
+        change_the_square(b, 63, empty); /* It changes the black rook place to empty */
+        change_the_square(b, 62, black_king); /* It puts the black king in his place */
+        change_the_square(b, 61, black_rook); /* It puts the black rook in his place */
     }
 
     /* The function commit a long castle for black */
-    void commit_a_long_castle_for_black(board * board1){
-        change_the_square(board1, 60, empty); /* It changes the black king place to empty */
-        change_the_square(board1, 56, empty); /* It changes the black rook place to empty */
-        change_the_square(board1, 58, black_king); /* It puts the black king in his place */
-        change_the_square(board1, 59, black_rook); /* It puts the black rook in his place */
+    void commit_a_long_castle_for_black(board * b){
+        change_the_square(b, 60, empty); /* It changes the black king place to empty */
+        change_the_square(b, 56, empty); /* It changes the black rook place to empty */
+        change_the_square(b, 58, black_king); /* It puts the black king in his place */
+        change_the_square(b, 59, black_rook); /* It puts the black rook in his place */
     }
 
     /* The function commit an en passant for black */
-    void commit_en_passant_for_black(board * board1, unsigned char src_loc, unsigned char dst_loc){
-        change_the_square(board1, src_loc, empty); /* It changes the black pawn place to empty */
-        change_the_square(board1, dst_loc, black_pawn); /* It puts the black pawn in his place */ 
-        change_the_square(board1, dst_loc + 8, empty); /* It changes the white pawn place to empty */
+    void commit_en_passant_for_black(board * b, unsigned char src_loc, unsigned char dst_loc){
+        change_the_square(b, src_loc, empty); /* It changes the black pawn place to empty */
+        change_the_square(b, dst_loc, black_pawn); /* It puts the black pawn in his place */ 
+        change_the_square(b, dst_loc + 8, empty); /* It changes the white pawn place to empty */
     }
 
     /* The function commit a promotion for black */
-    void commit_promotion_for_black(board * board1, unsigned char src_loc, unsigned char dst_loc, unsigned char what_to_promote_to){
-        change_the_square(board1, src_loc, empty); /* Change the src loc to empty */
-        if (what_to_promote_to == promote_to_queen) change_the_square(board1, dst_loc, black_queen); /* promote to queen */
-        else if (what_to_promote_to == promote_to_rook) change_the_square(board1, dst_loc, black_rook); /* promote to rook */
-        else if(what_to_promote_to == promote_to_knight) change_the_square(board1, dst_loc, black_knight); /* promote to knight */
-        else change_the_square(board1, dst_loc, black_bishop); /* promote to bishop */
+    void commit_promotion_for_black(board * b, unsigned char src_loc, unsigned char dst_loc, unsigned char what_to_promote_to){
+        change_the_square(b, src_loc, empty); /* Change the src loc to empty */
+        if (what_to_promote_to == promote_to_queen) change_the_square(b, dst_loc, black_queen); /* promote to queen */
+        else if (what_to_promote_to == promote_to_rook) change_the_square(b, dst_loc, black_rook); /* promote to rook */
+        else if(what_to_promote_to == promote_to_knight) change_the_square(b, dst_loc, black_knight); /* promote to knight */
+        else change_the_square(b, dst_loc, black_bishop); /* promote to bishop */
     }
 
 
     /* A function that receives a move of the white and executes it*/
-    void commit_a_regular_move_for_white(board * board1, move m){
+    void commit_a_regular_move_for_white(board * b, move m){
     unsigned char src_loc = get_src_square(m); /* The src square */
     unsigned char dst_loc = get_dst_square(m); /* The dst square */
-    char first_piece = get_piece_in_square(board1, src_loc); /* It gets the sole in the src square */
+    char first_piece = get_piece_in_square(b, src_loc); /* It gets the sole in the src square */
     if (get_is_short_castle(m) == 1) /* If this move is a short castle */ 
-        commit_a_short_castle_for_white(board1); /* Commit a short castle for white */
+        commit_a_short_castle_for_white(b); /* Commit a short castle for white */
     
     else if (get_is_long_castle(m) == 1) /* If this move is a long castle */
-        commit_a_long_castle_for_white(board1); /* Commit a long castle for white */
+        commit_a_long_castle_for_white(b); /* Commit a long castle for white */
     
-    else if ((dst_loc == (src_loc + 9) || dst_loc == (src_loc + 7)) && (first_piece == white_pawn) && (get_piece_in_square(board1, dst_loc) == empty)) /* if en passant exist */
-        commit_en_passant_for_white(board1, src_loc, dst_loc);
+    else if ((dst_loc == (src_loc + 9) || dst_loc == (src_loc + 7)) && (first_piece == white_pawn) && (get_piece_in_square(b, dst_loc) == empty)) /* if en passant exist */
+        commit_en_passant_for_white(b, src_loc, dst_loc);
     
     else if (first_piece == white_pawn && (dst_loc / 8) == 7)
-        commit_promotion_for_white(board1, src_loc, dst_loc, get_promotion_choice(m));
+        commit_promotion_for_white(b, src_loc, dst_loc, get_promotion_choice(m));
     
     else
     { 
-        change_the_square(board1, src_loc, empty); /* It changes the src square to empty */
-        change_the_square(board1, dst_loc, first_piece); /* It changes the dst square to the "first piece" */
+        change_the_square(b, src_loc, empty); /* It changes the src square to empty */
+        change_the_square(b, dst_loc, first_piece); /* It changes the dst square to the "first piece" */
     }
     
     
 }
 
 /* A function that receives a move of the black and executes it*/
-void commit_a_regular_move_for_black(board * board1, move m){
+void commit_a_regular_move_for_black(board * b, move m){
     unsigned char src_loc = get_src_square(m); /* The src square */
     unsigned char dst_loc = get_dst_square(m); /* The dst square */
-    char first_piece = get_piece_in_square(board1, src_loc); /* It gets the sole in the src square */
+    char first_piece = get_piece_in_square(b, src_loc); /* It gets the sole in the src square */
     if (get_is_short_castle(m) == 1) /* If this move is a short castle */ 
-        commit_a_short_castle_for_black(board1);
+        commit_a_short_castle_for_black(b);
     
     else if (get_is_long_castle(m) == 1) /* If this move is a long castle */
-        commit_a_long_castle_for_black(board1);
+        commit_a_long_castle_for_black(b);
     
-    else if ((dst_loc == (src_loc - 9) || dst_loc == (src_loc - 7)) && (first_piece == black_pawn) && (get_piece_in_square(board1, dst_loc) == empty)) /* if en passant exist */
-        commit_en_passant_for_black(board1, src_loc, dst_loc);
+    else if ((dst_loc == (src_loc - 9) || dst_loc == (src_loc - 7)) && (first_piece == black_pawn) && (get_piece_in_square(b, dst_loc) == empty)) /* if en passant exist */
+        commit_en_passant_for_black(b, src_loc, dst_loc);
     
     else if(first_piece == black_pawn && (dst_loc / 8) == 0)
-        commit_promotion_for_black(board1, src_loc, dst_loc, get_promotion_choice(m));
+        commit_promotion_for_black(b, src_loc, dst_loc, get_promotion_choice(m));
     
     else
     {
-    change_the_square(board1, src_loc, empty); /* It changes the src square to empty */
-    change_the_square(board1, dst_loc, first_piece); /* It changes the dst square to the "first piece" */
+    change_the_square(b, src_loc, empty); /* It changes the src square to empty */
+    change_the_square(b, dst_loc, first_piece); /* It changes the dst square to the "first piece" */
     }
 
     
