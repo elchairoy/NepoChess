@@ -150,26 +150,22 @@ char get_is_short_castle(move m) {
 
 
     /* A function that receives a move of the white and executes it*/
-    void commit_a_move_for_white(board * board1, move m){
+    void commit_a_regular_move_for_white(board * board1, move m){
     unsigned char src_loc = get_src_square(m); /* The src square */
     unsigned char dst_loc = get_dst_square(m); /* The dst square */
     char first_piece = get_piece_in_square(board1, src_loc); /* It gets the sole in the src square */
     if (get_is_short_castle(m) == 1) /* If this move is a short castle */ 
-    {
         commit_a_short_castle_for_white(board1); /* Commit a short castle for white */
-    }
+    
     else if (get_is_long_castle(m) == 1) /* If this move is a long castle */
-    {
         commit_a_long_castle_for_white(board1); /* Commit a long castle for white */
-    }
+    
     else if ((dst_loc == (src_loc + 9) || dst_loc == (src_loc + 7)) && (first_piece == white_pawn) && (get_piece_in_square(board1, dst_loc) == empty)) /* if en passant exist */
-    {
         commit_en_passant_for_white(board1, src_loc, dst_loc);
-    }
-    else if ((src_loc / 8) == 6 && first_piece == white_pawn && (dst_loc / 8) == 7)
-    {
+    
+    else if (first_piece == white_pawn && (dst_loc / 8) == 7)
         commit_promotion_for_white(board1, src_loc, dst_loc, get_promotion_choice(m));
-    }
+    
     else
     { 
         change_the_square(board1, src_loc, empty); /* It changes the src square to empty */
@@ -180,25 +176,22 @@ char get_is_short_castle(move m) {
 }
 
 /* A function that receives a move of the black and executes it*/
-void commit_a_move_for_black(board * board1, move m){
+void commit_a_regular_move_for_black(board * board1, move m){
     unsigned char src_loc = get_src_square(m); /* The src square */
     unsigned char dst_loc = get_dst_square(m); /* The dst square */
     char first_piece = get_piece_in_square(board1, src_loc); /* It gets the sole in the src square */
     if (get_is_short_castle(m) == 1) /* If this move is a short castle */ 
-    {
         commit_a_short_castle_for_black(board1);
-    }
+    
     else if (get_is_long_castle(m) == 1) /* If this move is a long castle */
-    {
         commit_a_long_castle_for_black(board1);
-    }
+    
     else if ((dst_loc == (src_loc - 9) || dst_loc == (src_loc - 7)) && (first_piece == black_pawn) && (get_piece_in_square(board1, dst_loc) == empty)) /* if en passant exist */
-    {
         commit_en_passant_for_black(board1, src_loc, dst_loc);
-    }
-    else if((src_loc / 8) == 1 && first_piece == black_pawn && (dst_loc / 8) == 0){
+    
+    else if(first_piece == black_pawn && (dst_loc / 8) == 0)
         commit_promotion_for_black(board1, src_loc, dst_loc, get_promotion_choice(m));
-    }
+    
     else
     {
     change_the_square(board1, src_loc, empty); /* It changes the src square to empty */

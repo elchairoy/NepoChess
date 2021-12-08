@@ -55,8 +55,8 @@ void commit_en_passant_for_black(board * board1, unsigned char src_loc, unsigned
 void commit_promotion_for_black(board * board1, unsigned char src_loc, unsigned char dst_loc, unsigned char what_to_promote_to);
 
 /* A function that receives a move of the white and executes it*/
-void commit_a_move_for_white(board * board1, move m);
+void commit_a_regular_move_for_white(board * board1, move m);
 
 /* A function that receives a move of the black and executes it*/
-void commit_a_move_for_black(board * board1, move m);
+void commit_a_regular_move_for_black(board * board1, move m);
 
