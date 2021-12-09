@@ -13,7 +13,7 @@
 char evaluate_by_points(board *b) {
     int i;
     char eval = 0;
-    /*
+
     for (i = 0;i < NUMBER_OF_SQUARES;i++) {
         switch (get_piece_in_square(b,i)) {
             case white_pawn:
@@ -59,7 +59,7 @@ char evaluate_by_points(board *b) {
             default:
                 break;
         }
-    }*/
+    }
     return eval;
 }
 
