@@ -3,6 +3,7 @@
 #ifndef BOARD_STRUCTS
 #define BOARD_STRUCTS
 #include "board_struct.h"
+#include "possible_moves.h"
 #endif
 
 /* Gives the piece in the given square.
@@ -31,3 +32,11 @@ char get_is_long_castle(move m);
 
 /* This function gets a move and returns if it's a short castle */
 char get_is_short_castle(move m);
+
+char isAttacked_by_black(board *the_board, char square);
+
+char isAttacked_by_white(board *the_board, char square);
+
+char find_king_square(board *the_board, char color);
+
+void print_board(board *the_board);

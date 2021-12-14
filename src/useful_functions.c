@@ -2,7 +2,7 @@
  Created by meir on 30/11/2021.
 */
 #include "useful_functions.h"
-
+char * PIECES1[13] = {" " , "\u265E", "\u265C", "\u265B", "\u265A", "\u265F", "\u265D", "\u2658", "\u2656", "\u2655", "\u2654", "\u2659", "\u2657"};
 #define MASK_FOR_A_HALF 0x0f /* A mask to get only a half of a byte. */
 #define MASK_FOR_6BITS 0x003f /* A mask to get only 6 bits of a short. */
 #define MASK_FOR_2BITS 0x0003 /* A mask to get only 2 bits of a short. */
@@ -80,4 +80,285 @@ char get_is_long_castle(move m) {
 /* This function gets a move and returns if it's a short castle */
 char get_is_short_castle(move m) {
     return (m & (1 << IS_SHORT_CASTLE_INDEX)) >> IS_SHORT_CASTLE_INDEX;
+}
+
+char isAttacked_by_black(board *the_board, char square) {
+    char piece;
+    int i = 0;
+    /* Check danger from columns and rows: */
+    while (move_up(square + i * UP, the_board, WHITE))
+        i++;
+    piece = get_piece_in_square(the_board, square + i * UP);
+    if (piece ==  black_queen || piece == black_rook)
+        return 1;
+
+    i=0;
+    while (move_down(square + i * DOWN, the_board, WHITE))
+        i++;
+    piece = get_piece_in_square(the_board, square + i * DOWN);
+    if (piece ==  black_queen || piece == black_rook)
+        return 1;
+    
+    i=0;
+    while (move_right(square + i * RIGHT, the_board, WHITE))
+        i++;
+    piece = get_piece_in_square(the_board, square + i * RIGHT);
+    if (piece ==  black_queen || piece == black_rook)
+        return 1;
+    
+    i=0;
+    while (move_left(square + i * LEFT, the_board, WHITE))
+        i++;
+    piece = get_piece_in_square(the_board, square + i * LEFT);
+    if (piece ==  black_queen || piece == black_rook)
+        return 1;
+    
+    i=0;
+    /* Check danger form diagonals: */
+    while (move_up_right(square + i * UP_RIGHT, the_board, WHITE))
+        i++;
+    piece = get_piece_in_square(the_board, square + i * UP_RIGHT);
+    if (piece ==  black_queen || piece == black_bishop)
+        return 1;
+    i=0;
+
+    while (move_up_left(square + i * UP_LEFT, the_board, WHITE))
+        i++;
+    piece = get_piece_in_square(the_board, square + i * UP_LEFT);
+    if (piece ==  black_queen || piece == black_bishop)
+        return 1;
+    i=0;
+
+    while (move_down_right(square + i * DOWN_RIGHT, the_board, WHITE))
+        i++;
+    piece = get_piece_in_square(the_board, square + i * DOWN_RIGHT);
+    if (piece ==  black_queen || piece == black_bishop)
+        return 1;
+    i=0;
+
+    while (move_down_left(square + i * DOWN_LEFT, the_board, WHITE))
+        i++;
+    piece = get_piece_in_square(the_board, square + i * DOWN_LEFT);
+    if (piece == black_queen || piece == black_bishop)
+        return 1;
+    i=0;
+
+    /* Check danger from knights: */
+
+    /*knight up up right to eat*/
+    if (get_column(square) > 0 && get_row(square) > 1) {
+        if (get_piece_in_square(the_board, square + KNIGHT_DOWN_DOWN_LEFT) == black_knight)
+            return 1;
+    }
+
+    /*knight up up left to eat*/
+    if (get_column(square) < 7 && get_row(square) > 1) {
+        if (get_piece_in_square(the_board, square + KNIGHT_DOWN_DOWN_RIGHT) == black_knight)
+            return 1;
+    }
+
+    /*knight up right right to eat*/
+    if (get_column(square) > 1 && get_row(square) > 0) {
+        if (get_piece_in_square(the_board, square + KNIGHT_DOWN_LEFT_LEFT) == black_knight)
+            return 1;
+    }
+
+    /*knight up left left to eat*/
+    if (get_column(square) < 6 && get_row(square) > 0) {
+        if (get_piece_in_square(the_board, square + KNIGHT_DOWN_RIGHT_RIGHT) == black_knight)
+            return 1;
+    }
+
+    /*knight down down right to eat*/
+    if (get_column(square) > 0 && get_row(square) < 6) {
+        if (get_piece_in_square(the_board, square + KNIGHT_UP_UP_LEFT) == black_knight)
+            return 1;
+    }
+
+    /*knight down down left to eat*/
+    if (get_column(square) < 7 && get_row(square) < 6) {
+        if (get_piece_in_square(the_board, square + KNIGHT_UP_UP_RIGHT) == black_knight)
+            return 1;
+    }
+
+    /*knight down right right to eat*/
+    if (get_column(square) > 2 && get_row(square) < 7) {
+        if (get_piece_in_square(the_board, square + KNIGHT_UP_LEFT_LEFT) == black_knight)
+            return 1;
+    }
+
+    /*knight down left left to eat*/
+    if (get_column(square) < 6 && get_row(square) < 7) {
+        if (get_piece_in_square(the_board, square + KNIGHT_UP_RIGHT_RIGHT) == black_knight)
+            return 1;
+    }
+
+
+    /* Check danger from pawns: */
+    if (get_piece_in_square(the_board, square + UP_RIGHT) == black_pawn)
+        return 1;
+    
+    if (get_piece_in_square(the_board, square + UP_LEFT) == black_pawn)
+        return 1;
+    return 0;
+}
+
+
+char isAttacked_by_white(board *the_board, char square) {
+    char piece;
+    int i = 0;
+    /* Check danger from columns and rows: */
+    while (move_up(square + i * UP, the_board, BLACK))
+        i++;
+    piece = get_piece_in_square(the_board, square + i * UP);
+    if (piece ==  white_queen || piece == white_rook)
+        return 1;
+
+    i=0;
+    while (move_down(square + i * DOWN, the_board, BLACK))
+        i++;
+    piece = get_piece_in_square(the_board, square + i * DOWN);
+    if (piece == white_queen || piece == white_rook)
+        return 1;
+    
+    i=0;
+    while (move_right(square + i * RIGHT, the_board, BLACK))
+        i++;
+    piece = get_piece_in_square(the_board, square + i * RIGHT);
+    if (piece == white_queen || piece == white_rook)
+        return 1;
+    
+    i=0;
+    while (move_left(square + i * LEFT, the_board, BLACK))
+        i++;
+    piece = get_piece_in_square(the_board, square + i * LEFT);
+    if (piece == white_queen || piece == white_rook)
+        return 1;
+    
+    i=0;
+    /* Check danger form diagonals: */
+    while (move_up_right(square + i * UP_RIGHT, the_board, BLACK))
+        i++;
+    piece = get_piece_in_square(the_board, square + i * UP_RIGHT);
+    if (piece == white_queen || piece == white_bishop)
+        return 1;
+    i=0;
+
+    while (move_up_left(square + i * UP_LEFT, the_board, BLACK))
+        i++;
+    piece = get_piece_in_square(the_board, square + i * UP_LEFT);
+    if (piece == white_queen || piece == white_bishop)
+        return 1;
+    i=0;
+
+    while (move_down_right(square + i * DOWN_RIGHT, the_board, BLACK))
+        i++;
+    piece = get_piece_in_square(the_board, square + i * DOWN_RIGHT);
+    if (piece == white_queen || piece == white_bishop)
+        return 1;
+    i=0;
+
+    while (move_down_left(square + i * DOWN_LEFT, the_board, BLACK))
+        i++;
+    piece = get_piece_in_square(the_board, square + i * DOWN_LEFT);
+    if (piece == white_queen || piece == white_bishop)
+        return 1;
+    i=0;
+
+    /* Check danger from knights: */
+
+    /*knight up up right to eat*/
+    if (get_column(square) > 0 && get_row(square) > 1) {
+        if (get_piece_in_square(the_board, square + KNIGHT_DOWN_DOWN_LEFT) == white_knight)
+            return 1;
+    }
+
+    /*knight up up left to eat*/
+    if (get_column(square) < 7 && get_row(square) > 1) {
+        if (get_piece_in_square(the_board, square + KNIGHT_DOWN_DOWN_RIGHT) == white_knight)
+            return 1;
+    }
+
+    /*knight up right right to eat*/
+    if (get_column(square) > 1 && get_row(square) > 0) {
+        if (get_piece_in_square(the_board, square + KNIGHT_DOWN_LEFT_LEFT) == white_knight)
+            return 1;
+    }
+
+    /*knight up left left to eat*/
+    if (get_column(square) < 6 && get_row(square) > 0) {
+        if (get_piece_in_square(the_board, square + KNIGHT_DOWN_RIGHT_RIGHT) == white_knight)
+            return 1;
+    }
+
+    /*knight down down right to eat*/
+    if (get_column(square) > 0 && get_row(square) < 6) {
+        if (get_piece_in_square(the_board, square + KNIGHT_UP_UP_LEFT) == white_knight)
+            return 1;
+    }
+
+    /*knight down down left to eat*/
+    if (get_column(square) < 7 && get_row(square) < 6) {
+        if (get_piece_in_square(the_board, square + KNIGHT_UP_UP_RIGHT) == white_knight)
+            return 1;
+    }
+
+    /*knight down right right to eat*/
+    if (get_column(square) > 2 && get_row(square) < 7) {
+        if (get_piece_in_square(the_board, square + KNIGHT_UP_LEFT_LEFT) == white_knight)
+            return 1;
+    }
+
+    /*knight down left left to eat*/
+    if (get_column(square) < 6 && get_row(square) < 7) {
+        if (get_piece_in_square(the_board, square + KNIGHT_UP_RIGHT_RIGHT) == white_knight)
+            return 1;
+    }
+
+
+    /* Check danger from pawns: */
+    if (get_piece_in_square(the_board, square + DOWN_RIGHT) == white_pawn)
+        return 1;
+    
+    if (get_piece_in_square(the_board, square + DOWN_LEFT) == white_pawn)
+        return 1;
+    return 0;
+}
+
+
+char find_king_square(board *the_board, char color){
+    int i = 0;
+    char piece = white_king;
+    if(!color)
+        piece = black_king;
+    while (get_piece_in_square(the_board,i) != piece) 
+        i++;
+    return i;
+}
+
+void print_board(board *the_board){
+    int num = 0;
+    int i, x, y, z;
+    for(z = 0; z < 3; z++)
+            printf(" ");
+    for(z = 0; z < 33; z++)
+            printf("-");
+    printf("\n");
+    for(i = 0; i < 8; i++){
+        y = NUMBER_OF_SQUARES - (i+1)*8;
+        if(y < 10)
+            printf("0");
+        printf("%d ",y);
+        for(x = 0; x < 8; x++){
+            num = get_piece_in_square(the_board, y + x);
+            printf("| %s ", PIECES1[num]);
+        }
+        printf("|");
+        printf("\n");
+        for(z = 0; z < 3; z++)
+            printf(" ");
+        for(z = 0; z < 33; z++)
+            printf("-");
+        printf("\n");
+    }
 }
