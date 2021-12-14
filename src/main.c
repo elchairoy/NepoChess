@@ -1,10 +1,10 @@
 #include <stdio.h>
-#include "../include/test_useful_functions.h"
+#include "../include/test_possible_moves.h"
 /*
   Created by Elchairoy Meir on 29/11/2021.
 */
 
 int main() {
-    test_useful_functions();
+    check();
     return 0;
 }
