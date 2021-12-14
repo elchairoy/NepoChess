@@ -580,54 +580,32 @@ void en_passant_and_castle(board *the_board, move *moves, char color){
                 }
         }
     }
-    if(color && !isAttacked_by_black(the_board, DEAFULT_WHITE_KING_SQUARE)){
-        square = DEAFULT_WHITE_KING_SQUARE;
-        if(the_board->can_white_castle_long){
-            temp = create_a_move(DEAFULT_WHITE_KING_SQUARE, DEAFULT_WHITE_KING_SQUARE + LEFT, 0, 1, 0);
-            if(is_move_valid(*the_board, temp, WHITE)){
-                    temp = create_a_move(DEAFULT_WHITE_KING_SQUARE, DEAFULT_WHITE_KING_SQUARE + LEFT*2, 0, 1, 0);
-                    if(is_move_valid(*the_board, temp, WHITE)){
-                        moves[move_num] = temp;
-                        move_num ++;
-                    }
-                }
+    if(color){
+        if(check_white_long_castle(the_board)){
+            moves[move_num] = create_a_move(DEAFULT_WHITE_KING_SQUARE, DEAFULT_WHITE_KING_SQUARE-2, 0, 1, 0);
+            move_num ++;
         }
-        if(the_board->can_white_castle_short){
-            temp = create_a_move(DEAFULT_WHITE_KING_SQUARE, DEAFULT_WHITE_KING_SQUARE + RIGHT, 0, 0, 1);
-            if(is_move_valid(*the_board, temp, WHITE)){
-                    temp = create_a_move(DEAFULT_WHITE_KING_SQUARE, DEAFULT_WHITE_KING_SQUARE + RIGHT*2, 0, 0, 1);
-                    if(is_move_valid(*the_board, temp, WHITE)){
-                        moves[move_num] = temp;
-                        move_num ++;
-                    }
-                }
+        if(check_white_short_castle(the_board)){
+            moves[move_num] = create_a_move(DEAFULT_WHITE_KING_SQUARE, DEAFULT_WHITE_KING_SQUARE+2, 0, 0, 1);
+            move_num ++;
         }
     }
-    if(!color && !isAttacked_by_white(the_board, DEAFULT_BLACK_KING_SQUARE)){
-        square = DEAFULT_BLACK_KING_SQUARE;
-        if(the_board->can_black_castle_long){
-            temp = create_a_move(DEAFULT_BLACK_KING_SQUARE, DEAFULT_BLACK_KING_SQUARE + LEFT, 0, 1, 0);
-            if(is_move_valid(*the_board, temp, BLACK)){
-                    temp = create_a_move(DEAFULT_WHITE_KING_SQUARE, DEAFULT_WHITE_KING_SQUARE + LEFT*2, 0, 1, 0);
-                    if(is_move_valid(*the_board, temp, BLACK)){
-                        moves[move_num] = temp;
-                        move_num ++;
-                    }
-                }
+    if(!color){
+        if(check_black_long_castle(the_board)){
+            moves[move_num] = create_a_move(DEAFULT_BLACK_KING_SQUARE, DEAFULT_BLACK_KING_SQUARE-2, 0, 1, 0);
+            move_num ++;
         }
-        if(the_board->can_black_castle_short){
-            temp = create_a_move(DEAFULT_BLACK_KING_SQUARE, DEAFULT_BLACK_KING_SQUARE + RIGHT, 0, 1, 0);
-            if(is_move_valid(*the_board, temp, BLACK)){
-                    temp = create_a_move(DEAFULT_WHITE_KING_SQUARE, DEAFULT_WHITE_KING_SQUARE + RIGHT*2, 0, 1, 0);
-                    if(is_move_valid(*the_board, temp, BLACK)){
-                        moves[move_num] = temp;
-                        move_num ++;
-                    }
-                }
+        if(check_black_short_castle(the_board)){
+            moves[move_num] = create_a_move(DEAFULT_BLACK_KING_SQUARE, DEAFULT_BLACK_KING_SQUARE+2, 0, 0, 1);
+            move_num ++;
         }
     }
     moves[move_num] = END;
 }
+
+
+
+
 
 char color_of_piece(char square, board *the_board){
     char peice = get_piece_in_square(the_board, square);
@@ -709,7 +687,7 @@ void connect_arrays(move * array, move * array1){
 }
 
 
-move* func(board *the_board, char color){
+move* get_all_moves(board *the_board, char color){
     int i = 0, x = 0, len = 1;
     move *all_moves;
     move moves[28];
@@ -722,10 +700,10 @@ move* func(board *the_board, char color){
             x = 0;
         }
     }
-    /*en_passant_and_castle(the_board, moves, color);
+    en_passant_and_castle(the_board, moves, color);
     while(moves[x] != END)
         x++;
-    len += x;*/
+    len += x;
     all_moves = malloc(len * sizeof(move));
     all_moves[0] = END;
     for(i = 0; i<NUMBER_OF_SQUARES; i++){
@@ -734,7 +712,7 @@ move* func(board *the_board, char color){
             connect_arrays(all_moves, moves);
         }
     }
-    /*en_passant_and_castle(the_board, moves, color);
-    connect_arrays(all_moves, moves);*/
+    en_passant_and_castle(the_board, moves, color);
+    connect_arrays(all_moves, moves);
     return all_moves;
 }

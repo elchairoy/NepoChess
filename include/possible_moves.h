@@ -89,4 +89,4 @@ char color_of_piece(char square, board *the_board);
 char is_move_valid(board the_board, move the_move, char color);
 /*main func*/
 void connect_arrays(move * array, move * array1);
-move* func(board *the_board, char color);
+move* get_all_moves(board *the_board, char color);

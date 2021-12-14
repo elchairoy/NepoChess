@@ -362,3 +362,77 @@ void print_board(board *the_board){
         printf("\n");
     }
 }
+
+char check_white_long_castle(board *the_board){
+    move temp;
+    if(!isAttacked_by_black(the_board, DEAFULT_WHITE_KING_SQUARE)){
+        if(the_board->can_white_castle_long 
+                && get_piece_in_square(the_board, DEAFULT_WHITE_KING_SQUARE + LEFT) == empty 
+                && get_piece_in_square(the_board, DEAFULT_WHITE_KING_SQUARE + LEFT*2) == empty 
+                && get_piece_in_square(the_board, DEAFULT_WHITE_KING_SQUARE + LEFT*3) == empty){
+            temp = create_a_move(DEAFULT_WHITE_KING_SQUARE, DEAFULT_WHITE_KING_SQUARE + LEFT, 0, 0, 0);
+            if(is_move_valid(*the_board, temp, WHITE)){
+                    temp = create_a_move(DEAFULT_WHITE_KING_SQUARE, DEAFULT_WHITE_KING_SQUARE + LEFT*2, 0, 1, 0);
+                    if(is_move_valid(*the_board, temp, WHITE)){
+                        return 1;
+                    }
+                }
+        }
+    }
+    return 0;
+}
+
+char check_white_short_castle(board *the_board){
+    move temp;
+    if(!isAttacked_by_black(the_board, DEAFULT_WHITE_KING_SQUARE)){
+        if(the_board->can_white_castle_short 
+                && get_piece_in_square(the_board, DEAFULT_WHITE_KING_SQUARE + RIGHT) == empty
+                && get_piece_in_square(the_board, DEAFULT_WHITE_KING_SQUARE + RIGHT*2) == empty){
+            temp = create_a_move(DEAFULT_WHITE_KING_SQUARE, DEAFULT_WHITE_KING_SQUARE + RIGHT, 0, 0, 0);
+            if(is_move_valid(*the_board, temp, WHITE)){
+                    temp = create_a_move(DEAFULT_WHITE_KING_SQUARE, DEAFULT_WHITE_KING_SQUARE + RIGHT*2, 0, 0, 1);
+                    if(is_move_valid(*the_board, temp, WHITE)){
+                        return 1;
+                    }
+                }
+        }
+    }
+    return 0;
+}
+
+char check_black_long_castle(board *the_board){
+    move temp;
+    if(!isAttacked_by_white(the_board, DEAFULT_BLACK_KING_SQUARE)){
+        if(the_board->can_black_castle_long
+                && get_piece_in_square(the_board, DEAFULT_BLACK_KING_SQUARE + LEFT) == empty
+                && get_piece_in_square(the_board, DEAFULT_BLACK_KING_SQUARE + LEFT * 2) == empty
+                && get_piece_in_square(the_board, DEAFULT_BLACK_KING_SQUARE + LEFT * 3) == empty){
+            temp = create_a_move(DEAFULT_BLACK_KING_SQUARE, DEAFULT_BLACK_KING_SQUARE + LEFT, 0, 0, 0);
+            if(is_move_valid(*the_board, temp, BLACK)){
+                temp = create_a_move(DEAFULT_BLACK_KING_SQUARE, DEAFULT_BLACK_KING_SQUARE + LEFT * 2, 0, 1, 0);
+                if(is_move_valid(*the_board, temp, BLACK)){
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
+}
+
+char check_black_short_castle(board *the_board){
+    move temp;
+    if(!isAttacked_by_white(the_board, DEAFULT_BLACK_KING_SQUARE)){
+        if(the_board->can_black_castle_short 
+                && get_piece_in_square(the_board, DEAFULT_BLACK_KING_SQUARE + RIGHT) == empty
+                && get_piece_in_square(the_board, DEAFULT_BLACK_KING_SQUARE + RIGHT*2) == empty){
+            temp = create_a_move(DEAFULT_BLACK_KING_SQUARE, DEAFULT_BLACK_KING_SQUARE + RIGHT, 0, 0, 0);
+            if(is_move_valid(*the_board, temp, BLACK)){
+                    temp = create_a_move(DEAFULT_BLACK_KING_SQUARE, DEAFULT_BLACK_KING_SQUARE + RIGHT*2, 0, 0, 1);
+                    if(is_move_valid(*the_board, temp, BLACK)){
+                        return 1;
+                    }
+                }
+        }
+    }
+    return 0;
+}
