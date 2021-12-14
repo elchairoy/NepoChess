@@ -59,7 +59,7 @@ int check(){
     white_bishop,white_knight<<4|white_rook,white_pawn << 4|white_pawn,white_pawn<<4|white_pawn,white_pawn<<4|
     white_pawn,white_pawn<<4|white_pawn,empty,empty,empty,empty,empty,empty,empty,empty,empty,empty,empty,empty
     ,empty,empty,empty,empty,black_pawn << 4|black_pawn,black_pawn<<4|black_pawn,black_pawn<<4|black_pawn,black_pawn<<4|
-    black_pawn,black_rook << 4|black_knight,black_bishop << 4|black_queen,black_king<<4|empty,empty<<4|black_rook};
+    black_pawn,black_rook << 4|black_knight,black_bishop << 4|black_queen,black_king<<4|black_bishop,black_knight<<4|black_rook};
     START_BOARD.can_black_castle_long = 1;
     START_BOARD.can_black_castle_short = 1;
     START_BOARD.can_white_castle_long = 1;
