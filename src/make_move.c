@@ -99,14 +99,15 @@ void can_en_passant_next_move(board * b, move m) {
 
 /* A function that receives a move of the white and executes it. */
 void commit_a_move_for_white(board * b, move m){
+    unsigned char src_loc = get_src_square(m); /* The src square. */
+    unsigned char dst_loc = get_dst_square(m); /* The dst square. */
+    char piece = get_piece_in_square(b, src_loc); /* It gets the sole in the src square. */
+
     b->pawn_en_passant_left = 0; /* The pawns can't en passant anymore. */
     b->pawn_en_passant_right = 0;
 
     b->whose_turn = 0; /* It will be black's turn next. */
 
-    unsigned char src_loc = get_src_square(m); /* The src square. */
-    unsigned char dst_loc = get_dst_square(m); /* The dst square. */
-    char piece = get_piece_in_square(b, src_loc); /* It gets the sole in the src square. */
     if (get_is_short_castle(m) == 1) /* If this move is a short castle. */
         commit_a_short_castle_for_white(b); /* Commit a short castle for white. */
 
@@ -135,14 +136,15 @@ void commit_a_move_for_white(board * b, move m){
 
 /* A function that receives a move of the black and executes it. */
 void commit_a_move_for_black(board * b, move m){
+    unsigned char src_loc = get_src_square(m); /* The src square. */
+    unsigned char dst_loc = get_dst_square(m); /* The dst square. */
+    char piece = get_piece_in_square(b, src_loc); /* It gets the sole in the src square. */
+
     b->pawn_en_passant_left = 0; /* The pawns can't en passant anymore. */
     b->pawn_en_passant_right = 0;
 
     b->whose_turn = 1; /* It will be white's turn next. */
 
-    unsigned char src_loc = get_src_square(m); /* The src square. */
-    unsigned char dst_loc = get_dst_square(m); /* The dst square. */
-    char piece = get_piece_in_square(b, src_loc); /* It gets the sole in the src square. */
     if (get_is_short_castle(m) == 1) /* If this move is a short castle. */
         commit_a_short_castle_for_black(b);
 
