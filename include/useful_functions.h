@@ -40,3 +40,11 @@ char isAttacked_by_white(board *the_board, char square);
 char find_king_square(board *the_board, char color);
 
 void print_board(board *the_board);
+
+char check_white_long_castle(board *the_board);
+
+char check_white_short_castle(board *the_board);
+
+char check_black_long_castle(board *the_board);
+
+char check_black_short_castle(board *the_board);
