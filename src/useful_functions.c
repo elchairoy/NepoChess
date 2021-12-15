@@ -339,28 +339,33 @@ char find_king_square(board *the_board, char color){
 void print_board(board *the_board){
     int num = 0;
     int i, x, y, z;
-    for(z = 0; z < 3; z++)
+    for(z = 0; z < 2; z++)
             printf(" ");
     for(z = 0; z < 33; z++)
             printf("-");
     printf("\n");
     for(i = 0; i < 8; i++){
         y = NUMBER_OF_SQUARES - (i+1)*8;
-        if(y < 10)
-            printf("0");
-        printf("%d ",y);
+        /*if(y < 10)
+            printf("0");*/
+        printf("%d ",(8-i));
         for(x = 0; x < 8; x++){
             num = get_piece_in_square(the_board, y + x);
             printf("| %s ", PIECES1[num]);
         }
         printf("|");
         printf("\n");
-        for(z = 0; z < 3; z++)
+        for(z = 0; z < 2; z++)
             printf(" ");
         for(z = 0; z < 33; z++)
             printf("-");
         printf("\n");
     }
+    for(z = 0; z < 2; z++)
+        printf(" ");
+    for(i=0; i < 8; i++)
+        printf("  %c ", i+'a');
+    printf("\n");
 }
 
 char check_white_long_castle(board *the_board){
