@@ -1,8 +1,11 @@
 #include "test_possible_moves.h"
+#define get_square_number(column,row) ((row - '0' - 1) * 8 + (column - 'a'))
+
 int game(board *the_board){
-    int src, dst, i = 0;
+    int i = 0, row;
+    char temp[3];
     move *all_moves;
-    char the_move = WHITE;
+    char the_move = WHITE, column, src_square, dst_square;
     while(1)
     {
         if(get_all_moves(the_board, the_move)[0] == END){
@@ -13,18 +16,20 @@ int game(board *the_board){
         printf("\n1 for white and 0 for black: %d\n", the_move);
         print_board(the_board);
         printf("enter src: ");
-        scanf("%d", &src);
-        if(check_src(the_board, src, the_move))
+        scanf("%s", temp);
+        src_square = get_square_number(temp[0], temp[1]);
+        if(check_src(the_board, src_square, the_move))
         {
             printf("enter dst: ");
-            scanf("%d", &dst);
-            if(dst <= 63 || dst >= 0)
+            scanf("%s", temp);
+            dst_square = get_square_number(temp[0], temp[1]);
+            if(dst_square <= 63 || dst_square >= 0)
             {
                 all_moves = get_all_moves(the_board, the_move);
                 i = 0;
                 while(all_moves[i] != END)
                 {
-                    if(src == get_src_square(all_moves[i]) && dst == get_dst_square(all_moves[i]))
+                    if(src_square == get_src_square(all_moves[i]) && dst_square == get_dst_square(all_moves[i]))
                     {
                         if(the_move)
                             commit_a_move_for_white(the_board, all_moves[i]);
