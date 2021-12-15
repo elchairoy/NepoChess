@@ -1,11 +1,11 @@
-#include "test_possible_moves.h"
+#include "../include/test_possible_moves.h"
 int game(board *the_board){
     int src, dst, i = 0;
     move *all_moves;
     char the_move = WHITE;
     while(1)
     {
-        if(get_all_moves(the_board, the_move)[0] == END){
+        if(get_all_moves(the_board)[0] == END){
             print_board(the_board);
             printf("CHECKMATE!!!");
             break;
@@ -20,7 +20,7 @@ int game(board *the_board){
             scanf("%d", &dst);
             if(dst <= 63 || dst >= 0)
             {
-                all_moves = get_all_moves(the_board, the_move);
+                all_moves = get_all_moves(the_board);
                 i = 0;
                 while(all_moves[i] != END)
                 {
@@ -66,12 +66,13 @@ int check(){
     START_BOARD.can_white_castle_short = 1;
     START_BOARD.pawn_en_passant_left = 0;
     START_BOARD.pawn_en_passant_right = 0;
+    START_BOARD.whose_turn = 1;
     int i;
     for(i = 0;i<32;i++)
     {
         START_BOARD.squares[i] = initial_board[i];
     }
-    all_moves = get_all_moves(&START_BOARD, WHITE);
+    all_moves = get_all_moves(&START_BOARD);
     i = 0;
     while(all_moves[i] != END){
         printf("from %d to %d\n", get_src_square(all_moves[i]), get_dst_square(all_moves[i]));

@@ -1,4 +1,6 @@
-#include "possible_moves.h"
+#include "../include/possible_moves.h"
+#include <syscall.h>
+
 /*4 func to cal if peice is getting off board in hes move*/
 char pass_left(char src){
     if(get_column(src) == 0)
@@ -687,7 +689,8 @@ void connect_arrays(move * array, move * array1){
 }
 
 
-move* get_all_moves(board *the_board, char color){
+move* get_all_moves(board *the_board){
+    char color = the_board->whose_turn;
     int i = 0, x = 0, len = 1;
     move *all_moves;
     move moves[28];
@@ -705,6 +708,10 @@ move* get_all_moves(board *the_board, char color){
         x++;
     len += x;
     all_moves = malloc(len * sizeof(move));
+    if (all_moves == 0) {
+        printf("no memory");
+        exit(1);
+    }
     all_moves[0] = END;
     for(i = 0; i<NUMBER_OF_SQUARES; i++){
         if(color_of_piece(i, the_board) == color && get_piece_in_square(the_board, i) != empty){

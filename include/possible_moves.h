@@ -1,4 +1,18 @@
+#ifndef BOARD_STRUCTS
+#define BOARD_STRUCTS
+#include "board_struct.h"
+#endif
+
+#ifndef USEFUL_FUNCTIONS
+#define USEFUL_FUNCTIONS
+#include "useful_functions.h"
+#endif
+
+#ifndef MAKE_MOVE
+#define MAKE_MOVE
 #include "make_move.h"
+#endif
+
 #include <stdio.h>
 #define DEAFULT_WHITE_KING_SQUARE 4
 #define DEAFULT_BLACK_KING_SQUARE 60
@@ -89,4 +103,4 @@ char color_of_piece(char square, board *the_board);
 char is_move_valid(board the_board, move the_move, char color);
 /*main func*/
 void connect_arrays(move * array, move * array1);
-move* get_all_moves(board *the_board, char color);
+move* get_all_moves(board *the_board);
