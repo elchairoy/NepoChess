@@ -13,7 +13,7 @@ move generate_random(board *the_board){
 
 
 int white_move(board *the_board){
-    int i = 0, row;
+    int i = 0, row, promotion = 4;
     char temp[3];
     move *all_moves;
     char column, src_square, dst_square;
@@ -34,6 +34,15 @@ int white_move(board *the_board){
                 {
                     if(src_square == get_src_square(all_moves[i]) && dst_square == get_dst_square(all_moves[i]))
                     {
+                        if(get_piece_in_square(the_board, src_square) == white_pawn && get_row(src_square) == 6){
+                            while(promotion > 3){
+                                system("clear");
+                                printf("promot to? (0=Q,1=R,2=B,3=N): ");
+                                scanf("%d", &promotion);
+                            }
+                            commit_a_move_for_white(the_board, create_a_move(src_square, dst_square, promotion, 0, 0));
+                            return 0;
+                        }
                         commit_a_move_for_white(the_board, all_moves[i]);
                         return 0;
                     }
@@ -108,13 +117,13 @@ int check(){
     {
         START_BOARD.squares[i] = initial_board[i];
     }
-    all_moves = get_all_moves(&START_BOARD);
+    /*all_moves = get_all_moves(&START_BOARD);
     i = 0;
     while(all_moves[i] != END){
         printf("from %d to %d\n", get_src_square(all_moves[i]), get_dst_square(all_moves[i]));
         i++;
-    }
-    /*system("clear");
-    game(&START_BOARD);*/
+    }*/
+    system("clear");
+    game(&START_BOARD);
     return 0;
 }

@@ -274,18 +274,15 @@ int queen(char square, board *the_board, char color, move *moves){
     move array2 [BISHOP_MAX_MOVES + 1];
     int i = 0;
     int move_num = 0;
-    move_in_straight_lines(square, the_board, color, array1);
-    move_in_diagonal_lines(square, the_board, color, array2);
-    while(array1[i] != END){
+    int len1 = move_in_straight_lines(square, the_board, color, array1);
+    int len2 = move_in_diagonal_lines(square, the_board, color, array2);
+    for(i = 0;i<len1;i++){
         moves[move_num] = array1[i];
         move_num ++;
-        i ++;
     }
-    i = 0;
-    while(array2[i] != END){
+    for(i = 0;i<len2;i++){
         moves[move_num] = array2[i];
         move_num ++;
-        i ++;
     }
     moves[move_num] = END;
     return move_num;
@@ -672,20 +669,9 @@ char moves_of_piece(char square, board *the_board, move * moves){
 }
 
 /*main function*/
-int connect_arrays(move * array, move * array1, int array_len, int array1_len){
-    int i;
-    for(i = 0; i<array1_len;i++){
-        array[array_len] = array1[i];
-        array_len ++;
-    }
-    array[array_len] = END;
-    return array_len;
-}
-
-
 move* get_all_moves(board *the_board){
     char color = the_board->whose_turn;
-    int i = 0, len = 1, move_num = 0;
+    int i = 0, len = 1, move_num = 0, x = 0;
     move *all_moves;
     move moves[28];
     for(i = 0; i<NUMBER_OF_SQUARES; i++){
@@ -702,10 +688,17 @@ move* get_all_moves(board *the_board){
     for(i = 0; i<NUMBER_OF_SQUARES; i++){
         if(color_of_piece(i, the_board) == color && get_piece_in_square(the_board, i) != empty){
             len = moves_of_piece(i, the_board, moves);
-            move_num += connect_arrays(all_moves, moves, move_num, len);
+            for(x = 0; x < len; x++){
+                all_moves[move_num] = moves[x];
+                move_num++;
+            }
         }
     }
     len = en_passant_and_castle(the_board, moves, color);
-    connect_arrays(all_moves, moves, move_num, len);
+    for(x = 0; x < len; x++){
+        all_moves[move_num] = moves[x];
+        move_num++;
+    }
+    all_moves[move_num] = END;
     return all_moves;
 }
