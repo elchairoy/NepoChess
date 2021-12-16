@@ -1,47 +1,76 @@
 #include "test_possible_moves.h"
 #define get_square_number(column,row) ((row - '0' - 1) * 8 + (column - 'a'))
 
-int game(board *the_board){
+
+move generate_random(board *the_board){
+    move *all_moves = get_all_moves(the_board, BLACK);
+    int len = 0;
+    while(all_moves[len] != END)
+        len++;
+    return all_moves[rand() % len];
+}
+
+
+int white_move(board *the_board){
     int i = 0, row;
     char temp[3];
     move *all_moves;
-    char the_move = WHITE, column, src_square, dst_square;
-    while(1)
-    {
-        if(get_all_moves(the_board, the_move)[0] == END){
-            print_board(the_board);
-            printf("CHECKMATE!!!");
-            break;
-        }
-        printf("\n1 for white and 0 for black: %d\n", the_move);
-        print_board(the_board);
+    char column, src_square, dst_square;
+    while(1){
         printf("enter src: ");
         scanf("%s", temp);
         src_square = get_square_number(temp[0], temp[1]);
-        if(check_src(the_board, src_square, the_move))
+        if(check_src(the_board, src_square, WHITE))
         {
             printf("enter dst: ");
             scanf("%s", temp);
             dst_square = get_square_number(temp[0], temp[1]);
             if(dst_square <= 63 || dst_square >= 0)
             {
-                all_moves = get_all_moves(the_board, the_move);
+                all_moves = get_all_moves(the_board, WHITE);
                 i = 0;
                 while(all_moves[i] != END)
                 {
                     if(src_square == get_src_square(all_moves[i]) && dst_square == get_dst_square(all_moves[i]))
                     {
-                        if(the_move)
-                            commit_a_move_for_white(the_board, all_moves[i]);
-                        else
-                            commit_a_move_for_black(the_board, all_moves[i]);
-                        the_move = !the_move;
-                        break;
+                        commit_a_move_for_white(the_board, all_moves[i]);
+                        return 0;
                     }
                     i++;    
                 }
             }
         }
+        system("clear");
+        print_board(the_board);
+    }
+}
+
+
+int game(board *the_board){
+    
+    while(1)
+    {
+        print_board(the_board);
+        if(get_all_moves(the_board, WHITE)[0] == END){
+            if(isAttacked_by_black(the_board, find_king_square(the_board, WHITE))){
+                printf("CHECKMATE 0-1\n");
+                return 0;
+            }
+            printf("STALMATE 0.5-0.5\n");
+            return 0;
+        }
+        white_move(the_board);
+        print_board(the_board);
+        if(get_all_moves(the_board, BLACK)[0] == END){
+            if(isAttacked_by_white(the_board, find_king_square(the_board, BLACK))){
+                printf("CHECKMATE 1-0\n");
+                return 0;
+            }
+            printf("STALMATE 0.5-0.5\n");
+            return 0;
+        }
+        commit_a_move_for_black(the_board ,generate_random(the_board));
+        system("clear");
     }
     return 0;
 }
@@ -76,12 +105,13 @@ int check(){
     {
         START_BOARD.squares[i] = initial_board[i];
     }
-    all_moves = get_all_moves(&START_BOARD, WHITE);
+    /*all_moves = get_all_moves(&START_BOARD, WHITE);
     i = 0;
     while(all_moves[i] != END){
         printf("from %d to %d\n", get_src_square(all_moves[i]), get_dst_square(all_moves[i]));
         i++;
-    }
+    }*/
+    system("clear");
     game(&START_BOARD);
     return 0;
 }
