@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "../include/test_minimax.h"
+
 /*
   Created by Elchairoy Meir on 29/11/2021.
 */
@@ -33,5 +34,6 @@ int main() {
     printf("from %d to %d\n",get_src_square(m),get_dst_square(m));
 
     printf("%ld\n",number_of_moves);
+
     return 0;
 }

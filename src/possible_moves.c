@@ -691,6 +691,7 @@ void connect_arrays(move * array, move * array1){
 
 move* get_all_moves(board *the_board){
     char color = the_board->whose_turn;
+
     int i = 0, x = 0, len = 1;
     move *all_moves;
     move moves[28];
@@ -712,6 +713,7 @@ move* get_all_moves(board *the_board){
         printf("no memory");
         exit(1);
     }
+
     all_moves[0] = END;
     for(i = 0; i<NUMBER_OF_SQUARES; i++){
         if(color_of_piece(i, the_board) == color && get_piece_in_square(the_board, i) != empty){

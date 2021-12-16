@@ -3,7 +3,7 @@
 */
 #include "useful_functions.h"
 char * PIECES1[13] = {" " , "\u265E", "\u265C", "\u265B", "\u265A", "\u265F", "\u265D", "\u2658", "\u2656", "\u2655", "\u2654", "\u2659", "\u2657"};
-/*char * PIECES1[13] = {" " , " ", " ", " "," " , " ", " ", " ", " " , " ", " ", " ", ""};*/
+
 #define MASK_FOR_A_HALF 0x0f /* A mask to get only a half of a byte. */
 #define MASK_FOR_6BITS 0x003f /* A mask to get only 6 bits of a short. */
 #define MASK_FOR_2BITS 0x0003 /* A mask to get only 2 bits of a short. */
@@ -227,6 +227,7 @@ char isAttacked_by_black(board *the_board, char square) {
     if (get_piece_in_square(the_board,square + DOWN_RIGHT) == black_king)
         return 1;
 
+
     return 0;
 }
 
@@ -350,6 +351,7 @@ char isAttacked_by_white(board *the_board, char square) {
     if (get_piece_in_square(the_board, square + DOWN_LEFT) == white_pawn)
         return 1;
 
+
     /* Check danger from king: */
     if (get_piece_in_square(the_board,square + RIGHT) == white_king)
         return 1;
@@ -376,6 +378,7 @@ char isAttacked_by_white(board *the_board, char square) {
         return 1;
 
 
+
     return 0;
 }
 
@@ -393,28 +396,33 @@ char find_king_square(board *the_board, char color){
 void print_board(board *the_board){
     int num = 0;
     int i, x, y, z;
-    for(z = 0; z < 3; z++)
+    for(z = 0; z < 2; z++)
             printf(" ");
     for(z = 0; z < 33; z++)
             printf("-");
     printf("\n");
     for(i = 0; i < 8; i++){
         y = NUMBER_OF_SQUARES - (i+1)*8;
-        if(y < 10)
-            printf("0");
-        printf("%d ",y);
+        printf("%d ",(8-i));
         for(x = 0; x < 8; x++){
             num = get_piece_in_square(the_board, y + x);
             printf("| %s ", PIECES1[num]);
         }
         printf("|");
         printf("\n");
-        for(z = 0; z < 3; z++)
+
+        for(z = 0; z < 2; z++)
             printf(" ");
         for(z = 0; z < 33; z++)
             printf("-");
         printf("\n");
     }
+
+    for(z = 0; z < 2; z++)
+        printf(" ");
+    for(i=0; i < 8; i++)
+        printf("  %c ", i+'a');
+    printf("\n");
 }
 
 char check_white_long_castle(board *the_board){
