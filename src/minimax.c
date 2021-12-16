@@ -6,21 +6,20 @@
 long int number_of_moves = 0;
 
 char evaluate_minimax_for_white(board b, char depth) {
-    move *all_moves = get_all_moves(&b);
+    move *all_moves;
     board temp_board = b;
     char i = 0;
     char max = MIN_CHAR;
     char temp;
-
-    if (all_moves[0] == 0) {
-        number_of_moves++;
-        free(all_moves);
-        if (isAttacked_by_black(&b,find_king_square(&b,1)))
+    if (isAttacked_by_black(&b,find_king_square(&b,WHITE))) {
+        all_moves = get_all_moves(&b);
+        if (all_moves[0] == 0) {
+            number_of_moves++;
+            free(all_moves);
             return MIN_CHAR;
-        
-        return 0;
+        }
     }
-
+    all_moves =  get_all_moves(&b);
     if (depth == 0) {
         number_of_moves++;
         free(all_moves);
@@ -45,18 +44,21 @@ char evaluate_minimax_for_white(board b, char depth) {
 }
 
 char evaluate_minimax_for_black(board b, char depth) {
-    move *all_moves = get_all_moves(&b);
+    move *all_moves;
     board temp_board = b;
     char i = 0;
     char min = MAX_CHAR;
     char temp;
-    if (all_moves[0] == 0) {
-        number_of_moves++;
-        free(all_moves);
-        if (isAttacked_by_white(&b,find_king_square(&b,0)))
-            return MAX_CHAR;
-        return 0;
+    if (isAttacked_by_white(&b,find_king_square(&b,BLACK))) {
+        all_moves = get_all_moves(&b);
+        if (all_moves[0] == END) {
+            number_of_moves++;
+            free(all_moves);
+            return MAX_MOVES;
+
+        }
     }
+    all_moves =  get_all_moves(&b);
     if (depth == 0) {
         number_of_moves++;
         free(all_moves);
@@ -96,7 +98,7 @@ move minimax_for_white(board *b,char depth) {
             free(all_moves);
             return best;
         }
-        if (temp < max) {
+        if (temp > max) {
             max = temp;
             best = all_moves[i];
         }
@@ -115,7 +117,7 @@ move minimax_for_black(board *b,char depth) {
     move best = all_moves[0];
     char temp;
 
-    while (all_moves[i] != 0) {
+    while (all_moves[i] != END) {
         commit_a_move_for_black(&temp_board,all_moves[i]);
         temp = evaluate_minimax_for_white(temp_board,depth - 1);
         if (temp == MIN_CHAR) {

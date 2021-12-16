@@ -4,6 +4,8 @@
         "useful_functions.h": "c",
         "stdlib.h": "c",
         "board_struct.h": "c",
-        "type_traits": "c"
+        "type_traits": "c",
+        "possible_moves.h": "c",
+        "test_possible_moves.h": "c"
     }
 }

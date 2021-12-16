@@ -1,10 +1,13 @@
+#ifndef AE5BDBF7_77C4_4AB2_867A_1994FFAC6C77
+#define AE5BDBF7_77C4_4AB2_867A_1994FFAC6C77
+
 #include <stdlib.h>
 #include <stdio.h>
-#ifndef BOARD_STRUCTS
-#define BOARD_STRUCTS
-#include "board_struct.h"
+
 #include "possible_moves.h"
-#endif
+#include "board_struct.h"
+#include "make_move.h"
+
 
 /* Gives the piece in the given square.
    If there is an error - returns -1. */
@@ -48,3 +51,6 @@ char check_white_short_castle(board *the_board);
 char check_black_long_castle(board *the_board);
 
 char check_black_short_castle(board *the_board);
+
+
+#endif /* AE5BDBF7_77C4_4AB2_867A_1994FFAC6C77 */

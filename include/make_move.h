@@ -1,13 +1,11 @@
+#ifndef EE025185_6380_4B7E_AEF0_4F6D62B6980A
+#define EE025185_6380_4B7E_AEF0_4F6D62B6980A
 #include <stdio.h>
-#ifndef BOARD_STRUCTS
-#define BOARD_STRUCTS
-#include "board_struct.h"
-#endif
 
-#ifndef USEFUL_FUNCTIONS
-#define USEFUL_FUNCTIONS
+#include "board_struct.h"
 #include "useful_functions.h"
-#endif
+#include "possible_moves.h"
+
 
 /* The function commit a short castle for white */
 void commit_a_short_castle_for_white(board * b);
@@ -39,3 +37,6 @@ void commit_a_move_for_white(board * b, move m);
 /* A function that receives a move of the black and executes it*/
 void commit_a_move_for_black(board * b, move m);
 
+
+
+#endif /* EE025185_6380_4B7E_AEF0_4F6D62B6980A */

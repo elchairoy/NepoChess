@@ -2,6 +2,9 @@
  Created by meir on 29/11/2021.
 */
 
+#ifndef DD0FAEFF_39F7_47FA_AB64_C1E01E82D91A
+#define DD0FAEFF_39F7_47FA_AB64_C1E01E82D91A
+
 
 #include <math.h>
 
@@ -40,3 +43,6 @@ typedef struct {
     unsigned pawn_en_passant_left : 7; /* The square of the pawn that can en passant to the left. (if no other pawns can en passant, it's 0)  */
 
 }board;
+
+
+#endif /* DD0FAEFF_39F7_47FA_AB64_C1E01E82D91A */

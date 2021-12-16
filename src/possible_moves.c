@@ -163,7 +163,7 @@ char move_down_right(char src, board *the_board, char color){
 }
 
 /*func to return for the rook and partly for the queen their move list in straight lines - left right up and down*/
-void move_in_straight_lines(char square, board *the_board, char color, move *moves){
+int move_in_straight_lines(char square, board *the_board, char color, move *moves){
     int i = 0;
     int move_num = 0;
     move temp;
@@ -207,10 +207,11 @@ void move_in_straight_lines(char square, board *the_board, char color, move *mov
         }
     }
     moves[move_num] = END;
+    return move_num;
 }
 
 /*this one returns the list of moves in diagonal lines - up_right up_left etc.*/
-void move_in_diagonal_lines(char square, board *the_board, char color, move *moves){
+int move_in_diagonal_lines(char square, board *the_board, char color, move *moves){
     int i = 0;
     int move_num = 0;
     move temp;
@@ -254,20 +255,21 @@ void move_in_diagonal_lines(char square, board *the_board, char color, move *mov
         }
     }
     moves[move_num] = END;
+    return move_num;
 }
 
 /*returns the rook moves list*/
-void rook(char square, board *the_board, char color, move *moves){
-    move_in_straight_lines(square, the_board, color, moves);
+int rook(char square, board *the_board, char color, move *moves){
+    return move_in_straight_lines(square, the_board, color, moves);
 }
 
 /*returns the bishop moves list*/
-void bishop(char square, board *the_board, char color, move *moves){
-    move_in_diagonal_lines(square, the_board, color, moves);
+int bishop(char square, board *the_board, char color, move *moves){
+    return move_in_diagonal_lines(square, the_board, color, moves);
 }
 
 /*creats 2 lists 1 for striaght lins and one for diagonal and conects them to one which is the final*/
-void queen(char square, board *the_board, char color, move *moves){
+int queen(char square, board *the_board, char color, move *moves){
     move array1 [ROOK_MAX_MOVES + 1];
     move array2 [BISHOP_MAX_MOVES + 1];
     int i = 0;
@@ -286,10 +288,11 @@ void queen(char square, board *the_board, char color, move *moves){
         i ++;
     }
     moves[move_num] = END;
+    return move_num;
 }
 
 /*checks every possible move of the king out of 8*/
-void king(char square, board *the_board, char color, move *moves){
+int king(char square, board *the_board, char color, move *moves){
     int move_num = 0;
     move temp;
     if(move_up(square, the_board, color)){
@@ -349,10 +352,11 @@ void king(char square, board *the_board, char color, move *moves){
         }
     }
     moves[move_num] = END;
+    return move_num;
 }
 
 /*checks every possible move for the knight out of 8*/
-void knight(char square, board *the_board, char color, move *moves){
+int knight(char square, board *the_board, char color, move *moves){
     int move_num = 0;
     move temp;
     /*knight up up right*/
@@ -436,11 +440,12 @@ void knight(char square, board *the_board, char color, move *moves){
         }
     }
     moves[move_num] = END;
+    return move_num;
 }
 
 /*checks every special move the pawn can do exept for the usual on which also gets checked but its minor, anyway there is 2 func
 because the pawn for each color moves only in one diriction and its the exact oppised of the other*/
-void whitepawn(char square, board *the_board, move *moves){
+int whitepawn(char square, board *the_board, move *moves){
     int move_num = 0;
     int crown;
     int x = 0;
@@ -482,10 +487,11 @@ void whitepawn(char square, board *the_board, move *moves){
         }
     }
     moves[move_num] = END;
+    return move_num;
 }
 
 
-void blackpawn(char square, board *the_board, move *moves){
+int blackpawn(char square, board *the_board, move *moves){
     int move_num = 0;
     move temp;
     char crown;
@@ -525,6 +531,7 @@ void blackpawn(char square, board *the_board, move *moves){
         }
     }
     moves[move_num] = END;
+    return move_num;
 }
 
 /* This function checks if a square is attacked. */
@@ -544,7 +551,7 @@ char is_move_valid(board the_board, move the_move, char color){
 }
 
 
-void en_passant_and_castle(board *the_board, move *moves, char color){
+int en_passant_and_castle(board *the_board, move *moves, char color){
     int move_num = 0;
     char square = 0;
     move temp;
@@ -603,6 +610,7 @@ void en_passant_and_castle(board *the_board, move *moves, char color){
         }
     }
     moves[move_num] = END;
+    return move_num;
 }
 
 
@@ -622,52 +630,40 @@ char moves_of_piece(char square, board *the_board, move * moves){
     switch (peice)
     {
     case white_knight:
-        knight(square, the_board, WHITE, moves);
-        break;
+        return knight(square, the_board, WHITE, moves);
     
     case black_knight:
-        knight(square, the_board, BLACK, moves);
-        break;
+        return knight(square, the_board, BLACK, moves);
 
     case white_rook:
-        rook(square, the_board, WHITE, moves);
-        break;
+        return rook(square, the_board, WHITE, moves);
     
     case black_rook:
-        rook(square, the_board, BLACK, moves);
-        break;
+        return rook(square, the_board, BLACK, moves);
 
     case white_queen:
-        queen(square, the_board, WHITE, moves);
-        break;
+        return queen(square, the_board, WHITE, moves);
 
     case black_queen:
-        queen(square, the_board, BLACK, moves);
-        break;
+        return queen(square, the_board, BLACK, moves);
     
     case white_king:
-        king(square, the_board, WHITE, moves);
-        break;
+        return king(square, the_board, WHITE, moves);
     
     case black_king:
-        king(square, the_board, BLACK, moves);
-        break;
+        return king(square, the_board, BLACK, moves);
 
     case white_bishop:
-        bishop(square, the_board, WHITE, moves);
-        break;
+        return bishop(square, the_board, WHITE, moves);
 
     case black_bishop:
-        bishop(square, the_board, BLACK, moves);
-        break;
-    
+        return bishop(square, the_board, BLACK, moves);
+
     case white_pawn:
-        whitepawn(square, the_board, moves);
-        break;
+        return whitepawn(square, the_board, moves);
     
     case black_pawn:
-        blackpawn(square, the_board, moves);
-        break;
+        return blackpawn(square, the_board, moves);
 
     default:
         return 0;
@@ -676,52 +672,40 @@ char moves_of_piece(char square, board *the_board, move * moves){
 }
 
 /*main function*/
-void connect_arrays(move * array, move * array1){
-    int len = 0, i = 0;
-    while(array[len] != END)
-        len++;
-    while(array1[i] != END){
-        array[len] = array1[i];
-        len ++;
-        i ++;
+int connect_arrays(move * array, move * array1, int array_len, int array1_len){
+    int i;
+    for(i = 0; i<array1_len;i++){
+        array[array_len] = array1[i];
+        array_len ++;
     }
-    array[len] = END;
+    array[array_len] = END;
+    return array_len;
 }
 
 
 move* get_all_moves(board *the_board){
     char color = the_board->whose_turn;
-
-    int i = 0, x = 0, len = 1;
+    int i = 0, len = 1, move_num = 0;
     move *all_moves;
     move moves[28];
     for(i = 0; i<NUMBER_OF_SQUARES; i++){
-        if(color_of_piece(i, the_board) == color && get_piece_in_square(the_board, i) != empty){
-            moves_of_piece(i, the_board, moves);
-            while(moves[x] != END)
-                x++;
-            len += x;
-            x = 0;
-        }
+        if(color_of_piece(i, the_board) == color && get_piece_in_square(the_board, i) != empty)
+            len += moves_of_piece(i, the_board, moves);
     }
-    en_passant_and_castle(the_board, moves, color);
-    while(moves[x] != END)
-        x++;
-    len += x;
+    len += en_passant_and_castle(the_board, moves, color);
     all_moves = malloc(len * sizeof(move));
     if (all_moves == 0) {
         printf("no memory");
         exit(1);
     }
-
     all_moves[0] = END;
     for(i = 0; i<NUMBER_OF_SQUARES; i++){
         if(color_of_piece(i, the_board) == color && get_piece_in_square(the_board, i) != empty){
-            moves_of_piece(i, the_board, moves);
-            connect_arrays(all_moves, moves);
+            len = moves_of_piece(i, the_board, moves);
+            move_num += connect_arrays(all_moves, moves, move_num, len);
         }
     }
-    en_passant_and_castle(the_board, moves, color);
-    connect_arrays(all_moves, moves);
+    len = en_passant_and_castle(the_board, moves, color);
+    connect_arrays(all_moves, moves, move_num, len);
     return all_moves;
 }

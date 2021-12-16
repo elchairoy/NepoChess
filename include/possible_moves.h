@@ -1,17 +1,10 @@
-#ifndef BOARD_STRUCTS
-#define BOARD_STRUCTS
+#ifndef DA695DC0_90E2_40B5_BC05_F55A01BC0605
+#define DA695DC0_90E2_40B5_BC05_F55A01BC0605
+
+
 #include "board_struct.h"
-#endif
-
-#ifndef USEFUL_FUNCTIONS
-#define USEFUL_FUNCTIONS
 #include "useful_functions.h"
-#endif
-
-#ifndef MAKE_MOVE
-#define MAKE_MOVE
 #include "make_move.h"
-#endif
 
 #include <stdio.h>
 #define DEAFULT_WHITE_KING_SQUARE 4
@@ -71,30 +64,30 @@ char move_down_left(char src, board *the_board, char color);
 char move_down_right(char src, board *the_board, char color);
 
 /*func to return for the rook and partly for the queen their move list in straight lines - left right up and down*/
-void move_in_straight_lines(char square, board *the_board, char color, move *moves);
+int move_in_straight_lines(char square, board *the_board, char color, move *moves);
 
 /*this one returns the list of moves in diagonal lines - up_right up_left etc.*/
-void move_in_diagonal_lines(char square, board *the_board, char color, move *moves);
+int move_in_diagonal_lines(char square, board *the_board, char color, move *moves);
 
 /*returns the rook moves list*/
-void rook(char square, board *the_board, char color, move *moves);
+int rook(char square, board *the_board, char color, move *moves);
 
 /*returns the bishop moves list*/
-void bishop(char square, board *the_board, char color, move *moves);
+int bishop(char square, board *the_board, char color, move *moves);
 
 /*creats 2 lists 1 for striaght lins and one for diagonal and conects them to one which is the final*/
-void queen(char square, board *the_board, char color, move *moves);
+int queen(char square, board *the_board, char color, move *moves);
 
 /*checks every possible move of the king out of 8*/
-void king(char square, board *the_board, char color, move *moves);
+int king(char square, board *the_board, char color, move *moves);
 
 /*checks every possible move of the king out of 8*/
-void knight(char square, board *the_board, char color, move *moves);
+int knight(char square, board *the_board, char color, move *moves);
 
 /*checks every special move the pawn can do exept for the usual on which also gets checked but its minor, anyway there is 2 func
 because the pawn for each color moves only in one diriction and its the exact oppised of the other*/
-void whitepawn(char square, board *the_board, move *moves);
-void blackpawn(char square, board *the_board, move *moves);
+int whitepawn(char square, board *the_board, move *moves);
+int blackpawn(char square, board *the_board, move *moves);
 
 
 /*calls the right func for the peice it was asked to check*/
@@ -102,7 +95,10 @@ char moves_of_piece(char square, board *the_board, move * moves);
 char color_of_piece(char square, board *the_board);
 char is_move_valid(board the_board, move the_move, char color);
 /*main func*/
-void connect_arrays(move * array, move * array1);
+int connect_arrays(move * array, move * array1, int array_len, int array1_len);
 
 move* get_all_moves(board *the_board);
 
+
+
+#endif /* DA695DC0_90E2_40B5_BC05_F55A01BC0605 */

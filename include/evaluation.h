@@ -1,12 +1,11 @@
+#ifndef DF067538_D9C3_4DB6_9FA4_0090105C00B0
+#define DF067538_D9C3_4DB6_9FA4_0090105C00B0
 #include <stdio.h>
-#ifndef BOARD_STRUCTS
-#define BOARD_STRUCTS
-#include "board_struct.h"
-#endif
 
-#ifndef USEFUL_FUNCTIONS
-#define USEFUL_FUNCTIONS
+#include "board_struct.h"
 #include "useful_functions.h"
-#endif
 
 char evaluate_by_points(board *b);
+
+
+#endif /* DF067538_D9C3_4DB6_9FA4_0090105C00B0 */

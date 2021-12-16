@@ -1,7 +1,7 @@
 /*
  Created by meir on 30/11/2021.
 */
-#include "useful_functions.h"
+#include "../include/useful_functions.h"
 char * PIECES1[13] = {" " , "\u265E", "\u265C", "\u265B", "\u265A", "\u265F", "\u265D", "\u2658", "\u2656", "\u2655", "\u2654", "\u2659", "\u2657"};
 
 #define MASK_FOR_A_HALF 0x0f /* A mask to get only a half of a byte. */
