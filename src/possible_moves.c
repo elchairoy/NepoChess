@@ -668,17 +668,59 @@ char moves_of_piece(char square, board *the_board, move * moves){
     return 1;
 }
 
+char get_max_moves_of_piece(char piece) {
+    switch (piece)
+    {
+    case white_rook:
+        return ROOK_MAX_MOVES;
+    
+    case white_king:
+        return KING_MAX_MOVES;
+
+    case white_knight:
+        return KNIGHT_MAX_MOVES;
+
+    case white_queen:
+        return QUEEN_MAX_MOVES;
+
+    case white_pawn:
+        return PAWN_MAX_MOVES;
+    
+    case white_bishop:
+        return BISHOP_MAX_MOVES;
+
+    case black_rook:
+        return ROOK_MAX_MOVES;
+    
+    case black_king:
+        return KING_MAX_MOVES;
+
+    case black_knight:
+        return KNIGHT_MAX_MOVES;
+
+    case black_queen:
+        return QUEEN_MAX_MOVES;
+
+    case black_pawn:
+        return PAWN_MAX_MOVES;
+    
+    case black_bishop:
+        return BISHOP_MAX_MOVES;
+    }
+}
+
 /*main function*/
 move* get_all_moves(board *the_board){
-    char color = the_board->whose_turn;
+    char color = the_board->whos_turn;
+    char piece;
     int i = 0, len = 1, move_num = 0, x = 0;
     move *all_moves;
-    move moves[28];
     for(i = 0; i<NUMBER_OF_SQUARES; i++){
-        if(color_of_piece(i, the_board) == color && get_piece_in_square(the_board, i) != empty)
-            len += moves_of_piece(i, the_board, moves);
+    	piece = get_piece_in_square(the_board, i);
+        if(color_of_piece(i, the_board) == color && piece != empty)
+            len += get_max_moves_of_piece(piece);
     }
-    len += en_passant_and_castle(the_board, moves, color);
+    len += 4;
     all_moves = malloc(len * sizeof(move));
     if (all_moves == 0) {
         printf("no memory");
@@ -687,18 +729,16 @@ move* get_all_moves(board *the_board){
     all_moves[0] = END;
     for(i = 0; i<NUMBER_OF_SQUARES; i++){
         if(color_of_piece(i, the_board) == color && get_piece_in_square(the_board, i) != empty){
-            len = moves_of_piece(i, the_board, moves);
-            for(x = 0; x < len; x++){
-                all_moves[move_num] = moves[x];
-                move_num++;
-            }
+            len = moves_of_piece(i, the_board, all_moves+move_num);
+            move_num+=len;
         }
     }
-    len = en_passant_and_castle(the_board, moves, color);
-    for(x = 0; x < len; x++){
-        all_moves[move_num] = moves[x];
-        move_num++;
-    }
+
+    len = en_passant_and_castle(the_board, all_moves+move_num, color);
+    /*for(x = 0; x < len; x++){
+        all_moves[move_num] = moves[x];*/
+    move_num+=len;
+    
     all_moves[move_num] = END;
     return all_moves;
 }

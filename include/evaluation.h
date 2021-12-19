@@ -5,6 +5,7 @@
 #include "board_struct.h"
 #include "useful_functions.h"
 
+/* This function evaluates the position only by the points of the pieces. */
 char evaluate_by_points(board *b);
 
 

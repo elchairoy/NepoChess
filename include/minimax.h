@@ -9,8 +9,8 @@
 
 char evaluate_minimax_for_white(board b, char depth);
 char evaluate_minimax_for_black(board b, char depth);
-move minimax_for_white(board *b,char depth);
-move minimax_for_black(board *b,char depth);
+move get_best_move_white(board *b,char depth);
+move get_best_move_black(board *b,char depth);
 
 
 #endif /* BE5F1FF0_4F72_47C7_8DFE_407829A022EA */

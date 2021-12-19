@@ -6,6 +6,7 @@
         "board_struct.h": "c",
         "type_traits": "c",
         "possible_moves.h": "c",
-        "test_possible_moves.h": "c"
+        "test_possible_moves.h": "c",
+        "test_minimax.h": "c"
     }
 }

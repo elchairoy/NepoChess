@@ -2,17 +2,16 @@
 
 
 
-#define QUEEN_WORTH 9
-#define ROOK_WORTH 5
-#define PAWN_WORTH 1
-#define KNIGHT_WORTH 3
-#define BISHOP_WORTH 3
+#define QUEEN_WORTH 9 /* How much does queen worth. */
+#define ROOK_WORTH 5 /* How much does rook worth. */
+#define PAWN_WORTH 1 /* How much does pawn worth. */
+#define KNIGHT_WORTH 3 /* How much does knight worth. */
+#define BISHOP_WORTH 3 /* How much does bishop worth. */
 
-#define NUMBER_OF_PIECES_DEVELOPED_MIDDLE_GAME 8
-
+/* This function evaluates the position only by the points of the pieces. */
 char evaluate_by_points(board *b) {
     int i;
-    char eval = 0;
+    char eval = 0; /* The eval. */
 
     for (i = 0;i < NUMBER_OF_SQUARES;i++) {
         switch (get_piece_in_square(b,i)) {

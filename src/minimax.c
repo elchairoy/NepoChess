@@ -1,41 +1,42 @@
 #include "../include/minimax.h"
 
-#define MAX_CHAR 100
-#define MIN_CHAR -100
+#define MAX_EVAL 100 /* The maximum evaluation possible. */
+#define MIN_EVAL -100 /* The minimum evaluation possible. */
 
-long int number_of_moves = 0;
+long int number_of_moves = 0; /* The number of positions scaned. */
 
+/* This function gets a board (when is white's move) and the depth and evaluates the position using minimax. */
 char evaluate_minimax_for_white(board b, char depth) {
-    move *all_moves;
+    move *all_moves; /* The array of all the moves possible. */
     board temp_board = b;
     char i = 0;
-    char max = MIN_CHAR;
+    char max = MIN_EVAL; /* The maximun eval possible in the position(maximum = best for white). */
     char temp;
-    if (isAttacked_by_black(&b,find_king_square(&b,WHITE))) {
+
+    if (isAttacked_by_black(&b,find_king_square(&b,WHITE))) { /* Checks if it's a check: */
         all_moves = get_all_moves(&b);
-        if (all_moves[0] == 0) {
+        if (all_moves[0] == 0) { /* If it's a mate: */
             number_of_moves++;
             free(all_moves);
-            return MIN_CHAR;
+            return MIN_EVAL;
         }
     }
-    all_moves =  get_all_moves(&b);
     if (depth == 0) {
         number_of_moves++;
-        free(all_moves);
         return evaluate_by_points(&b);
     }
-
+    all_moves =  get_all_moves(&b);
     while (all_moves[i] != 0) {
         temp_board = b;
-        commit_a_move_for_white(&temp_board,all_moves[i]);
-        temp = evaluate_minimax_for_black(temp_board,depth - 1);
-        if (temp == MAX_CHAR) {
+        commit_a_move_for_white(&temp_board,all_moves[i]); /* Commits the move. */
+        temp = evaluate_minimax_for_black(temp_board,depth - 1); /* Checks what is the eval after the move. */
+
+        if (temp == MAX_EVAL) {  /* If it's forced mate after the move: */
             free(all_moves);
             return temp;
         }
-        if (temp > max)
-            max = temp;
+        if (temp > max) /* If the eval is better then the max eval: */
+            max = temp; /* Changes min to be it. */
         temp_board = b;
         i++;
     }
@@ -43,37 +44,39 @@ char evaluate_minimax_for_white(board b, char depth) {
     return max;
 }
 
+/* This function gets a board (when is black's move) and the depth and evaluates the position using minimax. */
 char evaluate_minimax_for_black(board b, char depth) {
-    move *all_moves;
+    move *all_moves; /* All moves possible in the possition. */
     board temp_board = b;
     char i = 0;
-    char min = MAX_CHAR;
+    char min = MAX_EVAL; 
     char temp;
-    if (isAttacked_by_white(&b,find_king_square(&b,BLACK))) {
-        all_moves = get_all_moves(&b);
-        if (all_moves[0] == END) {
+    
+    if (isAttacked_by_white(&b,find_king_square(&b,BLACK))) { /* Checks if it's a check: */
+        all_moves = get_all_moves(&b); 
+        if (all_moves[0] == END) { /* If it's a mate: */
             number_of_moves++;
             free(all_moves);
-            return MAX_MOVES;
+            return MAX_EVAL;
 
         }
     }
-    all_moves =  get_all_moves(&b);
     if (depth == 0) {
         number_of_moves++;
-        free(all_moves);
         return evaluate_by_points(&b);
     }
-
+    all_moves =  get_all_moves(&b);
     while (all_moves[i] != 0) {
-        commit_a_move_for_black(&temp_board,all_moves[i]);
-        temp = evaluate_minimax_for_white(temp_board,depth - 1);
-        if (temp == MIN_CHAR) {
+        commit_a_move_for_black(&temp_board,all_moves[i]); /* Commits the move. */
+        temp = evaluate_minimax_for_white(temp_board,depth - 1); /* Checks what is the eval after the move. */
+
+        if (temp == MIN_EVAL) { /* If it's forced mate after the move: */
             free(all_moves);
             return temp;
         }
-        if (temp < min) {
-            min = temp;
+
+        if (temp < min) { /* If the eval is better then the min eval: */
+            min = temp; /* Changes min to be it. */
         }
         temp_board = b;
         i++;
@@ -82,24 +85,27 @@ char evaluate_minimax_for_black(board b, char depth) {
     return min;
 }
 
-move minimax_for_white(board *b,char depth) {
-    move *all_moves = get_all_moves(b);
+/* The main function of minimax for white, returns the best move of the position. */
+move get_best_move_white(board *b,char depth) {
+    move *all_moves = get_all_moves(b); /* All the moves possible in the position. */
     board temp_board = *b;
     char i = 0;
-    char max = MIN_CHAR;
-    move best = all_moves[0];
+    char max = MIN_EVAL; /* The maximun eval possible in the position(maximum = best for white). */
+    move best = all_moves[0]; /* The best move in the position. */
     char temp;
 
     while (all_moves[i] != 0) {
-        commit_a_move_for_white(&temp_board,all_moves[i]);
-        temp = evaluate_minimax_for_black(temp_board,depth - 1);
-        if (temp == MAX_CHAR) {
+        commit_a_move_for_white(&temp_board,all_moves[i]); /* Commits the move. */
+        temp = evaluate_minimax_for_black(temp_board,depth - 1); /* Checks what is the eval after the move. */
+
+        if (temp == MAX_EVAL) { /* If it's forced mate after the move: */
             best = all_moves[i];
             free(all_moves);
-            return best;
+            return best; /* Returns it. */
         }
-        if (temp > max) {
-            max = temp;
+
+        if (temp > max) { /* If the eval is better then the max eval: */
+            max = temp; /* Changes max to be it. */
             best = all_moves[i];
         }
         temp_board = *b;
@@ -109,24 +115,27 @@ move minimax_for_white(board *b,char depth) {
     return best;
 }
 
-move minimax_for_black(board *b,char depth) {
-    move *all_moves = get_all_moves(b);
+/* The main function of minimax for black, returns the best move of the position. */
+move get_best_move_black(board *b,char depth) {
+    move *all_moves = get_all_moves(b); /* All the moves possible in the position. */
     board temp_board = *b;
     char i = 0;
-    char min = MAX_CHAR;
-    move best = all_moves[0];
+    char min = MAX_EVAL; /* The minimun eval possible in the position(minimum = best for black). */
+    move best = all_moves[0]; /* The best move in the position. */
     char temp;
 
     while (all_moves[i] != END) {
-        commit_a_move_for_black(&temp_board,all_moves[i]);
-        temp = evaluate_minimax_for_white(temp_board,depth - 1);
-        if (temp == MIN_CHAR) {
+        commit_a_move_for_black(&temp_board,all_moves[i]); /* Commits the move. */
+        temp = evaluate_minimax_for_white(temp_board,depth - 1); /* Checks what is the eval after the move. */
+
+        if (temp == MIN_EVAL) { /* If it's forced mate after the move: */
             best = all_moves[i];
             free(all_moves);
-            return best;
+            return best; /* Returns it. */
         }
-        if (temp < min) {
-            min = temp;
+
+        if (temp < min) { /* If the eval is better then the min eval: */
+            min = temp; /* Changes min to be it. */
             best = all_moves[i];
         }
         temp_board = *b;

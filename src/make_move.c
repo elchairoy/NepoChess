@@ -106,7 +106,7 @@ void commit_a_move_for_white(board * b, move m){
     b->pawn_en_passant_left = 0; /* The pawns can't en passant anymore. */
     b->pawn_en_passant_right = 0;
 
-    b->whose_turn = 0; /* It will be black's turn next. */
+    b->whos_turn = 0; /* It will be black's turn next. */
 
     if (get_is_short_castle(m) == 1) /* If this move is a short castle. */
         commit_a_short_castle_for_white(b); /* Commit a short castle for white. */
@@ -143,7 +143,7 @@ void commit_a_move_for_black(board * b, move m){
     b->pawn_en_passant_left = 0; /* The pawns can't en passant anymore. */
     b->pawn_en_passant_right = 0;
 
-    b->whose_turn = 1; /* It will be white's turn next. */
+    b->whos_turn = 1; /* It will be white's turn next. */
 
     if (get_is_short_castle(m) == 1) /* If this move is a short castle. */
         commit_a_short_castle_for_black(b);
