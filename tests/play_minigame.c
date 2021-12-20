@@ -41,13 +41,16 @@ int white_move(board *the_board){
                                 scanf("%d", &promotion);
                             }
                             commit_a_move_for_white(the_board, create_a_move(src_square, dst_square, promotion, 0, 0));
+                            free(all_moves);
                             return 0;
                         }
                         commit_a_move_for_white(the_board, all_moves[i]);
+                        free(all_moves);
                         return 0;
                     }
                     i++;    
                 }
+                free(all_moves);
             }
         }
         system("clear");
@@ -63,12 +66,14 @@ int game(board *the_board){
         if(get_all_moves(the_board)[0] == END){
             if(isAttacked_by_black(the_board, find_king_square(the_board, WHITE))){
                 printf("CHECKMATE 0-1\n");
+                
                 return 0;
             }
             printf("STALMATE 0.5-0.5\n");
             return 0;
         }
         white_move(the_board);
+        system("clear");
         print_board(the_board);
         if(get_all_moves(the_board)[0] == END){
             if(isAttacked_by_white(the_board, find_king_square(the_board, BLACK))){
@@ -78,7 +83,7 @@ int game(board *the_board){
             printf("STALMATE 0.5-0.5\n");
             return 0;
         }
-        commit_a_move_for_black(the_board ,get_best_move_black(the_board,4));
+        commit_a_move_for_black(the_board ,get_best_move_black(the_board,4,5));
         system("clear");
     }
     return 0;
@@ -111,13 +116,15 @@ int check(){
     START_BOARD.pawn_en_passant_right = 0;
     START_BOARD.whos_turn=WHITE;
 
-
     int i;
     for(i = 0;i<32;i++)
     {
         START_BOARD.squares[i] = initial_board[i];
     }
-
+    commit_a_move_for_white(&START_BOARD,create_a_move(12,28,0,0,0));
+    commit_a_move_for_black(&START_BOARD,create_a_move(52,52-16,0,0,0));
+    commit_a_move_for_white(&START_BOARD,create_a_move(6,6+16-1,0,0,0));
+    commit_a_move_for_black(&START_BOARD,create_a_move(1+7*8,1+5*8+1,0,0,0));
     system("clear");
     game(&START_BOARD);
     return 0;

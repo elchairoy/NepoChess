@@ -706,6 +706,9 @@ char get_max_moves_of_piece(char piece) {
     
     case black_bishop:
         return BISHOP_MAX_MOVES;
+    
+    default:
+        return 0;
     }
 }
 
@@ -713,7 +716,7 @@ char get_max_moves_of_piece(char piece) {
 move* get_all_moves(board *the_board){
     char color = the_board->whos_turn;
     char piece;
-    int i = 0, len = 1, move_num = 0, x = 0;
+    int i = 0, len = 1, move_num = 0;
     move *all_moves;
     for(i = 0; i<NUMBER_OF_SQUARES; i++){
     	piece = get_piece_in_square(the_board, i);

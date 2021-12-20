@@ -196,35 +196,35 @@ char isAttacked_by_black(board *the_board, char square) {
 
 
     /* Check danger from pawns: */
-    if (get_piece_in_square(the_board, square + UP_RIGHT) == black_pawn)
+    if (move_up_right(square,the_board,WHITE) && get_piece_in_square(the_board, square + UP_RIGHT) == black_pawn)
         return 1;
     
-    if (get_piece_in_square(the_board, square + UP_LEFT) == black_pawn)
+    if (move_up_left(square,the_board,WHITE) && get_piece_in_square(the_board, square + UP_LEFT) == black_pawn)
         return 1;
 
         /* Check danger from king: */
-    if (get_piece_in_square(the_board,square + RIGHT) == black_king)
+    if (move_right(square,the_board,WHITE) && get_piece_in_square(the_board,square + RIGHT) == black_king)
         return 1;
 
-    if (get_piece_in_square(the_board,square + LEFT) == black_king)
+    if (move_left(square,the_board,WHITE) && get_piece_in_square(the_board,square + LEFT) == black_king)
         return 1;
 
-    if (get_piece_in_square(the_board,square + UP) == black_king)
+    if (move_up(square,the_board,WHITE) && get_piece_in_square(the_board,square + UP) == black_king)
         return 1;
 
-    if (get_piece_in_square(the_board,square + DOWN) == black_king)
+    if (move_down(square,the_board,WHITE) && get_piece_in_square(the_board,square + DOWN) == black_king)
         return 1;
 
-    if (get_piece_in_square(the_board,square + UP_RIGHT) == black_king)
+    if (move_up_right(square,the_board,WHITE) && get_piece_in_square(the_board,square + UP_RIGHT) == black_king)
         return 1;
 
-    if (get_piece_in_square(the_board,square + UP_LEFT) == black_king)
+    if (move_up_left(square,the_board,WHITE) && get_piece_in_square(the_board,square + UP_LEFT) == black_king)
         return 1;
 
-    if (get_piece_in_square(the_board,square + DOWN_LEFT) == black_king)
+    if (move_down_left(square,the_board,WHITE) && get_piece_in_square(the_board,square + DOWN_LEFT) == black_king)
         return 1;
 
-    if (get_piece_in_square(the_board,square + DOWN_RIGHT) == black_king)
+    if (move_down_right(square,the_board,WHITE) && get_piece_in_square(the_board,square + DOWN_RIGHT) == black_king)
         return 1;
 
 
@@ -345,39 +345,36 @@ char isAttacked_by_white(board *the_board, char square) {
 
 
     /* Check danger from pawns: */
-    if (get_piece_in_square(the_board, square + DOWN_RIGHT) == white_pawn)
+    if (move_down_right(square,the_board,BLACK) && get_piece_in_square(the_board, square + DOWN_RIGHT) == white_pawn)
         return 1;
     
-    if (get_piece_in_square(the_board, square + DOWN_LEFT) == white_pawn)
+    if (move_down_left(square,the_board,BLACK) && get_piece_in_square(the_board, square + DOWN_LEFT) == white_pawn)
         return 1;
 
-
-    /* Check danger from king: */
-    if (get_piece_in_square(the_board,square + RIGHT) == white_king)
+        /* Check danger from king: */
+    if (move_right(square,the_board,BLACK) && get_piece_in_square(the_board,square + RIGHT) == white_king)
         return 1;
 
-    if (get_piece_in_square(the_board,square + LEFT) == white_king)
+    if (move_left(square,the_board,BLACK) && get_piece_in_square(the_board,square + LEFT) == white_king)
         return 1;
 
-    if (get_piece_in_square(the_board,square + UP) == white_king)
+    if (move_up(square,the_board,BLACK) && get_piece_in_square(the_board,square + UP) == white_king)
         return 1;
 
-    if (get_piece_in_square(the_board,square + DOWN) == white_king)
+    if (move_down(square,the_board,BLACK) && get_piece_in_square(the_board,square + DOWN) == white_king)
         return 1;
 
-    if (get_piece_in_square(the_board,square + UP_RIGHT) == white_king)
+    if (move_up_right(square,the_board,BLACK) && get_piece_in_square(the_board,square + UP_RIGHT) == white_king)
         return 1;
 
-    if (get_piece_in_square(the_board,square + UP_LEFT) == white_king)
+    if (move_up_left(square,the_board,BLACK) && get_piece_in_square(the_board,square + UP_LEFT) == white_king)
         return 1;
 
-    if (get_piece_in_square(the_board,square + DOWN_LEFT) == white_king)
+    if (move_down_left(square,the_board,BLACK) && get_piece_in_square(the_board,square + DOWN_LEFT) == white_king)
         return 1;
 
-    if (get_piece_in_square(the_board,square + DOWN_RIGHT) == white_king)
+    if (move_down_right(square,the_board,BLACK) && get_piece_in_square(the_board,square + DOWN_RIGHT) == white_king)
         return 1;
-
-
 
     return 0;
 }

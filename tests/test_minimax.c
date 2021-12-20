@@ -34,7 +34,14 @@ void check_miminax() {
     commit_a_move_for_black(&START_BOARD,create_a_move(62,47,0,0,0));
     print_board(&START_BOARD);
     /* Check if the minimax spots the mate: */
-    move m = get_best_move_white(&START_BOARD,4);
+    move m = get_best_move_white(&START_BOARD,5,5);
     if (m != create_a_move(2,47,0,0,0))
         printf("Error in minimax");
 }
+/* RECORD:
+        4 - 1000ms, 787k
+            4,3 - 300ms, 158k
+        5 - 2m20s, 31M
+            5,4 - 1m23s, 21.8M
+            5,3 -  22s, 6.2M
+         */

@@ -124,9 +124,9 @@ void commit_a_move_for_white(board * b, move m){
     {
         /* Check if a rook or the king moved: */
         if  (src_loc == 0 || src_loc == 4)
-            b->can_black_castle_long = 0;
+            b->can_white_castle_long = 0;
         if  (src_loc == 7 || src_loc == 4)
-            b->can_black_castle_short = 0;
+            b->can_white_castle_short = 0;
 
         can_en_passant_next_move(b,m); /* Check which pawns can en passant in the next move. */
         change_the_square(b, src_loc, empty); /* It changes the src square to empty. */
