@@ -12,7 +12,6 @@ char evaluate_minimax_for_white(board b, char depth, char pre_frontier) {
     int i = 0;
     char max = MIN_EVAL; /* The maximun eval possible in the position(maximum = best for white). */
     char temp;
-
     if (isAttacked_by_black(&b,find_king_square(&b,WHITE))) { /* Checks if it's a check: */
         all_moves = get_all_moves(&b);
         if (all_moves[0] == 0) { /* If it's a mate: */
@@ -28,10 +27,10 @@ char evaluate_minimax_for_white(board b, char depth, char pre_frontier) {
     }
     all_moves =  get_all_moves(&b);
     while (all_moves[i] != 0) {
-        temp_board = b;
         commit_a_move_for_white(&temp_board,all_moves[i]); /* Commits the move. */
         if (depth >= pre_frontier && max - evaluate_minimax_for_black(temp_board,depth - 2,pre_frontier) >= 2) {
             i++;
+            temp_board = b;
             continue;
         }
         temp = evaluate_minimax_for_black(temp_board,depth - 1,pre_frontier); /* Checks what is the eval after the move. */
@@ -56,7 +55,7 @@ char evaluate_minimax_for_black(board b, char depth, char pre_frontier) {
     int i = 0;
     char min = MAX_EVAL; 
     char temp;
-    
+
     if (isAttacked_by_white(&b,find_king_square(&b,BLACK))) { /* Checks if it's a check: */
         all_moves = get_all_moves(&b); 
         if (all_moves[0] == END) { /* If it's a mate: */
@@ -75,6 +74,7 @@ char evaluate_minimax_for_black(board b, char depth, char pre_frontier) {
         commit_a_move_for_black(&temp_board,all_moves[i]); /* Commits the move. */
         if (depth >= pre_frontier && evaluate_minimax_for_white(temp_board,depth - 2,pre_frontier) - min >= 2) {
             i++;
+            temp_board = b;
             continue;
         }
         temp = evaluate_minimax_for_white(temp_board,depth - 1,pre_frontier); /* Checks what is the eval after the move. */
@@ -131,7 +131,7 @@ move get_best_move_black(board *b,char depth, char pre_frontier) {
     int i = 0;
     char min = MAX_EVAL; /* The minimun eval possible in the position(minimum = best for black). */
     move best = all_moves[0]; /* The best move in the position. */
-    char temp;
+    char temp = 0;
 
     while (all_moves[i] != END) {
         commit_a_move_for_black(&temp_board,all_moves[i]); /* Commits the move. */

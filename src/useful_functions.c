@@ -183,7 +183,7 @@ char isAttacked_by_black(board *the_board, char square) {
     }
 
     /*knight down right right to eat*/
-    if (get_column(square) > 2 && get_row(square) < 7) {
+    if (get_column(square) > 1 && get_row(square) < 7) {
         if (get_piece_in_square(the_board, square + KNIGHT_UP_LEFT_LEFT) == black_knight)
             return 1;
     }
@@ -332,7 +332,7 @@ char isAttacked_by_white(board *the_board, char square) {
     }
 
     /*knight down right right to eat*/
-    if (get_column(square) > 2 && get_row(square) < 7) {
+    if (get_column(square) > 1 && get_row(square) < 7) {
         if (get_piece_in_square(the_board, square + KNIGHT_UP_LEFT_LEFT) == white_knight)
             return 1;
     }
