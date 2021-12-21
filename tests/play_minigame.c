@@ -11,6 +11,36 @@ move generate_random(board *the_board){
     return all_moves[rand() % len];
 }
 
+void scanner(char * move, int src_dst)
+{
+    char row;
+    char column;
+    char trash;
+    if(src_dst)
+        printf("enter src: ");
+    else
+        printf("enter dst: ");
+    while (scanf(" %c %c%c", &column, &row, &trash) == 3 &&
+           trash != '\r' && trash != '\n')
+    {
+        char buffer[4096];
+        if (scanf("%4095[^\n]", buffer) == EOF)
+            break;
+        printf("too long\n");
+        if(src_dst)
+            printf("enter src: ");
+        else
+            printf("enter dst: ");
+    }
+    if(column < 'a' || column > 'h' || row < '1' || row > '8'){
+        printf("invalid square\n");
+        scanner(move, src_dst);
+    }
+    else{
+        move[0] = column;
+        move[1] = row;
+    }
+}
 
 int white_move(board *the_board){
     int i = 0, row, promotion = 4;
@@ -18,43 +48,37 @@ int white_move(board *the_board){
     move *all_moves;
     char column, src_square, dst_square;
     while(1){
-        printf("enter src: ");
-        scanf("%s", temp);
+        scanner(temp, 1);
         src_square = get_square_number(temp[0], temp[1]);
         if(check_src(the_board, src_square, WHITE))
         {
-            printf("enter dst: ");
-            scanf("%s", temp);
+            scanner(temp, 0);
             dst_square = get_square_number(temp[0], temp[1]);
-            if(dst_square <= 63 || dst_square >= 0)
+            all_moves = get_all_moves(the_board);
+            i = 0;
+            while(all_moves[i] != END)
             {
-                all_moves = get_all_moves(the_board);
-                i = 0;
-                while(all_moves[i] != END)
+                if(src_square == get_src_square(all_moves[i]) && dst_square == get_dst_square(all_moves[i]))
                 {
-                    if(src_square == get_src_square(all_moves[i]) && dst_square == get_dst_square(all_moves[i]))
-                    {
-                        if(get_piece_in_square(the_board, src_square) == white_pawn && get_row(src_square) == 6){
-                            while(promotion > 3){
-                                system("clear");
-                                printf("promot to? (0=Q,1=R,2=B,3=N): ");
-                                scanf("%d", &promotion);
-                            }
-                            commit_a_move_for_white(the_board, create_a_move(src_square, dst_square, promotion, 0, 0));
-                            free(all_moves);
-                            return 0;
+                    if(get_piece_in_square(the_board, src_square) == white_pawn && get_row(src_square) == 6){
+                        while(promotion > 3){
+                            system("clear");
+                            printf("promot to? (0=Q,1=R,2=B,3=N): ");
+                            scanf("%d", &promotion);
                         }
-                        commit_a_move_for_white(the_board, all_moves[i]);
+                        commit_a_move_for_white(the_board, create_a_move(src_square, dst_square, promotion, 0, 0));
                         free(all_moves);
                         return 0;
                     }
-                    i++;    
+                    commit_a_move_for_white(the_board, all_moves[i]);
+                    free(all_moves);
+                    return 0;
                 }
-                free(all_moves);
+                i++;    
             }
+            free(all_moves);
         }
-        system("clear");
-        print_board(the_board);
+        printf("invalid move\n");
     }
 }
 
@@ -83,15 +107,13 @@ int game(board *the_board){
             printf("STALMATE 0.5-0.5\n");
             return 0;
         }
-        commit_a_move_for_black(the_board ,get_best_move_black(the_board,4,5));
+        commit_a_move_for_black(the_board ,get_best_move_black(the_board,4,3));
         system("clear");
     }
     return 0;
 }
 
 int check_src(board *the_board, char src, char the_move){
-    if(src > 63 || src < 0)
-        return 0;
     if(get_piece_in_square(the_board, src) == empty)
         return 0;
     if(color_of_piece(src, the_board) != the_move)
@@ -121,10 +143,8 @@ int check(){
     {
         START_BOARD.squares[i] = initial_board[i];
     }
-    commit_a_move_for_white(&START_BOARD,create_a_move(12,28,0,0,0));
-    commit_a_move_for_black(&START_BOARD,create_a_move(52,52-16,0,0,0));
-    commit_a_move_for_white(&START_BOARD,create_a_move(6,6+16-1,0,0,0));
-    commit_a_move_for_black(&START_BOARD,create_a_move(1+7*8,1+5*8+1,0,0,0));
+    print_board(&START_BOARD);
+    char move[3];
     system("clear");
     game(&START_BOARD);
     return 0;
