@@ -14,12 +14,8 @@ char * PIECES1[13] = {" " , "\u265E", "\u265C", "\u265B", "\u265A", "\u265F", "\
 #define IS_LONG_CASTLE_INDEX 14 /* The place of the 'is long castle' in the short. */
 #define IS_SHORT_CASTLE_INDEX 15 /* The place of the 'is short castle' in the short. */
 
-/* Gives the piece in the given square.
-   If there is an error - returns -1. */
+/* Gives the piece in the given square. */
 char get_piece_in_square(board *b ,unsigned char square_number) {
-    if (square_number >= NUMBER_OF_SQUARES || b->squares == NULL) /* If there is an error: */
-        return -1;
-
     if (square_number % 2 == 1) /* If the square is in the first half a byte: */
         return (b->squares[square_number/2] & MASK_FOR_A_HALF) /* - clears the second half. */;
         
@@ -29,25 +25,17 @@ char get_piece_in_square(board *b ,unsigned char square_number) {
 
 /* Change the piece in the given square to the given piece.
    If there is an error - returns -1. */
-char change_the_square(board *b,unsigned char square_number ,char new_piece) {
-    if (square_number >= NUMBER_OF_SQUARES || b->squares == NULL) /* If there is an error: */
-        return -1;
-        
+void change_the_square(board *b,unsigned char square_number ,char new_piece) {
     if (square_number % 2 == 1) /* If the square is in the first half a byte: */
         b->squares[square_number / 2] = (b->squares[square_number / 2] & (MASK_FOR_A_HALF << (4))) /* - clears the first half */ | (new_piece); /* - places the new piece in the first half */
     
     else /* If the square is in the second half a byte: */
         b->squares[square_number / 2] = (b->squares[square_number / 2] & MASK_FOR_A_HALF) /* - clears the second half */ | (new_piece << 4); /* - places the new piece in the second half */
-    return 0;
 }
 
-/* This function gets the data needed for a move and returns a short representing the move.
-   If the data is invalid - returns -1. */
+/* This function gets the data needed for a move and returns a short representing the move.*/
 short create_a_move(unsigned char src_loc,unsigned char dst_loc,unsigned char promote_to,unsigned char castle_long,unsigned char castle_short) {
     move result = 0;
-
-    if (src_loc >= NUMBER_OF_SQUARES || src_loc >= NUMBER_OF_SQUARES || promote_to >= 4 || castle_long >= 2 || castle_short >= 2) /* If the data is invalid: */
-        return -1;
 
     result |= (src_loc << SRC_LOC_INDEX); /* Enters the src loc. */
     result |= (dst_loc << DST_LOC_INDEX); /* Enters the dst loc. */
@@ -382,9 +370,17 @@ char isAttacked_by_white(board *the_board, char square) {
 
 char find_king_square(board *the_board, char color){
     int i = 0;
-    char piece = white_king;
-    if(!color)
+    char piece; 
+    if (color) {
+        piece = white_king;
+        if (get_piece_in_square(the_board,4) == white_king)
+            return 4;
+    }
+    else {
         piece = black_king;
+        if (get_piece_in_square(the_board,60) == black_king)
+            return 60;
+    }
     while (get_piece_in_square(the_board,i) != piece) 
         i++;
     return i;

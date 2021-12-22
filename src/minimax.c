@@ -28,7 +28,7 @@ char evaluate_minimax_for_white(board b, char depth, char pre_frontier) {
     all_moves =  get_all_moves(&b);
     while (all_moves[i] != 0) {
         commit_a_move_for_white(&temp_board,all_moves[i]); /* Commits the move. */
-        if (depth >= pre_frontier && max - evaluate_minimax_for_black(temp_board,depth - 2,pre_frontier) >= 2) {
+        if (depth > pre_frontier && max - evaluate_minimax_for_black(temp_board,depth - 2,pre_frontier) >= 2) {
             i++;
             temp_board = b;
             continue;
@@ -72,7 +72,7 @@ char evaluate_minimax_for_black(board b, char depth, char pre_frontier) {
     all_moves =  get_all_moves(&b);
     while (all_moves[i] != 0) {
         commit_a_move_for_black(&temp_board,all_moves[i]); /* Commits the move. */
-        if (depth >= pre_frontier && evaluate_minimax_for_white(temp_board,depth - 2,pre_frontier) - min >= 2) {
+        if (depth > pre_frontier && evaluate_minimax_for_white(temp_board,depth - 2,pre_frontier) - min >= 2) {
             i++;
             temp_board = b;
             continue;
@@ -105,6 +105,11 @@ move get_best_move_white(board *b,char depth,char pre_frontier) {
 
     while (all_moves[i] != 0) {
         commit_a_move_for_white(&temp_board,all_moves[i]); /* Commits the move. */
+        if (depth > pre_frontier && max - evaluate_minimax_for_black(temp_board,depth - 2,pre_frontier) >= 2) {
+            i++;
+            temp_board = *b;
+            continue;
+        }
         temp = evaluate_minimax_for_black(temp_board,depth - 1,pre_frontier); /* Checks what is the eval after the move. */
 
         if (temp == MAX_EVAL) { /* If it's forced mate after the move: */
@@ -135,8 +140,12 @@ move get_best_move_black(board *b,char depth, char pre_frontier) {
 
     while (all_moves[i] != END) {
         commit_a_move_for_black(&temp_board,all_moves[i]); /* Commits the move. */
+        if (depth > pre_frontier && evaluate_minimax_for_white(temp_board,depth - 2,pre_frontier) - min >= 2) {
+            i++;
+            temp_board = *b;
+            continue;
+        }
         temp = evaluate_minimax_for_white(temp_board,depth - 1,pre_frontier); /* Checks what is the eval after the move. */
-
         if (temp == MIN_EVAL) { /* If it's forced mate after the move: */
             best = all_moves[i];
             free(all_moves);

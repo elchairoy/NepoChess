@@ -6,7 +6,7 @@ TESTS   := tests
 
 CC             := gcc
 CC_FLAGS       := -Wall -ansi -pedantic -ggdb -I${INCLUDE} -I${SRC} -lm
-CC_TESTS_FLAGS := -I${INCLUDE} -lm -DTEST -g # I am not adding here the c90 standard, because it interferes with libtap.
+CC_TESTS_FLAGS := -I${INCLUDE} -lm -DTEST -pg -g # I am not adding here the c90 standard, because it interferes with libtap.
 
 VALGRIND       := valgrind
 VALGRIND_FLAGS := --leak-check=yes --error-exitcode=2

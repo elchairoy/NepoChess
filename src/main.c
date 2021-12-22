@@ -11,8 +11,8 @@ extern long int number_of_moves;
 int main() {
   
 
-    /*check_miminax();
-    printf("%ld",number_of_moves);*/
-    check();
+    check_miminax();
+    printf("%ld",number_of_moves);
+    /*check();*/
     return 0;
 }

@@ -30,30 +30,30 @@ char pass_up(char src){
 }
 
 /*check if peice will get on a square that an ally is on which means he can't*/
-char colid_with_ally(char dst, board *the_board, char color)
+char colid_with_ally(char square, board *the_board, char color)
 {
-    char dst_piece = get_piece_in_square(the_board, dst);
+    char piece = get_piece_in_square(the_board, square);
     if(color)
     {
-        if(dst_piece <= NUM_OF_WHITE_PIECES && dst_piece != 0)
+        if (piece != 0 && piece <= NUM_OF_WHITE_PIECES)
             return 1;
         return 0;
     }
-    if(dst_piece > NUM_OF_WHITE_PIECES)
+    if (piece > NUM_OF_WHITE_PIECES)
         return 1;
     return 0;
 }
 
 /*check if peice is on a square that an enemy is on which means he can't continue*/
-char colid_with_enemy(char src, board *the_board, char color){
-    char src_piece = get_piece_in_square(the_board, src);
+char colid_with_enemy(char square, board *the_board, char color){
+    char piece = get_piece_in_square(the_board, square);
     if(color)
     {
-        if(src_piece > NUM_OF_WHITE_PIECES)
+        if (piece > NUM_OF_WHITE_PIECES)
             return 1;
         return 0;
     }
-    if(src_piece <= NUM_OF_WHITE_PIECES && src_piece != 0)
+    if (piece!=0 && piece <= NUM_OF_WHITE_PIECES)
         return 1;
     return 0;
 }

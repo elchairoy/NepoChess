@@ -15,7 +15,7 @@ char get_piece_in_square(board *b ,unsigned char square_number);
 
 /* Change the piece in the given square to the given piece.
    If there is an error - returns -1. */
-char change_the_square(board *b,unsigned char square_number ,char new_piece);
+void change_the_square(board *b,unsigned char square_number ,char new_piece);
 
 /* This function gets the data needed for a move and returns a short representing the move.
    If the data is invalid - returns -1. */
