@@ -33,7 +33,7 @@ void check_miminax() {
     /* Move to a position when white is threatning mate in one: */
     print_board(&START_BOARD);
     /* Check if the minimax spots the mate: */
-    move m = get_best_move_white(&START_BOARD,5,4);
+    move m = get_best_move_white(&START_BOARD,4,3);
     /*if (m != create_a_move(2,47,0,0,0))
         printf("Error in minimax");*/
 }
