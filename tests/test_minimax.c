@@ -27,12 +27,11 @@ void check_miminax() {
     commit_a_move_for_white(&START_BOARD,create_a_move(5,26,0,0,0));
     commit_a_move_for_black(&START_BOARD,create_a_move(62,47,0,0,0));
     print_board(&START_BOARD);
-
     HashTable ht;
     ht_setup(&ht,sizeof(board),sizeof(double *),100000000);
     move m = get_best_move_white(&START_BOARD,5,3,&ht);
     printf("from %d to %d\n",get_src_square(m),get_dst_square(m));
-}
+
 /* RECORD:
         4 - 1000ms, 787k
             4,3 - 300ms, 158k (without hash)
