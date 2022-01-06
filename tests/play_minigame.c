@@ -107,7 +107,9 @@ int game(board *the_board){
             printf("STALMATE 0.5-0.5\n");
             return 0;
         }
-        commit_a_move_for_black(the_board ,get_best_move_black(the_board,4,3));
+        HashTable ht;
+        ht_setup(&ht,sizeof(board),sizeof(double),100000000);
+        commit_a_move_for_black(the_board ,get_best_move_black(the_board,5,3,&ht));
         system("clear");
     }
     return 0;

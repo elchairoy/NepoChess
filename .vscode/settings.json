@@ -7,6 +7,16 @@
         "type_traits": "c",
         "possible_moves.h": "c",
         "test_possible_moves.h": "c",
-        "test_minimax.h": "c"
+        "test_minimax.h": "c",
+        "minimax.h": "c",
+        "hashtable.h": "c",
+        "string": "cpp",
+        "fstream": "cpp",
+        "istream": "cpp",
+        "new": "cpp",
+        "ostream": "cpp",
+        "sstream": "cpp",
+        "functional": "cpp",
+        "typeinfo": "cpp"
     }
 }
