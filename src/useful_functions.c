@@ -386,37 +386,52 @@ char find_king_square(board *the_board, char color){
     return i;
 }
 
-void print_board(board *the_board){
-    int num = 0;
-    int i, x, y, z;
-    for(z = 0; z < 2; z++)
-            printf(" ");
-    for(z = 0; z < 33; z++)
-            printf("-");
-    printf("\n");
-    for(i = 0; i < 8; i++){
-        y = NUMBER_OF_SQUARES - (i+1)*8;
-        printf("%d ",(8-i));
-        for(x = 0; x < 8; x++){
-            num = get_piece_in_square(the_board, y + x);
-            printf("| %s ", PIECES1[num]);
-        }
-        printf("|");
-        printf("\n");
 
-        for(z = 0; z < 2; z++)
+void print_line(){
+    /*Print a row of lines to separate.*/
+    for(int z = 0; z < 43; z++){
+        if(z < 2)
             printf(" ");
-        for(z = 0; z < 33; z++)
+        else
             printf("-");
-        printf("\n");
     }
-
-    for(z = 0; z < 2; z++)
-        printf(" ");
-    for(i=0; i < 8; i++)
-        printf("  %c ", i+'a');
     printf("\n");
 }
+
+
+void print_board(board *the_board){
+    int i, x, square_in_line, first_square_in_line, line, piece;
+    /*
+    Line - current line number.
+    First_square_in_line - number of the first square in the 'Line'
+    Square_in_line - number of the column in the 'current_line'
+    Piece - the peice in the 'current square'
+    i, x - for loop var
+    */
+    print_line();
+    /*First for returns the line to print from line 8 to line 1*/
+    for(line = NUMBER_OF_ROWS; line > 0; line--){
+        first_square_in_line = (line - 1) * NUMBER_OF_ROWS;
+        printf("%d ",line);
+        /*Second for prints the piece in every square of the current line from the left to the right.*/ 
+        for(square_in_line = 0; square_in_line < NUMBER_OF_COLUMNS; square_in_line++){
+            piece = get_piece_in_square(the_board, first_square_in_line + square_in_line);
+            printf("| %s  ", PIECES1[piece]);
+        }
+        printf("|\n");
+        print_line();
+    }
+    /*Print letters on the bottem.*/
+    for(i=0; i < NUMBER_OF_COLUMNS; i++){
+        /*Print enough spaces for the letter to be in the middle.*/
+        for(x = 0; x < 4; x++)
+            printf(" ");
+        /*print the letter from a to h*/
+        printf("%c", i + 'a');
+    }
+    printf("\n");
+}
+
 
 char check_white_long_castle(board *the_board){
     move temp;
