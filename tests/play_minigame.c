@@ -109,7 +109,7 @@ int game(board *the_board){
         }
         HashTable ht;
         ht_setup(&ht,sizeof(board),sizeof(double),100000000);
-        commit_a_move_for_black(the_board ,get_best_move_black(the_board,5,3,&ht));
+        commit_a_move_for_black(the_board ,get_best_move_black(the_board,5,4,&ht));
         system("clear");
     }
     return 0;

@@ -20,6 +20,8 @@ TEST_EXECUTABLE := runtests
 
 all: ${BIN}/${EXECUTABLE}
 
+compile-test: ${BIN}/${TEST_EXECUTABLE}
+
 run: clean all
 	@./${BIN}/${EXECUTABLE}
 
@@ -29,7 +31,7 @@ test: clean ${BIN}/${TEST_EXECUTABLE}
 valgrind: ${BIN}/${EXECUTABLE}
 	${VALGRIND} ${VALGRIND_FLAGS} $<
 
-valgrind_test: ${BIN}/${TEST_EXECUTABLE}
+valgrind-test: ${BIN}/${TEST_EXECUTABLE}
 	${VALGRIND} ${VALGRIND_FLAGS} $<
 
 # We are compiling here the sources as well, because the tester code uses the c code.

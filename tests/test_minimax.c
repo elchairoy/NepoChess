@@ -29,14 +29,16 @@ void check_miminax() {
     print_board(&START_BOARD);
     HashTable ht;
     ht_setup(&ht,sizeof(board),sizeof(double *),100000000);
-    move m = get_best_move_white(&START_BOARD,5,3,&ht);
+    move m = get_best_move_white(&START_BOARD,5,4,&ht);
     printf("from %d to %d\n",get_src_square(m),get_dst_square(m));
+}
 
 /* RECORD:
         4 - 1000ms, 787k
             4,3 - 300ms, 158k (without hash)
             4,3 - ?, 41k (with hash)
-        5 - 2m20s, 31M
-            5,4 - 1m23s, 21.8M
-            5,3 -  22s, 6.2M
+        5 - 1.7s, 4M
+            5,4 - 3s, 248k
+            5,3 - 3s, 248k
+        
          */
