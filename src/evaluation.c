@@ -2,16 +2,16 @@
 
 
 
-#define QUEEN_WORTH 9 /* How much does queen worth. */
-#define ROOK_WORTH 5 /* How much does rook worth. */
+#define QUEEN_WORTH 9.5 /* How much does queen worth. */
+#define ROOK_WORTH 5.63 /* How much does rook worth. */
 #define PAWN_WORTH 1 /* How much does pawn worth. */
-#define KNIGHT_WORTH 3 /* How much does knight worth. */
-#define BISHOP_WORTH 3 /* How much does bishop worth. */
+#define KNIGHT_WORTH 3.05 /* How much does knight worth. */
+#define BISHOP_WORTH 3.33 /* How much does bishop worth. */
 
 /* This function evaluates the position only by the points of the pieces. */
 char evaluate_by_points(board *b) {
     int i;
-    char eval = 0; /* The eval. */
+    double eval = 0; /* The eval. */
 
     for (i = 0;i < NUMBER_OF_SQUARES;i++) {
         switch (get_piece_in_square(b,i)) {
@@ -59,11 +59,11 @@ char evaluate_by_points(board *b) {
                 break;
         }
     }
+    eval = eval + number_of_white_developed_pieces(b)*0.5 - number_of_black_developed_pieces(b)*0.5;
     return eval;
 }
 
-/* We will add it later:
-
+/* Counts white's developed pieces (rook not included). */
 char number_of_white_developed_pieces(board *b) {
     char i;
     char piece;
@@ -76,6 +76,7 @@ char number_of_white_developed_pieces(board *b) {
     return 5-number_of_pieces;
 }
 
+/* Counts black's developed pieces (rook not included). */
 char number_of_black_developed_pieces(board *b) {
     char i;
     char piece;
@@ -87,7 +88,7 @@ char number_of_black_developed_pieces(board *b) {
     }
     return 5-number_of_pieces;
 }
-
+/*
 char is_middle_game(board *b) {
     char is_middle_game;
     is_middle_game += number_of_white_developed_pieces(b) + number_of_black_developed_pieces(b);

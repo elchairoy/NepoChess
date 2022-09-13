@@ -23,7 +23,9 @@ all: ${BIN}/${EXECUTABLE}
 run: clean all
 	@./${BIN}/${EXECUTABLE}
 
-test: clean ${BIN}/${TEST_EXECUTABLE}
+test: ${BIN}/${TEST_EXECUTABLE}
+
+test_run: clean ${BIN}/${TEST_EXECUTABLE}
 	@./${BIN}/${TEST_EXECUTABLE}
 
 valgrind: ${BIN}/${EXECUTABLE}

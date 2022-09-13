@@ -8,7 +8,7 @@
 #include "minimax.h"
 
 int check();
-int game(board *the_board);
+int game(board *the_board, HashTable *ht);
 int check_src(board *the_board, char src, char the_move);
 
 

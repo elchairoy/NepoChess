@@ -83,7 +83,7 @@ int white_move(board *the_board){
 }
 
 
-int game(board *the_board){
+int game(board *the_board, HashTable *ht){
     while(1)
     {
         print_board(the_board);
@@ -96,8 +96,9 @@ int game(board *the_board){
             printf("STALMATE 0.5-0.5\n");
             return 0;
         }
-        white_move(the_board);
-        system("clear");
+        commit_a_move_for_white(the_board ,get_best_move_white(the_board,4,3,ht));
+        ht_clear(ht);
+        /*system("clear");*/
         print_board(the_board);
         if(get_all_moves(the_board)[0] == END){
             if(isAttacked_by_white(the_board, find_king_square(the_board, BLACK))){
@@ -107,10 +108,9 @@ int game(board *the_board){
             printf("STALMATE 0.5-0.5\n");
             return 0;
         }
-        HashTable ht;
-        ht_setup(&ht,sizeof(board),sizeof(double),100000000);
-        commit_a_move_for_black(the_board ,get_best_move_black(the_board,5,3,&ht));
-        system("clear");
+        commit_a_move_for_black(the_board ,get_best_move_black(the_board,5,3,ht));
+        /*system("clear");*/
+        ht_clear(ht);
     }
     return 0;
 }
@@ -148,6 +148,8 @@ int check(){
     print_board(&START_BOARD);
     char move[3];
     system("clear");
-    game(&START_BOARD);
+    HashTable ht;
+    ht_setup(&ht,sizeof(board),sizeof(double),100000000);
+    game(&START_BOARD,&ht);
     return 0;
 }

@@ -3,6 +3,8 @@
 #define MAX_EVAL 100 /* The maximum evaluation possible. */
 #define MIN_EVAL -100 /* The minimum evaluation possible. */
 
+#define EVAL_TO_PRUNE 2 /* In what evaluation the minimax will cut the moves branch because it's too bad. */
+
 long int number_of_moves = 0; /* The number of positions scaned. */
 
 /* This function gets a board (when is white's move) and the depth and evaluates the position using minimax. */
@@ -48,7 +50,7 @@ char evaluate_minimax_for_white(board *b, char depth, char pre_frontier, HashTab
             continue;
         }
         /* The razoring: */
-        if (depth > pre_frontier && max - evaluate_minimax_for_black(&temp_board,depth - 2,pre_frontier, ht) >= 2) { /* If making the move will lead to a loss of 2 points in less moves: */
+        if (depth > pre_frontier && max - evaluate_minimax_for_black(&temp_board,depth - 2,pre_frontier, ht) >= EVAL_TO_PRUNE) { /* If making the move will lead to a loss of 2 points in less moves: */
             i++;
             temp_board = *b;
             continue;
@@ -115,7 +117,7 @@ char evaluate_minimax_for_black(board *b, char depth, char pre_frontier, HashTab
         }
 
         /* The razoring: */
-        if (depth > pre_frontier && evaluate_minimax_for_white(&temp_board,depth - 2,pre_frontier, ht) - min >= 2) { /* If making the move will lead to a loss of 2 points in less moves: */
+        if (depth > pre_frontier && evaluate_minimax_for_white(&temp_board,depth - 2,pre_frontier, ht) - min >= EVAL_TO_PRUNE) { /* If making the move will lead to a loss of 2 points in less moves: */
             i++;
             temp_board = *b;
             continue;

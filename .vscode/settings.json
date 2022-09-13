@@ -17,6 +17,7 @@
         "ostream": "cpp",
         "sstream": "cpp",
         "functional": "cpp",
-        "typeinfo": "cpp"
+        "typeinfo": "cpp",
+        "play_minigame.h": "c"
     }
 }
