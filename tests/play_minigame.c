@@ -115,13 +115,7 @@ int game(board *the_board, HashTable *ht){
             printf("STALMATE 0.5-0.5\n");
             return 0;
         }
-<<<<<<< HEAD
         commit_a_move_for_black(the_board ,get_best_move_black(the_board,5,4,ht));
-=======
-        HashTable ht;
-        ht_setup(&ht,sizeof(board),sizeof(double),100000000);
-        commit_a_move_for_black(the_board ,get_best_move_black(the_board,5,4,&ht));
->>>>>>> 0f54f5b54c0d8c20e1521d742ac51c6adf6940a5
         system("clear");
         ht_clear(ht);
     }

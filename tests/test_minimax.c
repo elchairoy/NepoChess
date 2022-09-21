@@ -32,10 +32,6 @@ void check_miminax() {
     move m = get_best_move_white(&START_BOARD,5,4,&ht);
     printf("from %d to %d\n",get_src_square(m),get_dst_square(m));
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> 0f54f5b54c0d8c20e1521d742ac51c6adf6940a5
 /* RECORD:
         4 - 1000ms, 787k
             4,3 - 300ms, 158k (without hash)
