@@ -59,7 +59,7 @@ char evaluate_minimax_for_white(board *b, char depth, char pre_frontier, HashTab
         temp = evaluate_minimax_for_black(&temp_board,depth - 1,pre_frontier, ht); /* Checks what is the eval after the move. */
 
         /* Adds it to the hash table: */
-        if (!ht_contains(ht,&temp_board) && !ht->threshold<=ht->capacity)
+        if (!ht_contains(ht,&temp_board) && (ht->size)*(ht->key_size)<=ht->capacity)
             ht_insert(ht, &temp_board, &temp);
 
         if (temp == MAX_EVAL) {  /* If it's forced mate after the move: */
@@ -126,7 +126,7 @@ char evaluate_minimax_for_black(board *b, char depth, char pre_frontier, HashTab
         temp = evaluate_minimax_for_white(&temp_board,depth - 1,pre_frontier, ht); /* Checks what is the eval after the move. */
 
         /* Adds it to the hash table: */
-        if (!ht_contains(ht,&temp_board) && !ht->threshold<=ht->capacity)
+        if (!ht_contains(ht,&temp_board) && (ht->size)*(ht->key_size)<=ht->capacity)
             ht_insert(ht, &temp_board, &temp);
 
         if (temp == MIN_EVAL) { /* If it's forced mate after the move: */
@@ -165,7 +165,7 @@ move get_best_move_white(board *b,char depth,char pre_frontier, HashTable *ht) {
         temp = evaluate_minimax_for_black(&temp_board,depth - 1,pre_frontier, ht); /* Checks what is the eval after the move. */
         
         /* Adds it to the hash table: */
-        if (!ht_contains(ht,&temp_board) && !ht->threshold<=ht->capacity)
+        if (!ht_contains(ht,&temp_board) && (ht->size)*(ht->key_size)<=ht->capacity)
             ht_insert(ht, &temp_board, &temp);
 
         if (temp == MAX_EVAL) { /* If it's forced mate after the move: */
@@ -204,7 +204,7 @@ move get_best_move_black(board *b,char depth, char pre_frontier, HashTable *ht) 
         temp = evaluate_minimax_for_white(&temp_board,depth - 1,pre_frontier,ht); /* Checks what is the eval after the move. */
         
         /* Adds it to the hash table: */
-        if (!ht_contains(ht,&temp_board) && !ht->threshold<=ht->capacity)
+        if (!ht_contains(ht,&temp_board) && (ht->size)*(ht->key_size)<=ht->capacity)
             ht_insert(ht, &temp_board, &temp);;
 
         if (temp == MIN_EVAL) { /* If it's forced mate after the move: */

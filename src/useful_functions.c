@@ -389,8 +389,7 @@ char find_king_square(board *the_board, char color){
 
 void print_line(){
     /*Print a row of lines to separate.*/
-    int z;
-    for(z = 0; z < 43; z++){
+    for(int z = 0; z < 43; z++){
         if(z < 2)
             printf(" ");
         else
