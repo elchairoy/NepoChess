@@ -59,22 +59,13 @@ char evaluate_by_points(board *b) {
                 break;
         }
     }
-<<<<<<< HEAD
     eval = eval + number_of_white_developed_pieces(b)*0.5 - number_of_black_developed_pieces(b)*0.5;
     return eval;
 }
 
 /* Counts white's developed pieces (rook not included). */
-=======
-    eval += number_of_white_developed_pieces(b) * 0.5;
-    eval -= number_of_black_developed_pieces(b) * 0.5;
-
-    return eval;
-}
-
 /* We will add it later: */
 
->>>>>>> 0f54f5b54c0d8c20e1521d742ac51c6adf6940a5
 char number_of_white_developed_pieces(board *b) {
     char i;
     char piece;
