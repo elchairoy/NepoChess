@@ -4,6 +4,7 @@
 
 
 move generate_random(board *the_board){
+    /*generate random move from the board*/
     move *all_moves = get_all_moves(the_board);
     int len = 0;
     while(all_moves[len] != END)
@@ -13,6 +14,7 @@ move generate_random(board *the_board){
 
 void scanner(char * move, int src_dst)
 {
+    /*get move from user and validate the move, keep asking untill a valid move is given*/
     char row;
     char column;
     char trash;
@@ -43,6 +45,7 @@ void scanner(char * move, int src_dst)
 }
 
 int white_move(board *the_board){
+    /*ask for a move, validate it then comite the moveand request more info from user if needed*/
     int i = 0, row, promotion = 4;
     char temp[3];
     move *all_moves;
@@ -63,7 +66,7 @@ int white_move(board *the_board){
                     if(get_piece_in_square(the_board, src_square) == white_pawn && get_row(src_square) == 6){
                         while(promotion > 3){
                             system("clear");
-                            printf("promot to? (0=Q,1=R,2=B,3=N): ");
+                            printf("promot to? (0=Q,1=R,2=N,3=B): ");
                             scanf("%d", &promotion);
                         }
                         commit_a_move_for_white(the_board, create_a_move(src_square, dst_square, promotion, 0, 0));
@@ -84,6 +87,9 @@ int white_move(board *the_board){
 
 
 int game(board *the_board, HashTable *ht){
+    /*while loop for the chess game, move from white to black and when the game over checker returns true the loop is broken*/
+    print_board(the_board);
+    system("clear");
     while(1)
     {
         print_board(the_board);
@@ -96,9 +102,10 @@ int game(board *the_board, HashTable *ht){
             printf("STALMATE 0.5-0.5\n");
             return 0;
         }
-        commit_a_move_for_white(the_board ,get_best_move_white(the_board,4,3,ht));
-        ht_clear(ht);
-        /*system("clear");*/
+        /*commit_a_move_for_white(the_board ,get_best_move_white(the_board,4,3,ht));
+        ht_clear(ht);*/
+        white_move(the_board);
+        system("clear");
         print_board(the_board);
         if(get_all_moves(the_board)[0] == END){
             if(isAttacked_by_white(the_board, find_king_square(the_board, BLACK))){
@@ -108,14 +115,15 @@ int game(board *the_board, HashTable *ht){
             printf("STALMATE 0.5-0.5\n");
             return 0;
         }
-        commit_a_move_for_black(the_board ,get_best_move_black(the_board,5,3,ht));
-        /*system("clear");*/
+        commit_a_move_for_black(the_board ,get_best_move_black(the_board,5,4,ht));
+        system("clear");
         ht_clear(ht);
     }
     return 0;
 }
 
 int check_src(board *the_board, char src, char the_move){
+    /*validate src squear from user input*/
     if(get_piece_in_square(the_board, src) == empty)
         return 0;
     if(color_of_piece(src, the_board) != the_move)
@@ -125,6 +133,7 @@ int check_src(board *the_board, char src, char the_move){
 
 
 int check(){
+    /*creates the board, set info and calls game func*/
     board START_BOARD;
     move *all_moves;
     char initial_board[32] = {white_rook << 4|white_knight,white_bishop << 4|white_queen,white_king<<4|
@@ -145,11 +154,19 @@ int check(){
     {
         START_BOARD.squares[i] = initial_board[i];
     }
-    print_board(&START_BOARD);
-    char move[3];
-    system("clear");
     HashTable ht;
     ht_setup(&ht,sizeof(board),sizeof(double),100000000);
     game(&START_BOARD,&ht);
     return 0;
 }
+
+/*
+games againts chess.com engeine:
+    1 - win
+    2 - win
+    3 (550) - win
+    4 - ?
+    5 - ?
+    6 - ?
+    elchai - ?
+*/
