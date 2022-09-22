@@ -19,5 +19,6 @@
         "functional": "cpp",
         "typeinfo": "cpp",
         "play_minigame.h": "c"
-    }
+    },
+    "C_Cpp.errorSquiggles": "Disabled"
 }

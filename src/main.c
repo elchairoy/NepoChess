@@ -10,6 +10,7 @@
 extern long int number_of_moves;
 
 int main() {
+  setbuf(stdout, NULL); // Set no stdout buffering
   check();
   printf("%ld",number_of_moves);
   return 0;
