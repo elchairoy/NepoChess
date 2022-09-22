@@ -84,8 +84,6 @@ int player_move(board *the_board, int color)
                             commit_a_move_for_black(the_board, all_moves[i]);
                     }
                     free(all_moves);
-                    // system("clear");
-                    // print_board(the_board);
                     return 0;
                 }
                 i++;
@@ -165,16 +163,16 @@ char check_bot_promotion(board *the_board, move the_move, int color)
 void bot_move(board *the_board, HashTable *ht, int color)
 {
     move bot_move;
-    int depth = 5;
-    int prune = 4;
+    int depth = 4;
+    int prefrontier = 3;
     if (color == WHITE)
     {
-        bot_move = get_best_move_white(the_board, depth, prune, ht);
+        bot_move = get_best_move_white(the_board, depth, prefrontier, ht);
         commit_a_move_for_white(the_board, bot_move);
     }
     else
     {
-        bot_move = get_best_move_black(the_board, depth, prune, ht);
+        bot_move = get_best_move_black(the_board, depth, prefrontier, ht);
         commit_a_move_for_black(the_board, bot_move);
     }
     // system("clear");
