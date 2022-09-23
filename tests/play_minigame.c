@@ -170,15 +170,16 @@ void bot_move(board *the_board, HashTable *ht, int color)
     if (color == WHITE)
     {
         bot_move = get_best_move_white(the_board, depth, prefrontier, ht);
+        printf("%s%s%c\n", get_square_loc(get_src_square(bot_move)),get_square_loc(get_dst_square(bot_move)), check_bot_promotion(the_board, bot_move, color));
         commit_a_move_for_white(the_board, bot_move);
     }
     else
     {
         bot_move = get_best_move_black(the_board, depth, prefrontier, ht);
+        printf("%s%s%c\n", get_square_loc(get_src_square(bot_move)),get_square_loc(get_dst_square(bot_move)), check_bot_promotion(the_board, bot_move, color));
         commit_a_move_for_black(the_board, bot_move);
     }
     ht_clear(ht);
-    printf("%s%s%c\n", get_square_loc(get_src_square(bot_move)),get_square_loc(get_dst_square(bot_move)), check_bot_promotion(the_board, bot_move, color));
 }
 
 int check_endgame(board *the_board, int color)
