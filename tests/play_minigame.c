@@ -150,12 +150,14 @@ char check_bot_promotion(board *the_board, move the_move, int color)
     int src_s = get_src_square(the_move);
     int src_r = get_row(src_s);
     int src_p = get_piece_in_square(the_board ,src_s);
-    if(color == WHITE)
+    if(color == WHITE){
         if(src_p == white_pawn && src_r == 6)
             return translate_promotion(get_promotion_choice(the_move));
-    else
+    }
+    else {
         if(src_p == black_pawn && src_r == 1)
             return translate_promotion(get_promotion_choice(the_move));
+    }
     return ' ';
 }
 
@@ -163,8 +165,8 @@ char check_bot_promotion(board *the_board, move the_move, int color)
 void bot_move(board *the_board, HashTable *ht, int color)
 {
     move bot_move;
-    int depth = 4;
-    int prefrontier = 3;
+    int depth = 5;
+    int prefrontier = 4;
     if (color == WHITE)
     {
         bot_move = get_best_move_white(the_board, depth, prefrontier, ht);
@@ -175,9 +177,7 @@ void bot_move(board *the_board, HashTable *ht, int color)
         bot_move = get_best_move_black(the_board, depth, prefrontier, ht);
         commit_a_move_for_black(the_board, bot_move);
     }
-    // system("clear");
     ht_clear(ht);
-    // print_board(the_board);
     printf("%s%s%c\n", get_square_loc(get_src_square(bot_move)),get_square_loc(get_dst_square(bot_move)), check_bot_promotion(the_board, bot_move, color));
 }
 

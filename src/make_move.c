@@ -125,6 +125,10 @@ void commit_a_move_for_white(board * b, move m){
             b->can_white_castle_long = 0;
         if  (src_loc == 7 || dst_loc==7 || src_loc == 4)
             b->can_white_castle_short = 0;
+        if (dst_loc == 56)
+            b->can_black_castle_long = 0;
+        if (dst_loc == 63)
+            b->can_black_castle_short = 0;
 
         can_en_passant_next_move(b,m); /* Check which pawns can en passant in the next move. */
         change_the_square(b, src_loc, empty); /* It changes the src square to empty. */
@@ -155,10 +159,14 @@ void commit_a_move_for_black(board * b, move m){
     else
     {
         /* Check if a rook or the king moved: */
-        if  (src_loc == 63 || dst_loc == 63 || src_loc == 60)
+        if  (src_loc == 63 || src_loc == 60)
             b->can_black_castle_short = 0;
-        if  (src_loc == 56 || dst_loc == 56 || src_loc == 60)
+        if  (src_loc == 56 || src_loc == 60)
             b->can_black_castle_long = 0;
+        if (dst_loc == 0)
+            b->can_white_castle_long = 0;
+        if (dst_loc == 7)
+            b->can_white_castle_short = 0;
 
         can_en_passant_next_move(b,m); /* Check which pawns  can en passant in the next move. */
         change_the_square(b, src_loc, empty); /* It changes the src square to empty. */
