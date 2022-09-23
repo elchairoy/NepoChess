@@ -36,6 +36,9 @@ valgrind: ${BIN}/${EXECUTABLE}
 valgrind-test: ${BIN}/${TEST_EXECUTABLE}
 	${VALGRIND} ${VALGRIND_FLAGS} $<
 
+test_against_stockfish: clean ${BIN}/${TEST_EXECUTABLE}
+	python3 tests/play_against_stockfish.py
+
 # We are compiling here the sources as well, because the tester code uses the c code.
 ${BIN}/${TEST_EXECUTABLE}: ${TESTS_SOURCES}
 	mkdir bin -p
