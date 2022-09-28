@@ -13,11 +13,6 @@ nepo_chess = 0
 TIMEOUT = 1000
 
 NEPOCHESS_ELO = 600
-
-def play_game(elo):
-     ka = (1/(1+(10)**(Decimal((elo-NEPOCHESS_ELO)/400))))
-     result = numpy.random.choice([0,1], p=[1-ka,ka])
-     return result
      
 def get_sf_move():
     move = sf.get_best_move()
@@ -103,3 +98,15 @@ def estimate_elo1(current_elo):
     return current_elo
 #print(estimate_elo1(NEPOCHESS_ELO))
 print(play_game(0))
+
+
+'''
+23.9.22:  NepoChess is at level 0
+
+
+
+
+
+
+
+'''
