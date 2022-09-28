@@ -8,11 +8,11 @@
 long int number_of_moves = 0; /* The number of positions scaned. */
 
 /* This function gets a board (when is white's move) and the depth and evaluates the position using minimax. */
-char evaluate_minimax_for_white(board *b, char depth, char pre_frontier, HashTable *ht) {
+double evaluate_minimax_for_white(board *b, char depth, char pre_frontier, HashTable *ht) {
     move *all_moves; /* The array of all the moves possible. */
     board temp_board = *b;
     int i = 0;
-    char max = MIN_EVAL; /* The maximun eval possible in the position(maximum = best for white). */
+    double max = MIN_EVAL; /* The maximun eval possible in the position(maximum = best for white). */
     double temp;
     void *tempvoid;
 
@@ -32,6 +32,10 @@ char evaluate_minimax_for_white(board *b, char depth, char pre_frontier, HashTab
     }
 
     all_moves =  get_all_moves(b); /* Gets all the moves possible. */
+
+    if (all_moves[0] == 0)/* Stalmate */
+        max = 0;
+
     while (all_moves[i] != 0) {
         commit_a_move_for_white(&temp_board,all_moves[i]); /* Commits the move. */
         
@@ -55,7 +59,7 @@ char evaluate_minimax_for_white(board *b, char depth, char pre_frontier, HashTab
             temp_board = *b;
             continue;
         }
-
+        
         temp = evaluate_minimax_for_black(&temp_board,depth - 1,pre_frontier, ht); /* Checks what is the eval after the move. */
 
         /* Adds it to the hash table: */
@@ -76,11 +80,11 @@ char evaluate_minimax_for_white(board *b, char depth, char pre_frontier, HashTab
 }
 
 /* This function gets a board (when is black's move) and the depth and evaluates the position using minimax. */
-char evaluate_minimax_for_black(board *b, char depth, char pre_frontier, HashTable *ht) {
+double evaluate_minimax_for_black(board *b, char depth, char pre_frontier, HashTable *ht) {
     move *all_moves; /* All moves possible in the possition. */
     board temp_board = *b;
     int i = 0;
-    char min = MAX_EVAL; 
+    double min = MAX_EVAL; 
     double temp;
     void *tempvoid;
 
@@ -98,6 +102,10 @@ char evaluate_minimax_for_black(board *b, char depth, char pre_frontier, HashTab
         return evaluate_by_points(b);
     }
     all_moves =  get_all_moves(b); /* Gets all the moves possible. */
+
+    if (all_moves[0] == 0)/* Stalmate */
+        min = 0;
+
     while (all_moves[i] != 0) {
         commit_a_move_for_black(&temp_board,all_moves[i]); /* Commits the move. */
 
@@ -149,10 +157,10 @@ move get_best_move_white(board *b,char depth,char pre_frontier, HashTable *ht) {
     move *all_moves = get_all_moves(b); /* All the moves possible in the position. */
     board temp_board = *b;
     int i = 0;
-    char max = MIN_EVAL; /* The maximun eval possible in the position(maximum = best for white). */
+    double max = MIN_EVAL; /* The maximun eval possible in the position(maximum = best for white). */
     move best = all_moves[0]; /* The best move in the position. */
     double temp;
-
+    
     while (all_moves[i] != 0) {
         commit_a_move_for_white(&temp_board,all_moves[i]); /* Commits the move. */
         /* The razoring: */
@@ -190,7 +198,7 @@ move get_best_move_black(board *b,char depth, char pre_frontier, HashTable *ht) 
     move *all_moves = get_all_moves(b); /* All the moves possible in the position. */
     board temp_board = *b;
     int i = 0;
-    char min = MAX_EVAL; /* The minimun eval possible in the position(minimum = best for black). */
+    double min = MAX_EVAL; /* The minimun eval possible in the position(minimum = best for black). */
     move best = all_moves[0]; /* The best move in the position. */
     double temp = 0;
 

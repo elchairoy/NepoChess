@@ -116,11 +116,13 @@ int game(board *the_board, HashTable *ht, char nepo_color)
     if (nepo_color == BLACK) {
         while (1)
         {
+            printf("eval= %lf\n",evaluate_by_points(the_board));
             if (check_endgame(the_board, WHITE) == 0)
                 return 0;
             player_move(the_board, WHITE);
             system("clear");
             print_board(the_board);
+            printf("eval= %lf\n",evaluate_by_points(the_board));
             if (check_endgame(the_board, BLACK) == 0)
                 return 0;
             bot_move(the_board, ht, BLACK);
@@ -131,11 +133,13 @@ int game(board *the_board, HashTable *ht, char nepo_color)
     else {
         while (1)
         {
+            printf("eval= %lf\n",evaluate_by_points(the_board));
             if (check_endgame(the_board, WHITE) == 0)
                 return 0;
             bot_move(the_board, ht, WHITE);
             system("clear");
             print_board(the_board);
+            printf("eval= %lf\n",evaluate_by_points(the_board));
             if (check_endgame(the_board, BLACK) == 0)
                 return 0;
             player_move(the_board, BLACK);

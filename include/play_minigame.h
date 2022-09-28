@@ -7,6 +7,7 @@
 #include "useful_functions.h"
 #include "make_move.h"
 #include "minimax.h"
+#include "evaluation.h"
 
 int check(char color);
 int game(board *the_board, HashTable *ht, char color);

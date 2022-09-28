@@ -67,7 +67,7 @@ def send_nepo_move(move, nepo = nepo_chess):
         nepo.sendline(promotion_dict[move[4]])
 
 # Expects to get a board from nepo
-def expect_board(nepo = nepo_chess,if_to_print = True):
+def print_board(nepo = nepo_chess,if_to_print = True):
     system("clear")
     nepo.expect('  -(?s).*h')
     board = nepo.after.decode()
@@ -79,16 +79,16 @@ def play_game_against_stockfish(level):
     sf.update_engine_parameters({"UCI_LimitStrength":"true","Skill Level":level})
     nepo_chess = pexpect.spawn(NEPOCHESS_BIN_PATH)
     while True:
-        expect_board(nepo_chess)
+        print_board(nepo_chess)
         print("STOCKFISH IS THINKING...")
         sf_move = get_sf_move()
-        status = send_nepo_move(sf_move)
+        status = send_nepo_move(sf_move,nepo_chess)
         if status is not None:
             return status
-        expect_board()
+        print_board(nepo_chess)
         
         print("NEPO IS THINKING...")
-        nepo_move = get_nepo_move()
+        nepo_move = get_nepo_move(nepo_chess)
         if type(nepo_move) != str:
             return nepo_move
         send_sf_move(nepo_move)
@@ -99,9 +99,7 @@ def play_game_against_itself():
     nepo_chess = pexpect.spawn(NEPOCHESS_BIN_PATH)
     nepo_chess2 = pexpect.spawn(NEPOCHESS2_BIN_PATH)
     while True:
-        # Expects boards from both
-        expect_board(nepo_chess,False)
-        expect_board(nepo_chess2,True)
+        print_board(nepo_chess2,True)
         
         print("NEPO 1 IS THINKING...")
         nepo1_move = get_nepo_move(nepo_chess)
@@ -109,9 +107,7 @@ def play_game_against_itself():
         if status is not None:
             return status
         
-        # Expects boards from both
-        expect_board(nepo_chess,False)
-        #expect_board(nepo_chess2,True)
+        print_board(nepo_chess,True)
         
         print("NEPO 2 IS THINKING...")
         nepo2_move = get_nepo_move(nepo_chess2)
@@ -121,14 +117,14 @@ def play_game_against_itself():
             return status
 
 # Estimates the strength of NepoChess against stockfish
-def estimate_strength(current_elo):
-    strength = 0   
+def estimate_strength():
+    strength = 12   
     for level in range(21):
-        if (play_game_against_stockfish(level)):
+        if (play_game_against_stockfish(strength)):
             strength += 1
-    return current_elo
+    return strength
 
-print(play_game_against_itself())
+print(estimate_strength())
 
 
 '''

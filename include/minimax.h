@@ -8,8 +8,8 @@
 #include "evaluation.h"
 #include "hashtable.h"
 
-char evaluate_minimax_for_white(board *b, char depth,char pre_frontier, HashTable *ht);
-char evaluate_minimax_for_black(board *b, char depth,char pre_frontier, HashTable *ht);
+double evaluate_minimax_for_white(board *b, char depth,char pre_frontier, HashTable *ht);
+double evaluate_minimax_for_black(board *b, char depth,char pre_frontier, HashTable *ht);
 move get_best_move_white(board *b,char depth, char pre_frontier, HashTable *ht);
 move get_best_move_black(board *b,char depth, char pre_frontier, HashTable *ht);
 
