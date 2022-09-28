@@ -59,7 +59,7 @@ char evaluate_by_points(board *b) {
                 break;
         }
     }
-    eval = eval + number_of_white_developed_pieces(b)*0.5 - number_of_black_developed_pieces(b)*0.5;
+    /*eval = eval + number_of_white_developed_pieces(b)*0.5 - number_of_black_developed_pieces(b)*0.5;*/
     return eval;
 }
 

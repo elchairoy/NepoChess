@@ -11,7 +11,8 @@ extern long int number_of_moves;
 
 int main() {
   setbuf(stdout, NULL); // Set no stdout buffering
-  check();
+  check(BLACK);
+  
   printf("%ld",number_of_moves);
   return 0;
 }

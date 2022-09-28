@@ -4,13 +4,7 @@
         {
             "label": "build",
             "type": "shell",
-<<<<<<< HEAD
-<<<<<<< HEAD
             "command": "make test",
-=======
-=======
->>>>>>> 0f54f5b54c0d8c20e1521d742ac51c6adf6940a5
-            "command": "make compile-test",
             "group": "build",
             "problemMatcher": "$gcc"
         },
@@ -31,10 +25,6 @@
             "problemMatcher": [
                 "$gcc"
             ],
-<<<<<<< HEAD
->>>>>>> 0f54f5b54c0d8c20e1521d742ac51c6adf6940a5
-=======
->>>>>>> 0f54f5b54c0d8c20e1521d742ac51c6adf6940a5
             "group": {
                 "kind": "build",
                 "isDefault": true

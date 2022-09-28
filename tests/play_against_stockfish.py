@@ -1,3 +1,5 @@
+from pickle import TRUE
+from re import T
 import pexpect
 import stockfish
 from os import system
@@ -6,10 +8,14 @@ import numpy
 import random
 from decimal import Decimal
 
+# A lot of functions get argument nepo (which nepo is the action for), It's only used for when it's nepo against itself.
+
 NEPOCHESS_BIN_PATH = './bin/runtests'
+NEPOCHESS2_BIN_PATH = './bin/runtests2'
 
 sf = 0
 nepo_chess = 0
+nepo_chess2 = 0
 TIMEOUT = 1000
 
 NEPOCHESS_ELO = 600
@@ -24,8 +30,8 @@ def send_sf_move(move):
     # print(f'[+] Sending {move} to stockfish')
     sf.make_moves_from_current_position([move])
 
-def get_nepo_move():
-    result = nepo_chess.expect(['[a-h][1-8][a-h][1-8][q,r,b,n]?', 'CHECKMATE 1-0', 'STALMATE 0.5-0.5'], timeout=TIMEOUT)
+def get_nepo_move(nepo = nepo_chess):
+    result = nepo.expect(['[a-h][1-8][a-h][1-8][q,r,b,n]?', 'CHECKMATE 1-0', 'STALMATE 0.5-0.5'], timeout=TIMEOUT)
     if result == 1:
         print('CHECKMATE, STOCKFISH WON')
         return 0
@@ -33,11 +39,11 @@ def get_nepo_move():
         print('STALMATE')
         return 0.5
 
-    move = nepo_chess.after.decode()
+    move = nepo.after.decode()
     # print(f'[+] Nepo move is {move}')
     return move
 
-def send_nepo_move(move):
+def send_nepo_move(move, nepo = nepo_chess):
     promotion_dict = {
         'q': '0',
         'r': '1',
@@ -45,8 +51,7 @@ def send_nepo_move(move):
         'b': '3'
     }
 
-    # print(f'[+] Sending {"".join(move)} to nepo')
-    result = nepo_chess.expect(["enter src: ", 'CHECKMATE 0-1', 'STALMATE 0.5-0.5'],timeout=TIMEOUT)
+    result = nepo.expect(["enter src: ", 'CHECKMATE 0-1', 'STALMATE 0.5-0.5'],timeout=TIMEOUT)
     if result == 1:
         print('CHECKMATE, NEPO WON')
         return 1
@@ -54,31 +59,33 @@ def send_nepo_move(move):
         print('STALMATE')
         return 0.5
 
-    nepo_chess.sendline(move[:2])
-    nepo_chess.expect("enter dst:")
-    nepo_chess.sendline(move[2:4])
+    nepo.sendline(move[:2])
+    nepo.expect("enter dst:")
+    nepo.sendline(move[2:4])
     if len(move) == 5: # Promotion
-        nepo_chess.expect("promot to\? \(0=Q,1=R,2=N,3=B\): ")
-        nepo_chess.sendline(promotion_dict[move[4]])
+        nepo.expect("promot to\? \(0=Q,1=R,2=N,3=B\): ")
+        nepo.sendline(promotion_dict[move[4]])
 
-def print_board():
+# Expects to get a board from nepo
+def expect_board(nepo = nepo_chess,if_to_print = True):
     system("clear")
-    nepo_chess.expect('  -(?s).*h')
-    print(nepo_chess.after.decode())
+    nepo.expect('  -(?s).*h')
+    board = nepo.after.decode()
+    if (if_to_print): print(board)
     
-def play_game(level):
+def play_game_against_stockfish(level):
     global sf, nepo_chess
     sf = stockfish.Stockfish('/usr/local/bin/stockfish')
     sf.update_engine_parameters({"UCI_LimitStrength":"true","Skill Level":level})
     nepo_chess = pexpect.spawn(NEPOCHESS_BIN_PATH)
     while True:
-        print_board()
+        expect_board(nepo_chess)
         print("STOCKFISH IS THINKING...")
         sf_move = get_sf_move()
         status = send_nepo_move(sf_move)
         if status is not None:
             return status
-        print_board()
+        expect_board()
         
         print("NEPO IS THINKING...")
         nepo_move = get_nepo_move()
@@ -86,18 +93,42 @@ def play_game(level):
             return nepo_move
         send_sf_move(nepo_move)
 
-def estimate_elo1(current_elo):
-    games = 0     
-    for level in range(8):
-        elo = 800 + 100*level
-        ka = (1/(1+(10)**(Decimal((elo-current_elo)/400))))
-        for _ in range(1):
-            games+=1
-            current_elo += 80*(play_game(level) - ka)
-            ka = (1/(1+(10)**(Decimal((elo-current_elo)/400))))
+# Make nepo play against itself
+def play_game_against_itself():
+    global nepo_chess, nepo_chess2
+    nepo_chess = pexpect.spawn(NEPOCHESS_BIN_PATH)
+    nepo_chess2 = pexpect.spawn(NEPOCHESS2_BIN_PATH)
+    while True:
+        # Expects boards from both
+        expect_board(nepo_chess,False)
+        expect_board(nepo_chess2,True)
+        
+        print("NEPO 1 IS THINKING...")
+        nepo1_move = get_nepo_move(nepo_chess)
+        status = send_nepo_move(nepo1_move,nepo_chess2)
+        if status is not None:
+            return status
+        
+        # Expects boards from both
+        expect_board(nepo_chess,False)
+        #expect_board(nepo_chess2,True)
+        
+        print("NEPO 2 IS THINKING...")
+        nepo2_move = get_nepo_move(nepo_chess2)
+        print("got:\n"+nepo2_move)
+        status = send_nepo_move(nepo2_move,nepo_chess)
+        if status is not None:
+            return status
+
+# Estimates the strength of NepoChess against stockfish
+def estimate_strength(current_elo):
+    strength = 0   
+    for level in range(21):
+        if (play_game_against_stockfish(level)):
+            strength += 1
     return current_elo
-#print(estimate_elo1(NEPOCHESS_ELO))
-print(play_game(0))
+
+print(play_game_against_itself())
 
 
 '''

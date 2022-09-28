@@ -17,6 +17,7 @@ TESTS_SOURCES := $(shell find ${TESTS} -type f -name '*.c')
 
 EXECUTABLE      := NepoChess
 TEST_EXECUTABLE := runtests
+TEST_EXECUTABLE2 := runtests2
 
 all: ${BIN}/${EXECUTABLE}
 
@@ -26,6 +27,8 @@ run: clean all
 	@./${BIN}/${EXECUTABLE}
 
 test: ${BIN}/${TEST_EXECUTABLE}
+
+test2: ${BIN}/${TEST_EXECUTABLE2}
 
 test_run: clean ${BIN}/${TEST_EXECUTABLE}
 	@./${BIN}/${TEST_EXECUTABLE}
@@ -39,8 +42,15 @@ valgrind-test: ${BIN}/${TEST_EXECUTABLE}
 test_against_stockfish: clean ${BIN}/${TEST_EXECUTABLE}
 	python3 tests/play_against_stockfish.py
 
+test_against_itself:
+	python3 tests/play_against_stockfish.py
+
 # We are compiling here the sources as well, because the tester code uses the c code.
-${BIN}/${TEST_EXECUTABLE}: ${TESTS_SOURCES}
+${BIN}/${TEST_EXECUTABLE}: ${TESTS_SOURCES} ${SOURCES}
+	mkdir bin -p
+	${CC} ${TESTS_SOURCES} ${SOURCES} ${CC_TESTS_FLAGS} -o $@
+
+${BIN}/${TEST_EXECUTABLE2}: ${TESTS_SOURCES} ${SOURCES}
 	mkdir bin -p
 	${CC} ${TESTS_SOURCES} ${SOURCES} ${CC_TESTS_FLAGS} -o $@
 

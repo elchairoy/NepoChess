@@ -108,23 +108,40 @@ int get_player_promotion_choice()
     }
 }
 
-int game(board *the_board, HashTable *ht)
+int game(board *the_board, HashTable *ht, char nepo_color)
 {
     /*while loop for the chess game, move from white to black and when the game over checker returns true the loop is broken*/
     system("clear");
     print_board(the_board);
-    while (1)
-    {
-        if (check_endgame(the_board, WHITE) == 0)
-            return 0;
-        player_move(the_board, WHITE);
-        system("clear");
-        print_board(the_board);
-        if (check_endgame(the_board, BLACK) == 0)
-            return 0;
-        bot_move(the_board, ht, BLACK);
-        system("clear");
-        print_board(the_board);
+    if (nepo_color == BLACK) {
+        while (1)
+        {
+            if (check_endgame(the_board, WHITE) == 0)
+                return 0;
+            player_move(the_board, WHITE);
+            system("clear");
+            print_board(the_board);
+            if (check_endgame(the_board, BLACK) == 0)
+                return 0;
+            bot_move(the_board, ht, BLACK);
+            system("clear");
+            print_board(the_board);
+        }
+    }
+    else {
+        while (1)
+        {
+            if (check_endgame(the_board, WHITE) == 0)
+                return 0;
+            bot_move(the_board, ht, WHITE);
+            system("clear");
+            print_board(the_board);
+            if (check_endgame(the_board, BLACK) == 0)
+                return 0;
+            player_move(the_board, BLACK);
+            system("clear");
+            print_board(the_board);
+        }
     }
     return 0;
 }
@@ -165,8 +182,8 @@ char check_bot_promotion(board *the_board, move the_move, int color)
 void bot_move(board *the_board, HashTable *ht, int color)
 {
     move bot_move;
-    int depth = 5;
-    int prefrontier = 4;
+    int depth = 4;
+    int prefrontier = 3;
     if (color == WHITE)
     {
         bot_move = get_best_move_white(the_board, depth, prefrontier, ht);
@@ -219,7 +236,7 @@ int check_src(board *the_board, char src, char the_move)
     return 1;
 }
 
-int check()
+int check(char color)
 {
     /*creates the board, set info and calls game func*/
     board START_BOARD;
@@ -246,7 +263,7 @@ int check()
         START_BOARD.squares[i] = initial_board[i];
     HashTable ht;
     ht_setup(&ht, sizeof(board), sizeof(double), 100000000);
-    game(&START_BOARD, &ht);
+    game(&START_BOARD, &ht, color);
     return 0;
 }
 
