@@ -159,7 +159,7 @@ double evaluate_by_points(board *b) {
 
 char is_endgame(board *b) 
 {
-    char number_of_minor_pieces_white, number_of_minor_pieces_black;
+    char number_of_minor_pieces_white = 0, number_of_minor_pieces_black = 0;
     char is_there_queen_white = 0, is_there_queen_black = 0;
     char i;
     for (i = 0; i<NUMBER_OF_SQUARES; i++) {
