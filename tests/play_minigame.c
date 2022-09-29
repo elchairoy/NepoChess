@@ -4,29 +4,6 @@
 #define get_square_loc(square_num) (strcat((char[2]){(char)'a' + (square_num % 8), '\0'}, (char[2]){(char)'1' + (square_num / 8), '\0'}))
 
 
-char* scanner()
-{
-    /*get move from user and validate the move, keep asking untill a valid move is given*/
-    char s_row, d_row;
-    char s_column, d_column;
-    char promotion;
-    while (true)
-    {
-        printf("enter move: ");
-        scanf(" %c %c %c %c%c", &s_column, &s_row, &d_column, &d_row, &promotion);
-        if (promotion != '\r' && promotion != '\n' &&
-            promotion != 'r' && promotion != 'n' &&
-            promotion != 'q' && promotion != 'b') continue;
-        if(s_column < 'a' || s_column > 'h' || s_row < '1' || s_row > '8' ||
-        d_column < 'a' || d_column > 'h' || d_row < '1' || d_row > '8') continue;
-        break;
-    }
-    if (promotion == '\r' || promotion == '\n') promotion = ' ';
-    char p_move[6] = {s_column, s_row, d_column, d_row, promotion, '\0'};
-    char *temp = p_move;
-    return temp;
-}
-
 int player_move(board *the_board, int color)
 {
     /*ask for a move, validate it then comite the moveand request more info from user if needed*/
