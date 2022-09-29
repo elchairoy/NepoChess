@@ -3,66 +3,60 @@
 #define get_square_number(column, row) ((row - '0' - 1) * 8 + (column - 'a'))
 #define get_square_loc(square_num) (strcat((char[2]){(char)'a' + (square_num % 8), '\0'}, (char[2]){(char)'1' + (square_num / 8), '\0'}))
 
-move random_move(board *the_board)
-{
-    /*generate random move from the board*/
-    move *all_moves = get_all_moves(the_board);
-    int len = 0;
-    while (all_moves[len] != END)
-        len++;
-    return all_moves[rand() % len];
-}
 
-void scanner(char *move, int get_src)
+char* scanner()
 {
     /*get move from user and validate the move, keep asking untill a valid move is given*/
-    char row;
-    char column;
-    char trash;
-    if (get_src)
-        printf("enter src: ");
-    else
-        printf("enter dst: ");
-    while (scanf(" %c %c%c", &column, &row, &trash) == 3 &&
-           trash != '\r' && trash != '\n')
+    char s_row, d_row;
+    char s_column, d_column;
+    char promotion;
+    while (true)
     {
-        char buffer[4096];
-        if (scanf("%4095[^\n]", buffer) == EOF)
-            break;
-        printf("too long\n");
-        if (get_src)
-            printf("enter src: ");
-        else
-            printf("enter dst: ");
+        printf("enter move: ");
+        scanf(" %c %c %c %c%c", &s_column, &s_row, &d_column, &d_row, &promotion);
+        if (promotion != '\r' && promotion != '\n' &&
+            promotion != 'r' && promotion != 'n' &&
+            promotion != 'q' && promotion != 'b') continue;
+        if(s_column < 'a' || s_column > 'h' || s_row < '1' || s_row > '8' ||
+        d_column < 'a' || d_column > 'h' || d_row < '1' || d_row > '8') continue;
+        break;
     }
-    if (column < 'a' || column > 'h' || row < '1' || row > '8')
-    {
-        printf("invalid square\n");
-        scanner(move, get_src);
-    }
-    else
-    {
-        move[0] = column;
-        move[1] = row;
-    }
+    if (promotion == '\r' || promotion == '\n') promotion = ' ';
+    char p_move[6] = {s_column, s_row, d_column, d_row, promotion, '\0'};
+    char *temp = p_move;
+    return temp;
 }
 
 int player_move(board *the_board, int color)
 {
     /*ask for a move, validate it then comite the moveand request more info from user if needed*/
-    int i = 0;
-    int row;
-    char temp[3];
+    int i;
+    char s_row, d_row;
+    char s_column, d_column;
+    char promotion;
     move *all_moves;
-    char column, src_square, dst_square;
-    while (1)
-    {
-        scanner(temp, 1);
-        src_square = get_square_number(temp[0], temp[1]);
+    char src_square, dst_square;
+    while (1){
+        while (true)
+        {
+            printf("enter move: ");
+            scanf(" %c %c %c %c%c", &s_column, &s_row, &d_column, &d_row, &promotion);
+            char buffer[4096];
+            if (scanf("%4095[^\n]", buffer) == EOF)
+                continue;
+            if (promotion != '\r' && promotion != '\n' &&
+                promotion != 'r' && promotion != 'n' &&
+                promotion != 'q' && promotion != 'b') continue;
+            if(s_column < 'a' || s_column > 'h' || s_row < '1' || s_row > '8' ||
+            d_column < 'a' || d_column > 'h' || d_row < '1' || d_row > '8') continue;
+            break;
+        }
+        if (promotion == '\r' || promotion == '\n') promotion = 'q';
+        promotion = translate_promotion(promotion);
+        src_square = get_square_number(s_column, s_row);
         if (check_src(the_board, src_square, color))
         {
-            scanner(temp, 0);
-            dst_square = get_square_number(temp[0], temp[1]);
+            dst_square = get_square_number(d_column, d_row);
             all_moves = get_all_moves(the_board);
             i = 0;
             while (all_moves[i] != END)
@@ -72,14 +66,14 @@ int player_move(board *the_board, int color)
                     if (color)
                     {
                         if (get_piece_in_square(the_board, src_square) == white_pawn && get_row(src_square) == 6)
-                            commit_a_move_for_white(the_board, create_a_move(src_square, dst_square, get_player_promotion_choice(), 0, 0));
+                            commit_a_move_for_white(the_board, create_a_move(src_square, dst_square, promotion, 0, 0));
                         else
                             commit_a_move_for_white(the_board, all_moves[i]);
                     }
                     else
                     {
                         if (get_piece_in_square(the_board, src_square) == black_pawn && get_row(src_square) == 1)
-                            commit_a_move_for_black(the_board, create_a_move(src_square, dst_square, get_player_promotion_choice(), 0, 0));
+                            commit_a_move_for_black(the_board, create_a_move(src_square, dst_square, promotion, 0, 0));
                         else
                             commit_a_move_for_black(the_board, all_moves[i]);
                     }
@@ -94,19 +88,6 @@ int player_move(board *the_board, int color)
     }
 }
 
-
-int get_player_promotion_choice()
-{
-    int promotion;
-    while (1)
-    {
-        printf("promot to? (0=Q,1=R,2=N,3=B): ");
-        scanf("%d", &promotion);
-        if (promotion >= 0 && promotion <= 3)
-            return promotion;
-        printf("invalid move\n");
-    }
-}
 
 int game(board *the_board, HashTable *ht, char nepo_color)
 {
@@ -151,17 +132,25 @@ int game(board *the_board, HashTable *ht, char nepo_color)
 }
 
 
-char translate_promotion(int promotion){
+char translate_promotion(char promotion){
     switch (promotion)
     {
-    case 0:
+    case '0':
         return 'q';
-    case 1:
+    case '1':
         return 'r';
-    case 2:
+    case '2':
         return 'n';
-    case 3:
+    case '3':
         return 'b';
+    case 'q':
+        return 0;
+    case 'r':
+        return 1;
+    case 'n':
+        return 2;
+    case 'b':
+        return 3;
     }
 }
 
@@ -173,11 +162,11 @@ char check_bot_promotion(board *the_board, move the_move, int color)
     int src_p = get_piece_in_square(the_board ,src_s);
     if(color == WHITE){
         if(src_p == white_pawn && src_r == 6)
-            return translate_promotion(get_promotion_choice(the_move));
+            return translate_promotion(get_promotion_choice(the_move) + '0');
     }
     else {
         if(src_p == black_pawn && src_r == 1)
-            return translate_promotion(get_promotion_choice(the_move));
+            return translate_promotion(get_promotion_choice(the_move) + '0');
     }
     return ' ';
 }
