@@ -9,8 +9,9 @@ void *scanner(char *move_str)
     while (true)
         {
             printf("enter move: ");
-            scanf(" %s", move_str);
+            scanf("%5s", move_str);
             char buffer[4096];
+            memset(buffer,0,4096);
             if (scanf("%4095[^\n]", buffer) == EOF)
                 {printf("invalid\n"); continue;}            
 
