@@ -142,7 +142,7 @@ char translate_promotion(char promotion){
         return 'n';
     case '3':
         return 'b';
-    case 'q':
+            case 'q':
         return 0;
     case 'r':
         return 1;
