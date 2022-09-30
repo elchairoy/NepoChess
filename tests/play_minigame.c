@@ -3,37 +3,59 @@
 #define get_square_number(column, row) ((row - '0' - 1) * 8 + (column - 'a'))
 #define get_square_loc(square_num) (strcat((char[2]){(char)'a' + (square_num % 8), '\0'}, (char[2]){(char)'1' + (square_num / 8), '\0'}))
 
+void *scanner(char *move_str)
+{
+    char len;
+    while (true)
+        {
+            printf("enter move: ");
+            scanf(" %s", move_str);
+            char buffer[4096];
+            if (scanf("%4095[^\n]", buffer) == EOF)
+                {printf("invalid\n"); continue;}            
+
+            len = strlen(move_str);
+        
+            if (len < 4) {printf("invalid\n"); continue;}
+
+            if (len == 4)
+                break;
+            
+            if (len == 5) 
+            {
+                if (move_str[4] != 'r' && move_str[4] != 'n' &&
+                        move_str[4] != 'q' && move_str[4] != 'b') {printf("invalid\n"); continue;}
+                else {
+                    move_str[4] = translate_promotion(move_str[4]);
+                    break;
+                }
+            }
+
+            if (len >= 6) {printf("invalid\n"); continue;}
+            
+            if(move_str[0] < 'a' || move_str[0] > 'h' || move_str[1] < '1' || move_str[1] > '8' ||
+                move_str[2] < 'a' || move_str[2] > 'h' || move_str[3] < '1' || move_str[3] > '8') {printf("invalid\n"); continue;}
+            
+            break;
+        }
+}
+
 
 int player_move(board *the_board, int color)
 {
     /*ask for a move, validate it then comite the moveand request more info from user if needed*/
     int i;
-    char s_row, d_row;
-    char s_column, d_column;
-    char promotion;
+    char move_str[6];
     move *all_moves;
     char src_square, dst_square;
     while (1){
-        while (true)
-        {
-            printf("enter move: ");
-            scanf(" %c %c %c %c%c", &s_column, &s_row, &d_column, &d_row, &promotion);
-            char buffer[4096];
-            if (scanf("%4095[^\n]", buffer) == EOF)
-                continue;
-            if (promotion != '\r' && promotion != '\n' &&
-                promotion != 'r' && promotion != 'n' &&
-                promotion != 'q' && promotion != 'b') continue;
-            if(s_column < 'a' || s_column > 'h' || s_row < '1' || s_row > '8' ||
-            d_column < 'a' || d_column > 'h' || d_row < '1' || d_row > '8') continue;
-            break;
-        }
-        if (promotion == '\r' || promotion == '\n') promotion = 'q';
-        promotion = translate_promotion(promotion);
-        src_square = get_square_number(s_column, s_row);
+        scanner(move_str); /* Gets the move from client. */
+
+        /* Check if the move is valid: */
+        src_square = get_square_number(move_str[0], move_str[1]);
         if (check_src(the_board, src_square, color))
         {
-            dst_square = get_square_number(d_column, d_row);
+            dst_square = get_square_number(move_str[2], move_str[3]);
             all_moves = get_all_moves(the_board);
             i = 0;
             while (all_moves[i] != END)
@@ -43,14 +65,14 @@ int player_move(board *the_board, int color)
                     if (color)
                     {
                         if (get_piece_in_square(the_board, src_square) == white_pawn && get_row(src_square) == 6)
-                            commit_a_move_for_white(the_board, create_a_move(src_square, dst_square, promotion, 0, 0));
+                            commit_a_move_for_white(the_board, create_a_move(src_square, dst_square, move_str[4], 0, 0));
                         else
                             commit_a_move_for_white(the_board, all_moves[i]);
                     }
                     else
                     {
                         if (get_piece_in_square(the_board, src_square) == black_pawn && get_row(src_square) == 1)
-                            commit_a_move_for_black(the_board, create_a_move(src_square, dst_square, promotion, 0, 0));
+                            commit_a_move_for_black(the_board, create_a_move(src_square, dst_square, move_str[4], 0, 0));
                         else
                             commit_a_move_for_black(the_board, all_moves[i]);
                     }

@@ -15,6 +15,7 @@ int check_src(board *the_board, char src, char the_move);
 void bot_move(board *the_board, HashTable *ht, int color);
 int check_endgame(board *the_board, int color);
 int get_player_promotion_choice();
+char translate_promotion(char promotion);
 
 
 

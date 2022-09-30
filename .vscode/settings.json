@@ -19,7 +19,8 @@
         "functional": "cpp",
         "typeinfo": "cpp",
         "play_minigame.h": "c",
-        "evaluation.h": "c"
+        "evaluation.h": "c",
+        "*.tcc": "c"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }

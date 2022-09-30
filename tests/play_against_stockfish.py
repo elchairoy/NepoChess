@@ -47,7 +47,7 @@ def send_nepo_move(move):
     }
 
     # print(f'[+] Sending {"".join(move)} to nepo')
-    result = nepo_chess.expect(["enter src: ", 'CHECKMATE 0-1', 'STALMATE 0.5-0.5'],timeout=TIMEOUT)
+    result = nepo_chess.expect(["enter move: ", 'CHECKMATE 0-1', 'STALMATE 0.5-0.5'],timeout=TIMEOUT)
     if result == 1:
         print('CHECKMATE, NEPO WON')
         return 1
@@ -55,12 +55,7 @@ def send_nepo_move(move):
         print('STALMATE')
         return 0.5
 
-    nepo_chess.sendline(move[:2])
-    nepo_chess.expect("enter dst:")
-    nepo_chess.sendline(move[2:4])
-    if len(move) == 5: # Promotion
-        nepo_chess.expect("promot to\? \(0=Q,1=R,2=N,3=B\): ")
-        nepo_chess.sendline(promotion_dict[move[4]])
+    nepo_chess.sendline(move)
 
 def print_board():
     system("clear")
