@@ -22,14 +22,17 @@ void *scanner(board *the_board, char *move_str)
             if(move_str[0] < 'a' || move_str[0] > 'h' || move_str[1] < '1' || move_str[1] > '8' ||
                move_str[2] < 'a' || move_str[2] > 'h' || move_str[3] < '1' || move_str[3] > '8') continue;
 
-            if (len == 5) 
-            {
+            /*if peice is soldeir that will be crownd but no crowning choice was enterd it will invalid the move*/
+            if((move_str[1] == '7' && get_piece_in_square(the_board, get_square_number(move_str[0], move_str[1])) == white_pawn) ||
+               (move_str[1] == '2' && get_piece_in_square(the_board, get_square_number(move_str[0], move_str[1])) == black_pawn))
+               {
+                if (len == 4) continue;
                 if (move_str[4] != 'r' && move_str[4] != 'n' && move_str[4] != 'q' && move_str[4] != 'b') continue;
-                if((move_str[1] == '7' && get_piece_in_square(the_board, get_square_number(move_str[0], move_str[1])) == white_pawn) ||
-                    (move_str[1] == '2' && get_piece_in_square(the_board, get_square_number(move_str[0], move_str[1])) == black_pawn)) 
-                    move_str[4] = translate_promotion(move_str[4]);
-                else continue;
-            }
+                move_str[4] = translate_promotion(move_str[4]);
+                break;
+               }
+            /*cant accept crowning anyway*/
+            if (len == 5) continue;
             break;
         }
 }
