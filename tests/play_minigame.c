@@ -3,40 +3,33 @@
 #define get_square_number(column, row) ((row - '0' - 1) * 8 + (column - 'a'))
 #define get_square_loc(square_num) (strcat((char[2]){(char)'a' + (square_num % 8), '\0'}, (char[2]){(char)'1' + (square_num / 8), '\0'}))
 
-void *scanner(char *move_str)
+void *scanner(board *the_board, char *move_str)
 {
     char len;
     while (true)
         {
+            if(move_str[0] != '\0') printf("invalid\n");
             printf("enter move: ");
             scanf("%5s", move_str);
             char buffer[4096];
             memset(buffer,0,4096);
-            if (scanf("%4095[^\n]", buffer) == EOF)
-                {printf("invalid\n"); continue;}            
+            if (scanf("%4095[^\n]", buffer) == EOF) continue;           
 
             len = strlen(move_str);
         
-            if (len < 4) {printf("invalid\n"); continue;}
+            if (len < 4 || len >= 6) continue;
 
-            if (len == 4)
-                break;
-            
+            if(move_str[0] < 'a' || move_str[0] > 'h' || move_str[1] < '1' || move_str[1] > '8' ||
+               move_str[2] < 'a' || move_str[2] > 'h' || move_str[3] < '1' || move_str[3] > '8') continue;
+
             if (len == 5) 
             {
-                if (move_str[4] != 'r' && move_str[4] != 'n' &&
-                        move_str[4] != 'q' && move_str[4] != 'b') {printf("invalid\n"); continue;}
-                else {
+                if (move_str[4] != 'r' && move_str[4] != 'n' && move_str[4] != 'q' && move_str[4] != 'b') continue;
+                if((move_str[1] == '7' && get_piece_in_square(the_board, get_square_number(move_str[0], move_str[1])) == white_pawn) ||
+                    (move_str[1] == '2' && get_piece_in_square(the_board, get_square_number(move_str[0], move_str[1])) == black_pawn)) 
                     move_str[4] = translate_promotion(move_str[4]);
-                    break;
-                }
+                else continue;
             }
-
-            if (len >= 6) {printf("invalid\n"); continue;}
-            
-            if(move_str[0] < 'a' || move_str[0] > 'h' || move_str[1] < '1' || move_str[1] > '8' ||
-                move_str[2] < 'a' || move_str[2] > 'h' || move_str[3] < '1' || move_str[3] > '8') {printf("invalid\n"); continue;}
-            
             break;
         }
 }
@@ -50,7 +43,7 @@ int player_move(board *the_board, int color)
     move *all_moves;
     char src_square, dst_square;
     while (1){
-        scanner(move_str); /* Gets the move from client. */
+        scanner(the_board, move_str); /* Gets the move from client. */
 
         /* Check if the move is valid: */
         src_square = get_square_number(move_str[0], move_str[1]);
