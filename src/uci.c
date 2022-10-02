@@ -1,4 +1,14 @@
-#include "../include/play_minigame.h"
+#include "../include/uci.h"
+
+char initial_board[32] = {
+        white_rook << 4 | white_rook, white_bishop << 4 | white_queen, white_king << 4 | white_bishop, white_knight << 4 | white_rook,
+        white_pawn << 4 | white_pawn, white_pawn << 4 | white_pawn, white_pawn << 4 | white_pawn, white_pawn << 4 | white_pawn,
+        empty, empty, empty, empty,
+        empty, empty, empty, empty,
+        empty, empty, empty, empty,
+        empty, empty, empty, empty,
+        black_pawn << 4 | black_pawn, black_pawn << 4 | black_pawn, black_pawn << 4 | black_pawn, black_pawn << 4 | black_pawn,
+        black_rook << 4 | black_knight, black_bishop << 4 | black_queen, black_king << 4 | black_bishop, black_knight << 4 | black_rook};
 
 #define get_square_number(column, row) ((row - '0' - 1) * 8 + (column - 'a'))
 #define get_square_loc(square_num) (strcat((char[2]){(char)'a' + (square_num % 8), '\0'}, (char[2]){(char)'1' + (square_num / 8), '\0'}))
@@ -8,7 +18,6 @@ void *scanner(board *the_board, char *move_str)
     char len;
     while (true)
         {
-            if(move_str[0] != '\0') printf("invalid\n");
             printf("enter move: ");
             scanf("%5s", move_str);
             char buffer[4096];
@@ -215,55 +224,42 @@ int check_endgame(board *the_board, int color)
     return 1;
 }
 
-int check_src(board *the_board, char src, char the_move)
+int check_src(board *the_board, char src, char color_to_move)
 {
     /*validate src squear from user input*/
     if (get_piece_in_square(the_board, src) == empty)
         return 0;
-    if (color_of_piece(src, the_board) != the_move)
+    if (color_of_piece(src, the_board) != color_to_move)
         return 0;
     return 1;
+}
+
+void setup_start_board(board *b) 
+{   
+    int i;
+    b->can_black_castle_long = 1;
+    b->can_black_castle_short = 1;
+    b->can_white_castle_long = 1;
+    b->can_white_castle_short = 1;
+    b->pawn_en_passant_left = 0;
+    b->pawn_en_passant_right = 0;
+    b->whos_turn = WHITE;
+    for (i = 0; i < 32; i++)
+        b->squares[i] = initial_board[i];
 }
 
 int check(char color)
 {
     /*creates the board, set info and calls game func*/
-    board START_BOARD;
-    move *all_moves;
-    char initial_board[32] = {
-        white_rook << 4 | white_knight, white_bishop << 4 | white_queen, white_king << 4 | white_bishop, white_knight << 4 | white_rook,
-        white_pawn << 4 | white_pawn, white_pawn << 4 | white_pawn, white_pawn << 4 | white_pawn, white_pawn << 4 | white_pawn,
-        empty, empty, empty, empty,
-        empty, empty, empty, empty,
-        empty, empty, empty, empty,
-        empty, empty, empty, empty,
-        black_pawn << 4 | black_pawn, black_pawn << 4 | black_pawn, black_pawn << 4 | black_pawn, black_pawn << 4 | black_pawn,
-        black_rook << 4 | black_knight, black_bishop << 4 | black_queen, black_king << 4 | black_bishop, black_knight << 4 | black_rook};
-    START_BOARD.can_black_castle_long = 1;
-    START_BOARD.can_black_castle_short = 1;
-    START_BOARD.can_white_castle_long = 1;
-    START_BOARD.can_white_castle_short = 1;
-    START_BOARD.pawn_en_passant_left = 0;
-    START_BOARD.pawn_en_passant_right = 0;
-    START_BOARD.whos_turn = WHITE;
-
-    int i;
-    for (i = 0; i < 32; i++)
-        START_BOARD.squares[i] = initial_board[i];
+    char s[100];
+    scanf("%s", s);
+    printf("uciok");
+    scanf("%s", s);
+    printf("readyok");
+    board b;
+    setup_start_board(&b);
     HashTable ht;
     ht_setup(&ht, sizeof(board), sizeof(double), 100000000);
-    game(&START_BOARD, &ht, color);
+    game(&b, &ht, color);
     return 0;
 }
-
-/*
-games againts chess.com engeine:
-    1 - win
-    2 - win
-    3 (550) - win 21/9/22
-    4 (700) - win 21/9/22
-    5 - ?
-    6 - ?
-    7 - ?
-    elchai - ?
-*/
