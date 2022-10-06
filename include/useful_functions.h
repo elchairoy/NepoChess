@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "possible_moves.h"
 #include "board_struct.h"
@@ -52,5 +53,6 @@ char check_black_long_castle(board *the_board);
 
 char check_black_short_castle(board *the_board);
 
+char *strrev(char *str);
 
 #endif /* AE5BDBF7_77C4_4AB2_867A_1994FFAC6C77 */

@@ -16,8 +16,8 @@ HEADERS       := $(shell find ${ROOT} -type f -name '*.h')
 TESTS_SOURCES := $(shell find ${TESTS} -type f -name '*.c')
 
 EXECUTABLE      := NepoChess
-TEST_EXECUTABLE := runtests
-TEST_EXECUTABLE2 := runtests2
+TEST_EXECUTABLE := NepoChessTests
+TEST_EXECUTABLE2 := NepoChessTests2
 
 all: ${BIN}/${EXECUTABLE}
 

@@ -229,6 +229,6 @@ move get_best_move_black(board *b,char depth, char pre_frontier, HashTable *ht) 
         i++;
     }
     free(all_moves);
-    printf("minmax eval= %lf\n",min);
+    /*printf("minmax eval= %lf\n",min);*/
     return best;
 }
