@@ -262,12 +262,14 @@ void bot_move(board *the_board, HashTable *ht)
     int depth = 5;
     if (the_board->whos_turn == WHITE)
     {
+        get_best_move_white(the_board, depth-1, ht);
         bot_move = get_best_move_white(the_board, depth, ht);
         printf("bestmove %s%s%c\n", get_square_loc(get_src_square(bot_move)),get_square_loc(get_dst_square(bot_move)), check_bot_promotion(the_board, bot_move));
         commit_a_move_for_white(the_board, bot_move);
     }
     else
     {
+        get_best_move_black(the_board, depth-1, ht);
         bot_move = get_best_move_black(the_board, depth, ht);
         printf("bestmove %s%s%c\n", get_square_loc(get_src_square(bot_move)),get_square_loc(get_dst_square(bot_move)), check_bot_promotion(the_board, bot_move));
         commit_a_move_for_black(the_board, bot_move);
