@@ -158,14 +158,14 @@ int player_move(board *the_board, char *str)
                 if (the_board->whos_turn == WHITE)
                 {
                     if (get_piece_in_square(the_board, src_square) == white_pawn && get_row(src_square) == 6)
-                        commit_a_move_for_white(the_board, create_a_move(src_square, dst_square, move_str[4], 0, 0));
+                        commit_a_move_for_white(the_board, create_a_move(src_square, dst_square, translate_promotion(move_str[4]), 0, 0));
                     else
                         commit_a_move_for_white(the_board, all_moves[i]);
                 }
                 else
                 {
                     if (get_piece_in_square(the_board, src_square) == black_pawn && get_row(src_square) == 1)
-                        commit_a_move_for_black(the_board, create_a_move(src_square, dst_square, move_str[4], 0, 0));
+                        commit_a_move_for_black(the_board, create_a_move(src_square, dst_square, translate_promotion(move_str[4]), 0, 0));
                     else
                         commit_a_move_for_black(the_board, all_moves[i]);
                 }
@@ -259,8 +259,8 @@ char check_bot_promotion(board *the_board, move the_move)
 void bot_move(board *the_board, HashTable *ht)
 {
     move bot_move;
-    int depth = 4;
-    int prefrontier = 3;
+    int depth = 5;
+    int prefrontier = 4;
     if (the_board->whos_turn == WHITE)
     {
         bot_move = get_best_move_white(the_board, depth, prefrontier, ht);
@@ -273,7 +273,7 @@ void bot_move(board *the_board, HashTable *ht)
         printf("bestmove %s%s%c\n", get_square_loc(get_src_square(bot_move)),get_square_loc(get_dst_square(bot_move)), check_bot_promotion(the_board, bot_move));
         commit_a_move_for_black(the_board, bot_move);
     }
-    ht_clear(ht);
+    /*ht_clear(ht);*/
 }
 
 int check_endgame(board *the_board)
@@ -393,6 +393,7 @@ char uci_parse(board *b, HashTable *ht)
 	}
     if (!strncmp (line, "go", 2))
 	{
+        print_board(b);
 		bot_move(b,ht);
 	}
 

@@ -8,7 +8,7 @@
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/bin/runtests",
+            "program": "${workspaceFolder}/bin/NepoChessTests",
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],

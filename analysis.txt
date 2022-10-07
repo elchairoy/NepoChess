@@ -3,77 +3,82 @@ Flat profile:
 Each sample counts as 0.01 seconds.
   %   cumulative   self              self     total           
  time   seconds   seconds    calls  ms/call  ms/call  name    
- 50.02      0.02     0.02    41351     0.00     0.00  evaluate_by_points
- 25.01      0.03     0.01    95798     0.00     0.00  isAttacked_by_white
- 25.01      0.04     0.01    26606     0.00     0.00  evaluate_minimax_for_black
-  0.00      0.04     0.00 10971343     0.00     0.00  get_piece_in_square
-  0.00      0.04     0.00  2947748     0.00     0.00  colid_with_enemy
-  0.00      0.04     0.00  2026437     0.00     0.00  colid_with_ally
-  0.00      0.04     0.00  1179350     0.00     0.00  pass_up
-  0.00      0.04     0.00  1005119     0.00     0.00  pass_down
-  0.00      0.04     0.00   911957     0.00     0.00  pass_left
-  0.00      0.04     0.00   793788     0.00     0.00  pass_right
-  0.00      0.04     0.00   474949     0.00     0.00  move_up_left
-  0.00      0.04     0.00   454790     0.00     0.00  color_of_piece
-  0.00      0.04     0.00   392220     0.00     0.00  move_down_right
-  0.00      0.04     0.00   366069     0.00     0.00  move_up
-  0.00      0.04     0.00   344750     0.00     0.00  move_left
-  0.00      0.04     0.00   343564     0.00     0.00  move_up_right
-  0.00      0.04     0.00   338542     0.00     0.00  move_down_left
-  0.00      0.04     0.00   331782     0.00     0.00  move_right
-  0.00      0.04     0.00   308268     0.00     0.00  move_down
-  0.00      0.04     0.00   280485     0.00     0.00  change_the_square
-  0.00      0.04     0.00   280217     0.00     0.00  get_dst_square
-  0.00      0.04     0.00   280217     0.00     0.00  get_src_square
-  0.00      0.04     0.00   171119     0.00     0.00  create_a_move
-  0.00      0.04     0.00   140155     0.00     0.00  find_king_square
-  0.00      0.04     0.00   140154     0.00     0.00  get_is_short_castle
-  0.00      0.04     0.00   140070     0.00     0.00  get_is_long_castle
-  0.00      0.04     0.00   140062     0.00     0.00  can_en_passant_next_move
-  0.00      0.04     0.00    96439     0.00     0.00  is_move_valid
-  0.00      0.04     0.00    87350     0.00     0.00  ht_is_initialized
-  0.00      0.04     0.00    87341     0.00     0.00  _ht_default_hash
-  0.00      0.04     0.00    87341     0.00     0.00  _ht_hash
-  0.00      0.04     0.00    80778     0.00     0.00  commit_a_move_for_black
-  0.00      0.04     0.00    61664     0.00     0.00  _ht_default_compare
-  0.00      0.04     0.00    61664     0.00     0.00  _ht_equal
-  0.00      0.04     0.00    59376     0.00     0.00  commit_a_move_for_white
-  0.00      0.04     0.00    55637     0.00     0.00  get_max_moves_of_piece
-  0.00      0.04     0.00    55637     0.00     0.00  moves_of_piece
-  0.00      0.04     0.00    51463     0.00     0.00  isAttacked_by_black
-  0.00      0.04     0.00    45924     0.00     0.00  pawn_straight
-  0.00      0.04     0.00    43675     0.00     0.00  _ht_should_grow
-  0.00      0.04     0.00    43675     0.00     0.00  ht_insert
-  0.00      0.04     0.00    43666     0.00     0.00  ht_lookup
-  0.00      0.04     0.00    27354     0.00     0.00  pawn_eat_left
-  0.00      0.04     0.00    27354     0.00     0.00  pawn_eat_right
-  0.00      0.04     0.00    21804     0.00     0.00  _ht_create_node
-  0.00      0.04     0.00    21804     0.00     0.00  _ht_push_front
-  0.00      0.04     0.00    21044     0.00     0.00  blackpawn
-  0.00      0.04     0.00    17110     0.00     0.00  evaluate_minimax_for_white
-  0.00      0.04     0.00    10652     0.00     0.00  move_in_straight_lines
-  0.00      0.04     0.00    10644     0.00     0.00  move_in_diagonal_lines
-  0.00      0.04     0.00     7106     0.00     0.00  rook
-  0.00      0.04     0.00     7098     0.00     0.00  bishop
-  0.00      0.04     0.00     6980     0.00     0.00  knight
-  0.00      0.04     0.00     6310     0.00     0.00  whitepawn
-  0.00      0.04     0.00     3553     0.00     0.00  en_passant_and_castle
-  0.00      0.04     0.00     3553     0.00     0.00  get_all_moves
-  0.00      0.04     0.00     3553     0.00     0.00  king
-  0.00      0.04     0.00     3546     0.00     0.00  queen
-  0.00      0.04     0.00     2764     0.00     0.00  check_black_long_castle
-  0.00      0.04     0.00     2764     0.00     0.00  check_black_short_castle
-  0.00      0.04     0.00      789     0.00     0.00  check_white_long_castle
-  0.00      0.04     0.00      789     0.00     0.00  check_white_short_castle
-  0.00      0.04     0.00       84     0.00     0.00  commit_a_short_castle_for_white
-  0.00      0.04     0.00        5     0.00     0.00  commit_en_passant_for_white
-  0.00      0.04     0.00        2     0.00     0.00  commit_en_passant_for_black
-  0.00      0.04     0.00        1     0.00     0.00  _ht_allocate
-  0.00      0.04     0.00        1     0.00    40.01  check_miminax
-  0.00      0.04     0.00        1     0.00     0.00  commit_a_long_castle_for_black
-  0.00      0.04     0.00        1     0.00    40.01  get_best_move_white
-  0.00      0.04     0.00        1     0.00     0.00  ht_setup
-  0.00      0.04     0.00        1     0.00     0.00  print_board
+ 86.47      0.51     0.51        1   510.15   510.15  ht_destroy
+  3.39      0.53     0.02    55040     0.00     0.00  get_piece_in_square
+  1.70      0.54     0.01   142870     0.00     0.00  is_endgame
+  1.70      0.55     0.01    65684     0.00     0.00  pawn_eat_right
+  1.70      0.56     0.01    55050     0.00     0.00  create_a_move
+  1.70      0.57     0.01     9946     0.00     0.00  moves_of_piece
+  1.70      0.58     0.01     8122     0.00     0.00  _ht_push_front
+  1.70      0.59     0.01     7542     0.00     0.00  evaluate_by_points
+  0.00      0.59     0.00  2368615     0.00     0.00  main
+  0.00      0.59     0.00   496013     0.00     0.00  colid_with_ally
+  0.00      0.59     0.00   339282     0.00     0.00  pass_up
+  0.00      0.59     0.00   195696     0.00     0.00  pass_right
+  0.00      0.59     0.00   188863     0.00     0.00  pass_down
+  0.00      0.59     0.00   139393     0.00     0.00  pass_left
+  0.00      0.59     0.00    79617     0.00     0.00  en_passant_and_castle
+  0.00      0.59     0.00    72750     0.00     0.00  move_up_right
+  0.00      0.59     0.00    69908     0.00     0.00  move_down_left
+  0.00      0.59     0.00    62540     0.00     0.00  move_right
+  0.00      0.59     0.00    61328     0.00     0.00  move_up_left
+  0.00      0.59     0.00    55039     0.00     0.00  get_src_square
+  0.00      0.59     0.00    53450     0.00     0.00  move_up
+  0.00      0.59     0.00    50937     0.00     0.00  move_left
+  0.00      0.59     0.00    50716     0.00     0.00  move_down
+  0.00      0.59     0.00    32490     0.00     0.00  ht_is_initialized
+  0.00      0.59     0.00    29633     0.00     0.00  _ht_default_hash
+  0.00      0.59     0.00    29633     0.00     0.00  _ht_hash
+  0.00      0.59     0.00    27519     0.00     0.00  get_is_long_castle
+  0.00      0.59     0.00    27519     0.00     0.00  get_promotion_choice
+  0.00      0.59     0.00    27517     0.00     0.00  commit_promotion_for_black
+  0.00      0.59     0.00    27200     0.00     0.00  change_the_square
+  0.00      0.59     0.00    24819     0.00     0.00  commit_a_move_for_white
+  0.00      0.59     0.00    22250     0.00     0.00  isAttacked_by_white
+  0.00      0.59     0.00    14219     0.00     0.00  isAttacked_by_black
+  0.00      0.59     0.00    13389     0.00     0.00  ht_lookup
+  0.00      0.59     0.00     9946     0.00     0.00  color_of_piece
+  0.00      0.59     0.00     9299     0.00     0.00  colid_with_enemy
+  0.00      0.59     0.00     9275     0.00     0.00  get_is_short_castle
+  0.00      0.59     0.00     8122     0.00     0.00  _ht_create_node
+  0.00      0.59     0.00     8122     0.00     0.00  _ht_destroy_node
+  0.00      0.59     0.00     8122     0.00     0.00  _ht_should_grow
+  0.00      0.59     0.00     8122     0.00     0.00  ht_contains
+  0.00      0.59     0.00     8122     0.00     0.00  ht_insert
+  0.00      0.59     0.00     7582     0.00     0.00  uci_parse
+  0.00      0.59     0.00     7542     0.00     0.00  commit_a_move_for_black
+  0.00      0.59     0.00     5782     0.00     0.00  blackpawn
+  0.00      0.59     0.00     5305     0.00     0.00  _ht_default_compare
+  0.00      0.59     0.00     5305     0.00     0.00  _ht_equal
+  0.00      0.59     0.00     4971     0.00     0.00  pawn_eat_left
+  0.00      0.59     0.00     4971     0.00     0.00  pawn_straight
+  0.00      0.59     0.00     4515     0.00     0.00  whitepawn
+  0.00      0.59     0.00     2700     0.00     0.00  can_en_passant_next_move
+  0.00      0.59     0.00     1923     0.00     0.00  move_down_right
+  0.00      0.59     0.00     1866     0.00     0.00  move_in_straight_lines
+  0.00      0.59     0.00     1301     0.00     0.00  move_in_diagonal_lines
+  0.00      0.59     0.00     1244     0.00     0.00  rook
+  0.00      0.59     0.00     1186     0.00     0.00  king
+  0.00      0.59     0.00      622     0.00     0.00  bishop
+  0.00      0.59     0.00      622     0.00     0.00  get_max_moves_of_piece
+  0.00      0.59     0.00      622     0.00     0.03  is_move_valid
+  0.00      0.59     0.00      622     0.00     0.00  queen
+  0.00      0.59     0.00      565     0.00     0.00  check_black_long_castle
+  0.00      0.59     0.00      565     0.00     0.00  check_white_short_castle
+  0.00      0.59     0.00      456     0.00     0.00  knight
+  0.00      0.59     0.00       57     0.00     0.00  check_white_long_castle
+  0.00      0.59     0.00       57     0.00     0.00  print_board
+  0.00      0.59     0.00        2     0.00     0.00  _ht_allocate
+  0.00      0.59     0.00        2     0.00     0.00  check_src
+  0.00      0.59     0.00        2     0.00     0.00  commit_a_long_castle_for_black
+  0.00      0.59     0.00        1     0.00     0.00  check_bot_promotion
+  0.00      0.59     0.00        1     0.00     0.00  check_endgame
+  0.00      0.59     0.00        1     0.00     0.00  get_best_move_white
+  0.00      0.59     0.00        1     0.00   510.15  ht_clear
+  0.00      0.59     0.00        1     0.00     0.00  ht_setup
+  0.00      0.59     0.00        1     0.00     0.00  player_move
+  0.00      0.59     0.00        1     0.00     0.00  setup_start_board
+  0.00      0.59     0.00        1     0.00     0.00  translate_piece_symbol
 
  %         the percentage of the total running time of the
 time       program used by this function.
@@ -111,555 +116,611 @@ notice and this notice are preserved.
 		     Call graph (explanation follows)
 
 
-granularity: each sample hit covers 2 byte(s) for 24.99% of 0.04 seconds
+granularity: each sample hit covers 2 byte(s) for 1.69% of 0.59 seconds
 
 index % time    self  children    called     name
-                0.00    0.04       1/1           main [3]
-[1]    100.0    0.00    0.04       1         check_miminax [1]
-                0.00    0.04       1/1           get_best_move_white [2]
-                0.00    0.00       8/171119      create_a_move [44]
-                0.00    0.00       4/59376       commit_a_move_for_white [51]
-                0.00    0.00       4/80778       commit_a_move_for_black [50]
-                0.00    0.00       1/1           print_board [65]
-                0.00    0.00       1/1           ht_setup [64]
-                0.00    0.00       1/280217      get_dst_square [42]
-                0.00    0.00       1/280217      get_src_square [43]
+                                                 <spontaneous>
+[1]     86.4    0.00    0.51                 bot_move [1]
+                0.00    0.51       1/1           ht_clear [2]
+                0.00    0.00       2/55050       create_a_move [17]
+                0.00    0.00       1/24819       commit_a_move_for_white [19]
+                0.00    0.00       1/1           translate_piece_symbol [41]
+                0.00    0.00       2/55039       get_src_square [52]
+                0.00    0.00       1/1           get_best_move_white [73]
 -----------------------------------------------
-                0.00    0.04       1/1           check_miminax [1]
-[2]    100.0    0.00    0.04       1         get_best_move_white [2]
-                0.01    0.03      50/50          evaluate_minimax_for_black <cycle 1> [5]
-                0.00    0.00       1/3553        get_all_moves [9]
-                0.00    0.00      41/59376       commit_a_move_for_white [51]
-                0.00    0.00       9/43675       ht_insert [55]
+                0.00    0.51       1/1           bot_move [1]
+[2]     86.4    0.00    0.51       1         ht_clear [2]
+                0.51    0.00       1/1           ht_destroy [3]
+                0.00    0.00       1/2           _ht_allocate [112]
+-----------------------------------------------
+                0.51    0.00       1/1           ht_clear [2]
+[3]     86.4    0.51    0.00       1         ht_destroy [3]
+                0.00    0.00    8122/8122        _ht_destroy_node [108]
+                0.00    0.00       2/32490       ht_is_initialized [55]
+-----------------------------------------------
+                                 560             evaluate_minimax_for_white [4]
+[4]      6.2    0.00    0.04       0+560     evaluate_minimax_for_white [4]
+                0.00    0.03    7542/7542        commit_a_move_for_black [5]
+                0.00    0.00    7582/22250       isAttacked_by_white [11]
+                0.00    0.00     560/8122        ht_insert [14]
+                0.00    0.00    1120/2700        can_en_passant_next_move [26]
+                0.00    0.00    7582/9275        get_is_short_castle [62]
+                0.00    0.00    1120/13389       ht_lookup [59]
+                0.00    0.00     560/8122        ht_contains [63]
+                0.00    0.00      56/622         get_max_moves_of_piece [67]
+                                 560             evaluate_minimax_for_white [4]
+-----------------------------------------------
+                0.00    0.03    7542/7542        evaluate_minimax_for_white [4]
+[5]      5.5    0.00    0.03    7542         commit_a_move_for_black [5]
+                0.02    0.00   49634/55040       get_piece_in_square [7]
+                0.01    0.00    7542/7542        evaluate_by_points [15]
+                0.00    0.00   24817/27517       commit_promotion_for_black [20]
+                0.00    0.00   25007/2368615     main [44]
+                0.00    0.00   24819/27519       get_is_long_castle [56]
+                0.00    0.00   24819/27519       get_promotion_choice [57]
+                0.00    0.00       2/2           commit_a_long_castle_for_black [70]
 -----------------------------------------------
                                                  <spontaneous>
-[3]    100.0    0.00    0.04                 main [3]
-                0.00    0.04       1/1           check_miminax [1]
------------------------------------------------
-[4]    100.0    0.01    0.03      50+43666   <cycle 1 as a whole> [4]
-                0.01    0.02   26606             evaluate_minimax_for_black <cycle 1> [5]
-                0.00    0.01   17110             evaluate_minimax_for_white <cycle 1> [8]
------------------------------------------------
-                               26556             evaluate_minimax_for_white <cycle 1> [8]
-                0.01    0.03      50/50          get_best_move_white [2]
-[5]     75.7    0.01    0.02   26606         evaluate_minimax_for_black <cycle 1> [5]
-                0.01    0.00   25155/41351       evaluate_by_points [6]
-                0.00    0.01    2634/3553        get_all_moves [9]
-                0.00    0.00   26606/95798       isAttacked_by_white [7]
-                0.00    0.00   26606/140155      find_king_square [45]
-                0.00    0.00   17110/80778       commit_a_move_for_black [50]
-                0.00    0.00   17110/43666       ht_lookup [56]
-                0.00    0.00   17110/43675       ht_insert [55]
-                0.00    0.00    1240/171119      create_a_move [44]
-                               17110             evaluate_minimax_for_white <cycle 1> [8]
------------------------------------------------
-                0.01    0.00   16196/41351       evaluate_minimax_for_white <cycle 1> [8]
-                0.01    0.00   25155/41351       evaluate_minimax_for_black <cycle 1> [5]
-[6]     50.0    0.02    0.00   41351         evaluate_by_points [6]
-                0.00    0.00 2646464/10971343     get_piece_in_square [25]
------------------------------------------------
-                0.00    0.00    2764/95798       check_black_long_castle [22]
-                0.00    0.00    2764/95798       check_black_short_castle [23]
-                0.00    0.00   26606/95798       evaluate_minimax_for_black <cycle 1> [5]
-                0.01    0.00   63664/95798       is_move_valid [10]
-[7]     25.0    0.01    0.00   95798         isAttacked_by_white [7]
-                0.00    0.00 1014445/10971343     get_piece_in_square [25]
-                0.00    0.00  270790/392220      move_down_right [34]
-                0.00    0.00  216568/338542      move_down_left [38]
-                0.00    0.00  180052/308268      move_down [40]
-                0.00    0.00  159302/331782      move_right [39]
-                0.00    0.00  158966/344750      move_left [36]
-                0.00    0.00  158907/366069      move_up [35]
-                0.00    0.00  158651/343564      move_up_right [37]
-                0.00    0.00  158527/474949      move_up_left [32]
------------------------------------------------
-                               17110             evaluate_minimax_for_black <cycle 1> [5]
-[8]     24.2    0.00    0.01   17110         evaluate_minimax_for_white <cycle 1> [8]
-                0.01    0.00   16196/41351       evaluate_by_points [6]
-                0.00    0.00     918/3553        get_all_moves [9]
-                0.00    0.00   26556/59376       commit_a_move_for_white [51]
-                0.00    0.00   26556/43666       ht_lookup [56]
-                0.00    0.00   26556/43675       ht_insert [55]
-                0.00    0.00   17110/140155      find_king_square [45]
-                0.00    0.00   17110/51463       isAttacked_by_black [53]
-                               26556             evaluate_minimax_for_black <cycle 1> [5]
------------------------------------------------
-                0.00    0.00       1/3553        get_best_move_white [2]
-                0.00    0.00     918/3553        evaluate_minimax_for_white <cycle 1> [8]
-                0.00    0.01    2634/3553        evaluate_minimax_for_black <cycle 1> [5]
-[9]     18.1    0.00    0.01    3553         get_all_moves [9]
-                0.00    0.01   55637/55637       moves_of_piece [11]
-                0.00    0.00    3553/3553        en_passant_and_castle [19]
-                0.00    0.00  454784/454790      color_of_piece [33]
-                0.00    0.00  308293/10971343     get_piece_in_square [25]
-                0.00    0.00   55637/55637       get_max_moves_of_piece [52]
-                0.00    0.00    7106/171119      create_a_move [44]
------------------------------------------------
-                0.00    0.00       3/96439       en_passant_and_castle [19]
-                0.00    0.00      88/96439       check_white_short_castle [24]
-                0.00    0.00    4512/96439       king [21]
-                0.00    0.00    7960/96439       whitepawn [20]
-                0.00    0.00   14446/96439       move_in_diagonal_lines [15]
-                0.00    0.00   17716/96439       move_in_straight_lines [14]
-                0.00    0.00   19008/96439       knight [13]
-                0.00    0.00   32706/96439       blackpawn [12]
-[10]    16.6    0.00    0.01   96439         is_move_valid [10]
-                0.01    0.00   63664/95798       isAttacked_by_white [7]
-                0.00    0.00   96439/140155      find_king_square [45]
-                0.00    0.00   63664/80778       commit_a_move_for_black [50]
-                0.00    0.00   32775/59376       commit_a_move_for_white [51]
-                0.00    0.00   32775/51463       isAttacked_by_black [53]
------------------------------------------------
-                0.00    0.01   55637/55637       get_all_moves [9]
-[11]    16.6    0.00    0.01   55637         moves_of_piece [11]
-                0.00    0.00   21044/21044       blackpawn [12]
-                0.00    0.00    6980/6980        knight [13]
-                0.00    0.00    7106/7106        rook [16]
-                0.00    0.00    3546/3546        queen [17]
-                0.00    0.00    7098/7098        bishop [18]
-                0.00    0.00    6310/6310        whitepawn [20]
-                0.00    0.00    3553/3553        king [21]
-                0.00    0.00   55637/10971343     get_piece_in_square [25]
------------------------------------------------
-                0.00    0.00   21044/21044       moves_of_piece [11]
-[12]     5.6    0.00    0.00   21044         blackpawn [12]
-                0.00    0.00   32706/96439       is_move_valid [10]
-                0.00    0.00   53750/171119      create_a_move [44]
-                0.00    0.00   35840/45924       pawn_straight [54]
-                0.00    0.00   21044/27354       pawn_eat_right [58]
-                0.00    0.00   21044/27354       pawn_eat_left [57]
------------------------------------------------
-                0.00    0.00    6980/6980        moves_of_piece [11]
-[13]     3.3    0.00    0.00    6980         knight [13]
-                0.00    0.00   19008/96439       is_move_valid [10]
-                0.00    0.00   25988/171119      create_a_move [44]
-                0.00    0.00   24434/2026437     colid_with_ally [27]
------------------------------------------------
-                0.00    0.00    3546/10652       queen [17]
-                0.00    0.00    7106/10652       rook [16]
-[14]     3.1    0.00    0.00   10652         move_in_straight_lines [14]
-                0.00    0.00   17716/96439       is_move_valid [10]
-                0.00    0.00   28368/171119      create_a_move [44]
-                0.00    0.00   18916/308268      move_down [40]
-                0.00    0.00   14507/344750      move_left [36]
-                0.00    0.00   13740/366069      move_up [35]
-                0.00    0.00   13161/331782      move_right [39]
------------------------------------------------
-                0.00    0.00    3546/10644       queen [17]
-                0.00    0.00    7098/10644       bishop [18]
-[15]     2.5    0.00    0.00   10644         move_in_diagonal_lines [15]
-                0.00    0.00   14446/96439       is_move_valid [10]
-                0.00    0.00   25090/171119      create_a_move [44]
-                0.00    0.00   17555/343564      move_up_right [37]
-                0.00    0.00   14175/338542      move_down_left [38]
-                0.00    0.00   12990/474949      move_up_left [32]
-                0.00    0.00   12302/392220      move_down_right [34]
------------------------------------------------
-                0.00    0.00    7106/7106        moves_of_piece [11]
-[16]     2.0    0.00    0.00    7106         rook [16]
-                0.00    0.00    7106/10652       move_in_straight_lines [14]
------------------------------------------------
-                0.00    0.00    3546/3546        moves_of_piece [11]
-[17]     1.8    0.00    0.00    3546         queen [17]
-                0.00    0.00    3546/10652       move_in_straight_lines [14]
-                0.00    0.00    3546/10644       move_in_diagonal_lines [15]
-                0.00    0.00    3546/171119      create_a_move [44]
------------------------------------------------
-                0.00    0.00    7098/7098        moves_of_piece [11]
-[18]     1.7    0.00    0.00    7098         bishop [18]
-                0.00    0.00    7098/10644       move_in_diagonal_lines [15]
------------------------------------------------
-                0.00    0.00    3553/3553        get_all_moves [9]
-[19]     1.5    0.00    0.00    3553         en_passant_and_castle [19]
-                0.00    0.00    2764/2764        check_black_long_castle [22]
-                0.00    0.00    2764/2764        check_black_short_castle [23]
-                0.00    0.00     789/789         check_white_short_castle [24]
-                0.00    0.00       3/96439       is_move_valid [10]
-                0.00    0.00    3600/171119      create_a_move [44]
-                0.00    0.00     789/789         check_white_long_castle [59]
-                0.00    0.00       6/454790      color_of_piece [33]
------------------------------------------------
-                0.00    0.00    6310/6310        moves_of_piece [11]
-[20]     1.4    0.00    0.00    6310         whitepawn [20]
-                0.00    0.00    7960/96439       is_move_valid [10]
-                0.00    0.00   14270/171119      create_a_move [44]
-                0.00    0.00   10084/45924       pawn_straight [54]
-                0.00    0.00    6310/27354       pawn_eat_right [58]
-                0.00    0.00    6310/27354       pawn_eat_left [57]
------------------------------------------------
-                0.00    0.00    3553/3553        moves_of_piece [11]
-[21]     0.8    0.00    0.00    3553         king [21]
-                0.00    0.00    4512/96439       is_move_valid [10]
-                0.00    0.00    8065/171119      create_a_move [44]
-                0.00    0.00    3553/366069      move_up [35]
-                0.00    0.00    3553/308268      move_down [40]
-                0.00    0.00    3553/344750      move_left [36]
-                0.00    0.00    3553/331782      move_right [39]
-                0.00    0.00    3553/343564      move_up_right [37]
-                0.00    0.00    3553/474949      move_up_left [32]
-                0.00    0.00    3553/392220      move_down_right [34]
-                0.00    0.00    3553/338542      move_down_left [38]
------------------------------------------------
-                0.00    0.00    2764/2764        en_passant_and_castle [19]
-[22]     0.7    0.00    0.00    2764         check_black_long_castle [22]
-                0.00    0.00    2764/95798       isAttacked_by_white [7]
-                0.00    0.00    1517/10971343     get_piece_in_square [25]
------------------------------------------------
-                0.00    0.00    2764/2764        en_passant_and_castle [19]
-[23]     0.7    0.00    0.00    2764         check_black_short_castle [23]
-                0.00    0.00    2764/95798       isAttacked_by_white [7]
-                0.00    0.00    1517/10971343     get_piece_in_square [25]
------------------------------------------------
-                0.00    0.00     789/789         en_passant_and_castle [19]
-[24]     0.0    0.00    0.00     789         check_white_short_castle [24]
-                0.00    0.00      88/96439       is_move_valid [10]
-                0.00    0.00    1394/10971343     get_piece_in_square [25]
-                0.00    0.00     789/51463       isAttacked_by_black [53]
-                0.00    0.00      88/171119      create_a_move [44]
------------------------------------------------
-                0.00    0.00      64/10971343     print_board [65]
-                0.00    0.00    1394/10971343     check_white_short_castle [24]
-                0.00    0.00    1481/10971343     check_white_long_castle [59]
-                0.00    0.00    1517/10971343     check_black_long_castle [22]
-                0.00    0.00    1517/10971343     check_black_short_castle [23]
-                0.00    0.00   45924/10971343     pawn_straight [54]
-                0.00    0.00   55637/10971343     moves_of_piece [11]
-                0.00    0.00   59701/10971343     commit_a_move_for_white [51]
-                0.00    0.00   81333/10971343     commit_a_move_for_black [50]
-                0.00    0.00  190066/10971343     can_en_passant_next_move [48]
-                0.00    0.00  271454/10971343     find_king_square [45]
-                0.00    0.00  308293/10971343     get_all_moves [9]
-                0.00    0.00  454790/10971343     color_of_piece [33]
-                0.00    0.00  863078/10971343     isAttacked_by_black [53]
-                0.00    0.00 1014445/10971343     isAttacked_by_white [7]
-                0.00    0.00 2026437/10971343     colid_with_ally [27]
-                0.00    0.00 2646464/10971343     evaluate_by_points [6]
-                0.00    0.00 2947748/10971343     colid_with_enemy [26]
-[25]     0.0    0.00    0.00 10971343         get_piece_in_square [25]
------------------------------------------------
-                0.00    0.00   23801/2947748     pawn_eat_right [58]
-                0.00    0.00   23803/2947748     pawn_eat_left [57]
-                0.00    0.00  308268/2947748     move_down [40]
-                0.00    0.00  331782/2947748     move_right [39]
-                0.00    0.00  338542/2947748     move_down_left [38]
-                0.00    0.00  343564/2947748     move_up_right [37]
-                0.00    0.00  344750/2947748     move_left [36]
-                0.00    0.00  366069/2947748     move_up [35]
-                0.00    0.00  392220/2947748     move_down_right [34]
-                0.00    0.00  474949/2947748     move_up_left [32]
-[26]     0.0    0.00    0.00 2947748         colid_with_enemy [26]
-                0.00    0.00 2947748/10971343     get_piece_in_square [25]
------------------------------------------------
-                0.00    0.00   24434/2026437     knight [13]
-                0.00    0.00  170779/2026437     move_up_right [37]
-                0.00    0.00  197145/2026437     move_up [35]
-                0.00    0.00  204422/2026437     move_down [40]
-                0.00    0.00  234500/2026437     move_down_left [38]
-                0.00    0.00  255674/2026437     move_down_right [34]
-                0.00    0.00  271160/2026437     move_up_left [32]
-                0.00    0.00  327293/2026437     move_right [39]
-                0.00    0.00  341030/2026437     move_left [36]
-[27]     0.0    0.00    0.00 2026437         colid_with_ally [27]
-                0.00    0.00 2026437/10971343     get_piece_in_square [25]
------------------------------------------------
-                0.00    0.00  340964/1179350     move_up_right [37]
-                0.00    0.00  365232/1179350     move_up [35]
-                0.00    0.00  473154/1179350     move_up_left [32]
-[28]     0.0    0.00    0.00 1179350         pass_up [28]
------------------------------------------------
-                0.00    0.00  306514/1005119     move_down [40]
-                0.00    0.00  335340/1005119     move_down_left [38]
-                0.00    0.00  363265/1005119     move_down_right [34]
-[29]     0.0    0.00    0.00 1005119         pass_down [29]
------------------------------------------------
-                0.00    0.00   27354/911957      pawn_eat_left [57]
-                0.00    0.00  234945/911957      move_down_left [38]
-                0.00    0.00  304992/911957      move_up_left [32]
-                0.00    0.00  344666/911957      move_left [36]
-[30]     0.0    0.00    0.00  911957         pass_left [30]
------------------------------------------------
-                0.00    0.00   27354/793788      pawn_eat_right [58]
-                0.00    0.00  172613/793788      move_up_right [37]
-                0.00    0.00  262173/793788      move_down_right [34]
-                0.00    0.00  331648/793788      move_right [39]
-[31]     0.0    0.00    0.00  793788         pass_right [31]
------------------------------------------------
-                0.00    0.00    3553/474949      king [21]
-                0.00    0.00   12990/474949      move_in_diagonal_lines [15]
-                0.00    0.00  158527/474949      isAttacked_by_white [7]
-                0.00    0.00  299879/474949      isAttacked_by_black [53]
-[32]     0.0    0.00    0.00  474949         move_up_left [32]
-                0.00    0.00  474949/2947748     colid_with_enemy [26]
-                0.00    0.00  473154/1179350     pass_up [28]
-                0.00    0.00  304992/911957      pass_left [30]
-                0.00    0.00  271160/2026437     colid_with_ally [27]
------------------------------------------------
-                0.00    0.00       6/454790      en_passant_and_castle [19]
-                0.00    0.00  454784/454790      get_all_moves [9]
-[33]     0.0    0.00    0.00  454790         color_of_piece [33]
-                0.00    0.00  454790/10971343     get_piece_in_square [25]
------------------------------------------------
-                0.00    0.00    3553/392220      king [21]
-                0.00    0.00   12302/392220      move_in_diagonal_lines [15]
-                0.00    0.00  105575/392220      isAttacked_by_black [53]
-                0.00    0.00  270790/392220      isAttacked_by_white [7]
-[34]     0.0    0.00    0.00  392220         move_down_right [34]
-                0.00    0.00  392220/2947748     colid_with_enemy [26]
-                0.00    0.00  363265/1005119     pass_down [29]
-                0.00    0.00  262173/793788      pass_right [31]
-                0.00    0.00  255674/2026437     colid_with_ally [27]
------------------------------------------------
-                0.00    0.00    3553/366069      king [21]
-                0.00    0.00   13740/366069      move_in_straight_lines [14]
-                0.00    0.00  158907/366069      isAttacked_by_white [7]
-                0.00    0.00  189869/366069      isAttacked_by_black [53]
-[35]     0.0    0.00    0.00  366069         move_up [35]
-                0.00    0.00  366069/2947748     colid_with_enemy [26]
-                0.00    0.00  365232/1179350     pass_up [28]
-                0.00    0.00  197145/2026437     colid_with_ally [27]
------------------------------------------------
-                0.00    0.00    3553/344750      king [21]
-                0.00    0.00   14507/344750      move_in_straight_lines [14]
-                0.00    0.00  158966/344750      isAttacked_by_white [7]
-                0.00    0.00  167724/344750      isAttacked_by_black [53]
-[36]     0.0    0.00    0.00  344750         move_left [36]
-                0.00    0.00  344750/2947748     colid_with_enemy [26]
-                0.00    0.00  344666/911957      pass_left [30]
-                0.00    0.00  341030/2026437     colid_with_ally [27]
------------------------------------------------
-                0.00    0.00    3553/343564      king [21]
-                0.00    0.00   17555/343564      move_in_diagonal_lines [15]
-                0.00    0.00  158651/343564      isAttacked_by_white [7]
-                0.00    0.00  163805/343564      isAttacked_by_black [53]
-[37]     0.0    0.00    0.00  343564         move_up_right [37]
-                0.00    0.00  343564/2947748     colid_with_enemy [26]
-                0.00    0.00  340964/1179350     pass_up [28]
-                0.00    0.00  172613/793788      pass_right [31]
-                0.00    0.00  170779/2026437     colid_with_ally [27]
------------------------------------------------
-                0.00    0.00    3553/338542      king [21]
-                0.00    0.00   14175/338542      move_in_diagonal_lines [15]
-                0.00    0.00  104246/338542      isAttacked_by_black [53]
-                0.00    0.00  216568/338542      isAttacked_by_white [7]
-[38]     0.0    0.00    0.00  338542         move_down_left [38]
-                0.00    0.00  338542/2947748     colid_with_enemy [26]
-                0.00    0.00  335340/1005119     pass_down [29]
-                0.00    0.00  234945/911957      pass_left [30]
-                0.00    0.00  234500/2026437     colid_with_ally [27]
------------------------------------------------
-                0.00    0.00    3553/331782      king [21]
-                0.00    0.00   13161/331782      move_in_straight_lines [14]
-                0.00    0.00  155766/331782      isAttacked_by_black [53]
-                0.00    0.00  159302/331782      isAttacked_by_white [7]
-[39]     0.0    0.00    0.00  331782         move_right [39]
-                0.00    0.00  331782/2947748     colid_with_enemy [26]
-                0.00    0.00  331648/793788      pass_right [31]
-                0.00    0.00  327293/2026437     colid_with_ally [27]
------------------------------------------------
-                0.00    0.00    3553/308268      king [21]
-                0.00    0.00   18916/308268      move_in_straight_lines [14]
-                0.00    0.00  105747/308268      isAttacked_by_black [53]
-                0.00    0.00  180052/308268      isAttacked_by_white [7]
-[40]     0.0    0.00    0.00  308268         move_down [40]
-                0.00    0.00  308268/2947748     colid_with_enemy [26]
-                0.00    0.00  306514/1005119     pass_down [29]
-                0.00    0.00  204422/2026437     colid_with_ally [27]
------------------------------------------------
-                0.00    0.00       4/280485      commit_a_long_castle_for_black [63]
-                0.00    0.00       6/280485      commit_en_passant_for_black [62]
-                0.00    0.00      15/280485      commit_en_passant_for_white [61]
-                0.00    0.00     336/280485      commit_a_short_castle_for_white [60]
-                0.00    0.00  118574/280485      commit_a_move_for_white [51]
-                0.00    0.00  161550/280485      commit_a_move_for_black [50]
-[41]     0.0    0.00    0.00  280485         change_the_square [41]
------------------------------------------------
-                0.00    0.00       1/280217      check_miminax [1]
-                0.00    0.00   59376/280217      commit_a_move_for_white [51]
-                0.00    0.00   80778/280217      commit_a_move_for_black [50]
-                0.00    0.00  140062/280217      can_en_passant_next_move [48]
-[42]     0.0    0.00    0.00  280217         get_dst_square [42]
------------------------------------------------
-                0.00    0.00       1/280217      check_miminax [1]
-                0.00    0.00   59376/280217      commit_a_move_for_white [51]
-                0.00    0.00   80778/280217      commit_a_move_for_black [50]
-                0.00    0.00  140062/280217      can_en_passant_next_move [48]
-[43]     0.0    0.00    0.00  280217         get_src_square [43]
------------------------------------------------
-                0.00    0.00       8/171119      check_miminax [1]
-                0.00    0.00      88/171119      check_white_short_castle [24]
-                0.00    0.00    1240/171119      evaluate_minimax_for_black <cycle 1> [5]
-                0.00    0.00    3546/171119      queen [17]
-                0.00    0.00    3600/171119      en_passant_and_castle [19]
-                0.00    0.00    7106/171119      get_all_moves [9]
-                0.00    0.00    8065/171119      king [21]
-                0.00    0.00   14270/171119      whitepawn [20]
-                0.00    0.00   25090/171119      move_in_diagonal_lines [15]
-                0.00    0.00   25988/171119      knight [13]
-                0.00    0.00   28368/171119      move_in_straight_lines [14]
-                0.00    0.00   53750/171119      blackpawn [12]
-[44]     0.0    0.00    0.00  171119         create_a_move [44]
------------------------------------------------
-                0.00    0.00   17110/140155      evaluate_minimax_for_white <cycle 1> [8]
-                0.00    0.00   26606/140155      evaluate_minimax_for_black <cycle 1> [5]
-                0.00    0.00   96439/140155      is_move_valid [10]
-[45]     0.0    0.00    0.00  140155         find_king_square [45]
-                0.00    0.00  271454/10971343     get_piece_in_square [25]
------------------------------------------------
-                0.00    0.00   59376/140154      commit_a_move_for_white [51]
-                0.00    0.00   80778/140154      commit_a_move_for_black [50]
-[46]     0.0    0.00    0.00  140154         get_is_short_castle [46]
------------------------------------------------
-                0.00    0.00   59292/140070      commit_a_move_for_white [51]
-                0.00    0.00   80778/140070      commit_a_move_for_black [50]
-[47]     0.0    0.00    0.00  140070         get_is_long_castle [47]
------------------------------------------------
-                0.00    0.00   59287/140062      commit_a_move_for_white [51]
-                0.00    0.00   80775/140062      commit_a_move_for_black [50]
-[48]     0.0    0.00    0.00  140062         can_en_passant_next_move [48]
-                0.00    0.00  190066/10971343     get_piece_in_square [25]
-                0.00    0.00  140062/280217      get_src_square [43]
-                0.00    0.00  140062/280217      get_dst_square [42]
------------------------------------------------
-                0.00    0.00   87350/87350       ht_insert [55]
-[49]     0.0    0.00    0.00   87350         ht_is_initialized [49]
------------------------------------------------
-                0.00    0.00       4/80778       check_miminax [1]
-                0.00    0.00   17110/80778       evaluate_minimax_for_black <cycle 1> [5]
-                0.00    0.00   63664/80778       is_move_valid [10]
-[50]     0.0    0.00    0.00   80778         commit_a_move_for_black [50]
-                0.00    0.00  161550/280485      change_the_square [41]
-                0.00    0.00   81333/10971343     get_piece_in_square [25]
-                0.00    0.00   80778/280217      get_src_square [43]
-                0.00    0.00   80778/280217      get_dst_square [42]
-                0.00    0.00   80778/140154      get_is_short_castle [46]
-                0.00    0.00   80778/140070      get_is_long_castle [47]
-                0.00    0.00   80775/140062      can_en_passant_next_move [48]
-                0.00    0.00       2/2           commit_en_passant_for_black [62]
-                0.00    0.00       1/1           commit_a_long_castle_for_black [63]
------------------------------------------------
-                0.00    0.00       4/59376       check_miminax [1]
-                0.00    0.00      41/59376       get_best_move_white [2]
-                0.00    0.00   26556/59376       evaluate_minimax_for_white <cycle 1> [8]
-                0.00    0.00   32775/59376       is_move_valid [10]
-[51]     0.0    0.00    0.00   59376         commit_a_move_for_white [51]
-                0.00    0.00  118574/280485      change_the_square [41]
-                0.00    0.00   59701/10971343     get_piece_in_square [25]
-                0.00    0.00   59376/280217      get_dst_square [42]
-                0.00    0.00   59376/280217      get_src_square [43]
-                0.00    0.00   59376/140154      get_is_short_castle [46]
-                0.00    0.00   59292/140070      get_is_long_castle [47]
-                0.00    0.00   59287/140062      can_en_passant_next_move [48]
-                0.00    0.00      84/84          commit_a_short_castle_for_white [60]
-                0.00    0.00       5/5           commit_en_passant_for_white [61]
------------------------------------------------
-                0.00    0.00   55637/55637       get_all_moves [9]
-[52]     0.0    0.00    0.00   55637         get_max_moves_of_piece [52]
------------------------------------------------
-                0.00    0.00     789/51463       check_white_long_castle [59]
-                0.00    0.00     789/51463       check_white_short_castle [24]
-                0.00    0.00   17110/51463       evaluate_minimax_for_white <cycle 1> [8]
-                0.00    0.00   32775/51463       is_move_valid [10]
-[53]     0.0    0.00    0.00   51463         isAttacked_by_black [53]
-                0.00    0.00  863078/10971343     get_piece_in_square [25]
-                0.00    0.00  299879/474949      move_up_left [32]
-                0.00    0.00  189869/366069      move_up [35]
-                0.00    0.00  167724/344750      move_left [36]
-                0.00    0.00  163805/343564      move_up_right [37]
-                0.00    0.00  155766/331782      move_right [39]
-                0.00    0.00  105747/308268      move_down [40]
-                0.00    0.00  105575/392220      move_down_right [34]
-                0.00    0.00  104246/338542      move_down_left [38]
------------------------------------------------
-                0.00    0.00   10084/45924       whitepawn [20]
-                0.00    0.00   35840/45924       blackpawn [12]
-[54]     0.0    0.00    0.00   45924         pawn_straight [54]
-                0.00    0.00   45924/10971343     get_piece_in_square [25]
------------------------------------------------
-                0.00    0.00       9/43675       get_best_move_white [2]
-                0.00    0.00   17110/43675       evaluate_minimax_for_black <cycle 1> [5]
-                0.00    0.00   26556/43675       evaluate_minimax_for_white <cycle 1> [8]
-[55]     0.0    0.00    0.00   43675         ht_insert [55]
-                0.00    0.00   87350/87350       ht_is_initialized [49]
-                0.00    0.00   43675/43675       _ht_should_grow [101]
-                0.00    0.00   43675/87341       _ht_hash [98]
-                0.00    0.00   29630/61664       _ht_equal [100]
-                0.00    0.00   21804/21804       _ht_push_front [103]
------------------------------------------------
-                0.00    0.00   17110/43666       evaluate_minimax_for_black <cycle 1> [5]
-                0.00    0.00   26556/43666       evaluate_minimax_for_white <cycle 1> [8]
-[56]     0.0    0.00    0.00   43666         ht_lookup [56]
-                0.00    0.00   43666/87341       _ht_hash [98]
-                0.00    0.00   32034/61664       _ht_equal [100]
------------------------------------------------
-                0.00    0.00    6310/27354       whitepawn [20]
-                0.00    0.00   21044/27354       blackpawn [12]
-[57]     0.0    0.00    0.00   27354         pawn_eat_left [57]
-                0.00    0.00   27354/911957      pass_left [30]
-                0.00    0.00   23803/2947748     colid_with_enemy [26]
------------------------------------------------
-                0.00    0.00    6310/27354       whitepawn [20]
-                0.00    0.00   21044/27354       blackpawn [12]
-[58]     0.0    0.00    0.00   27354         pawn_eat_right [58]
-                0.00    0.00   27354/793788      pass_right [31]
-                0.00    0.00   23801/2947748     colid_with_enemy [26]
------------------------------------------------
-                0.00    0.00     789/789         en_passant_and_castle [19]
-[59]     0.0    0.00    0.00     789         check_white_long_castle [59]
-                0.00    0.00    1481/10971343     get_piece_in_square [25]
-                0.00    0.00     789/51463       isAttacked_by_black [53]
------------------------------------------------
-                0.00    0.00      84/84          commit_a_move_for_white [51]
-[60]     0.0    0.00    0.00      84         commit_a_short_castle_for_white [60]
-                0.00    0.00     336/280485      change_the_square [41]
------------------------------------------------
-                0.00    0.00       5/5           commit_a_move_for_white [51]
-[61]     0.0    0.00    0.00       5         commit_en_passant_for_white [61]
-                0.00    0.00      15/280485      change_the_square [41]
------------------------------------------------
-                0.00    0.00       2/2           commit_a_move_for_black [50]
-[62]     0.0    0.00    0.00       2         commit_en_passant_for_black [62]
-                0.00    0.00       6/280485      change_the_square [41]
------------------------------------------------
-                0.00    0.00       1/1           commit_a_move_for_black [50]
-[63]     0.0    0.00    0.00       1         commit_a_long_castle_for_black [63]
-                0.00    0.00       4/280485      change_the_square [41]
------------------------------------------------
-                0.00    0.00       1/1           check_miminax [1]
-[64]     0.0    0.00    0.00       1         ht_setup [64]
-                0.00    0.00       1/1           _ht_allocate [104]
------------------------------------------------
-                0.00    0.00       1/1           check_miminax [1]
-[65]     0.0    0.00    0.00       1         print_board [65]
-                0.00    0.00      64/10971343     get_piece_in_square [25]
------------------------------------------------
-                0.00    0.00   87341/87341       _ht_hash [98]
-[97]     0.0    0.00    0.00   87341         _ht_default_hash [97]
------------------------------------------------
-                0.00    0.00   43666/87341       ht_lookup [56]
-                0.00    0.00   43675/87341       ht_insert [55]
-[98]     0.0    0.00    0.00   87341         _ht_hash [98]
-                0.00    0.00   87341/87341       _ht_default_hash [97]
------------------------------------------------
-                0.00    0.00   61664/61664       _ht_equal [100]
-[99]     0.0    0.00    0.00   61664         _ht_default_compare [99]
------------------------------------------------
-                0.00    0.00   29630/61664       ht_insert [55]
-                0.00    0.00   32034/61664       ht_lookup [56]
-[100]    0.0    0.00    0.00   61664         _ht_equal [100]
-                0.00    0.00   61664/61664       _ht_default_compare [99]
------------------------------------------------
-                0.00    0.00   43675/43675       ht_insert [55]
-[101]    0.0    0.00    0.00   43675         _ht_should_grow [101]
------------------------------------------------
-                0.00    0.00   21804/21804       _ht_push_front [103]
-[102]    0.0    0.00    0.00   21804         _ht_create_node [102]
------------------------------------------------
-                0.00    0.00   21804/21804       ht_insert [55]
-[103]    0.0    0.00    0.00   21804         _ht_push_front [103]
-                0.00    0.00   21804/21804       _ht_create_node [102]
------------------------------------------------
-                0.00    0.00       1/1           ht_setup [64]
-[104]    0.0    0.00    0.00       1         _ht_allocate [104]
+[6]      5.0    0.00    0.03                 get_all_moves [6]
+                0.00    0.02     622/622         is_move_valid [8]
+                0.01    0.00    9946/9946        moves_of_piece [10]
+                0.00    0.00   79616/79617       en_passant_and_castle [24]
+                0.00    0.00   51578/2368615     main [44]
+                0.00    0.00    9946/9946        color_of_piece [60]
+                0.00    0.00    1244/27200       change_the_square [58]
+-----------------------------------------------
+                0.00    0.00       6/55040       commit_en_passant_for_black [39]
+                0.00    0.00    5400/55040       commit_a_move_for_white [19]
+                0.02    0.00   49634/55040       commit_a_move_for_black [5]
+[7]      3.4    0.02    0.00   55040         get_piece_in_square [7]
+-----------------------------------------------
+                0.00    0.02     622/622         get_all_moves [6]
+[8]      3.0    0.00    0.02     622         is_move_valid [8]
+                0.00    0.01   12529/14219       isAttacked_by_black [18]
+                0.00    0.01   14108/22250       isAttacked_by_white [11]
+                0.00    0.00   12529/24819       commit_a_move_for_white [19]
+                0.00    0.00    1579/9275        get_is_short_castle [62]
+-----------------------------------------------
+                                                 <spontaneous>
+[9]      2.3    0.00    0.01                 evaluate_minimax_for_black [9]
+                0.00    0.01    7542/8122        ht_insert [14]
+                0.00    0.00   12269/24819       commit_a_move_for_white [19]
+                0.00    0.00     560/14219       isAttacked_by_black [18]
+                0.00    0.00     560/22250       isAttacked_by_white [11]
+                0.00    0.00    7542/7582        uci_parse [38]
+                0.00    0.00   12269/13389       ht_lookup [59]
+                0.00    0.00    7542/8122        ht_contains [63]
+                0.00    0.00     564/622         get_max_moves_of_piece [67]
+                0.00    0.00       4/27200       change_the_square [58]
+-----------------------------------------------
+                0.01    0.00    9946/9946        get_all_moves [6]
+[10]     1.9    0.01    0.00    9946         moves_of_piece [10]
+                0.00    0.00    1301/1301        move_in_diagonal_lines [28]
+                0.00    0.00     622/622         bishop [32]
+                0.00    0.00     456/456         knight [33]
+                0.00    0.00    1186/1186        king [34]
+                0.00    0.00     622/622         queen [35]
+                0.00    0.00    4515/4515        whitepawn [36]
+                0.00    0.00    9946/2368615     main [44]
+                0.00    0.00    1244/1244        rook [66]
+-----------------------------------------------
+                0.00    0.00     560/22250       evaluate_minimax_for_black [9]
+                0.00    0.00    7582/22250       evaluate_minimax_for_white [4]
+                0.00    0.01   14108/22250       is_move_valid [8]
+[11]     1.7    0.00    0.01   22250         isAttacked_by_white [11]
+                0.00    0.00   28245/65684       pawn_eat_right [13]
+                0.00    0.00   49063/69908       move_down_left [21]
+                0.00    0.00   28575/50937       move_left [22]
+                0.00    0.00   28249/61328       move_up_left [23]
+                0.00    0.00  183272/2368615     main [44]
+                0.00    0.00   51977/72750       move_up_right [50]
+                0.00    0.00   32119/53450       move_up [53]
+                0.00    0.00   28668/50716       move_down [54]
+                0.00    0.00   28249/62540       move_right [51]
+-----------------------------------------------
+                0.00    0.00    4971/142870      pawn_straight [31]
+                0.00    0.00   31978/142870      move_up_left [23]
+                0.00    0.00   50716/142870      move_left [22]
+                0.00    0.00   55205/142870      move_down_left [21]
+[12]     1.7    0.01    0.00  142870         is_endgame [12]
+                0.00    0.00  482688/2368615     main [44]
+-----------------------------------------------
+                0.00    0.00     622/65684       king [34]
+                0.00    0.00    1935/65684       move_in_straight_lines [27]
+                0.00    0.00   28245/65684       isAttacked_by_white [11]
+                0.01    0.00   34882/65684       isAttacked_by_black [18]
+[13]     1.7    0.01    0.00   65684         pawn_eat_right [13]
+                0.00    0.00    4350/496013      colid_with_ally [45]
+-----------------------------------------------
+                0.00    0.00      20/8122        get_best_move_black [37]
+                0.00    0.00     560/8122        evaluate_minimax_for_white [4]
+                0.00    0.01    7542/8122        evaluate_minimax_for_black [9]
+[14]     1.7    0.00    0.01    8122         ht_insert [14]
+                0.01    0.00    8122/8122        _ht_push_front [16]
+                0.00    0.00   16244/32490       ht_is_initialized [55]
+                0.00    0.00    8122/8122        _ht_should_grow [109]
+                0.00    0.00    8122/29633       _ht_hash [106]
+                0.00    0.00       5/5305        _ht_equal [111]
+-----------------------------------------------
+                0.01    0.00    7542/7542        commit_a_move_for_black [5]
+[15]     1.7    0.01    0.00    7542         evaluate_by_points [15]
+                0.00    0.00  482688/2368615     main [44]
+-----------------------------------------------
+                0.01    0.00    8122/8122        ht_insert [14]
+[16]     1.7    0.01    0.00    8122         _ht_push_front [16]
+                0.00    0.00    8122/8122        _ht_create_node [107]
+-----------------------------------------------
+                0.00    0.00       1/55050       translate_piece_symbol [41]
+                0.00    0.00       2/55050       bot_move [1]
+                0.00    0.00      11/55050       player_move [40]
+                0.00    0.00    2700/55050       can_en_passant_next_move [26]
+                0.00    0.00   24819/55050       commit_a_move_for_white [19]
+                0.01    0.00   27517/55050       commit_promotion_for_black [20]
+[17]     1.7    0.01    0.00   55050         create_a_move [17]
+-----------------------------------------------
+                0.00    0.00     560/14219       evaluate_minimax_for_black [9]
+                0.00    0.00     565/14219       check_white_short_castle [30]
+                0.00    0.00     565/14219       check_black_long_castle [29]
+                0.00    0.01   12529/14219       is_move_valid [8]
+[18]     1.5    0.00    0.01   14219         isAttacked_by_black [18]
+                0.01    0.00   34882/65684       pawn_eat_right [13]
+                0.00    0.00   19757/50937       move_left [22]
+                0.00    0.00   30349/61328       move_up_left [23]
+                0.00    0.00   17734/69908       move_down_left [21]
+                0.00    0.00  124201/2368615     main [44]
+                0.00    0.00   31561/62540       move_right [51]
+                0.00    0.00   19447/50716       move_down [54]
+                0.00    0.00   18526/53450       move_up [53]
+                0.00    0.00   17734/72750       move_up_right [50]
+-----------------------------------------------
+                0.00    0.00       1/24819       bot_move [1]
+                0.00    0.00      20/24819       get_best_move_black [37]
+                0.00    0.00   12269/24819       evaluate_minimax_for_black [9]
+                0.00    0.00   12529/24819       is_move_valid [8]
+[19]     1.2    0.00    0.01   24819         commit_a_move_for_white [19]
+                0.00    0.00   24819/55050       create_a_move [17]
+                0.00    0.00    5400/55040       get_piece_in_square [7]
+                0.00    0.00    2700/27517       commit_promotion_for_black [20]
+                0.00    0.00   24819/55039       get_src_square [52]
+                0.00    0.00    2712/2368615     main [44]
+                0.00    0.00    2700/27519       get_is_long_castle [56]
+                0.00    0.00    2700/27519       get_promotion_choice [57]
+-----------------------------------------------
+                0.00    0.00    2700/27517       commit_a_move_for_white [19]
+                0.00    0.00   24817/27517       commit_a_move_for_black [5]
+[20]     0.8    0.00    0.01   27517         commit_promotion_for_black [20]
+                0.01    0.00   27517/55050       create_a_move [17]
+                0.00    0.00   27517/55039       get_src_square [52]
+-----------------------------------------------
+                0.00    0.00     622/69908       king [34]
+                0.00    0.00    2489/69908       move_in_diagonal_lines [28]
+                0.00    0.00   17734/69908       isAttacked_by_black [18]
+                0.00    0.00   49063/69908       isAttacked_by_white [11]
+[21]     0.7    0.00    0.00   69908         move_down_left [21]
+                0.00    0.00   55205/142870      is_endgame [12]
+                0.00    0.00   72750/496013      colid_with_ally [45]
+                0.00    0.00   72480/195696      pass_right [47]
+                0.00    0.00   52901/339282      pass_up [46]
+-----------------------------------------------
+                0.00    0.00     622/50937       king [34]
+                0.00    0.00    1983/50937       move_in_straight_lines [27]
+                0.00    0.00   19757/50937       isAttacked_by_black [18]
+                0.00    0.00   28575/50937       isAttacked_by_white [11]
+[22]     0.6    0.00    0.00   50937         move_left [22]
+                0.00    0.00   50716/142870      is_endgame [12]
+                0.00    0.00   50716/496013      colid_with_ally [45]
+                0.00    0.00   50082/339282      pass_up [46]
+-----------------------------------------------
+                0.00    0.00     622/61328       king [34]
+                0.00    0.00    2108/61328       move_in_diagonal_lines [28]
+                0.00    0.00   28249/61328       isAttacked_by_white [11]
+                0.00    0.00   30349/61328       isAttacked_by_black [18]
+[23]     0.4    0.00    0.00   61328         move_up_left [23]
+                0.00    0.00   31978/142870      is_endgame [12]
+                0.00    0.00   62540/496013      colid_with_ally [45]
+                0.00    0.00   62153/188863      pass_down [48]
+                0.00    0.00   31102/339282      pass_up [46]
+-----------------------------------------------
+                                   2             en_passant_and_castle [24]
+                0.00    0.00       1/79617       check_src [42]
+                0.00    0.00   79616/79617       get_all_moves [6]
+[24]     0.1    0.00    0.00   79617+2       en_passant_and_castle [24]
+                0.00    0.00     565/565         check_white_short_castle [30]
+                0.00    0.00     565/565         check_black_long_castle [29]
+                0.00    0.00       1/5782        blackpawn [25]
+                0.00    0.00   79619/2368615     main [44]
+                0.00    0.00     623/27200       change_the_square [58]
+                0.00    0.00      57/57          print_board [69]
+                0.00    0.00      57/57          check_white_long_castle [68]
+                                   2             en_passant_and_castle [24]
+-----------------------------------------------
+                                8326             blackpawn [25]
+                0.00    0.00       1/5782        en_passant_and_castle [24]
+                0.00    0.00     253/5782        king [34]
+                0.00    0.00     388/5782        move_in_straight_lines [27]
+                0.00    0.00     835/5782        whitepawn [36]
+                0.00    0.00    1658/5782        move_in_diagonal_lines [28]
+                0.00    0.00    2647/5782        knight [33]
+[25]     0.1    0.00    0.00    5782+8326    blackpawn [25]
+                0.00    0.00    4515/4971        pawn_straight [31]
+                0.00    0.00    1579/2700        can_en_passant_next_move [26]
+                0.00    0.00   12841/27200       change_the_square [58]
+                0.00    0.00    8455/9299        colid_with_enemy [61]
+                0.00    0.00    4515/4971        pawn_eat_left [64]
+                                8326             blackpawn [25]
+-----------------------------------------------
+                0.00    0.00       1/2700        player_move [40]
+                0.00    0.00    1120/2700        evaluate_minimax_for_white [4]
+                0.00    0.00    1579/2700        blackpawn [25]
+[26]     0.1    0.00    0.00    2700         can_en_passant_next_move [26]
+                0.00    0.00    2700/55050       create_a_move [17]
+                0.00    0.00   44205/2368615     main [44]
+                0.00    0.00    2700/55039       get_src_square [52]
+-----------------------------------------------
+                0.00    0.00     622/1866        queen [35]
+                0.00    0.00    1244/1866        bishop [32]
+[27]     0.1    0.00    0.00    1866         move_in_straight_lines [27]
+                0.00    0.00    1935/65684       pawn_eat_right [13]
+                0.00    0.00    1983/50937       move_left [22]
+                0.00    0.00     388/5782        blackpawn [25]
+                0.00    0.00    2311/27200       change_the_square [58]
+                0.00    0.00    2183/53450       move_up [53]
+                0.00    0.00    1979/50716       move_down [54]
+-----------------------------------------------
+                0.00    0.00    1301/1301        moves_of_piece [10]
+[28]     0.1    0.00    0.00    1301         move_in_diagonal_lines [28]
+                0.00    0.00    1658/5782        blackpawn [25]
+                0.00    0.00    2489/69908       move_down_left [21]
+                0.00    0.00    2108/61328       move_up_left [23]
+                0.00    0.00    3524/27200       change_the_square [58]
+                0.00    0.00    2417/72750       move_up_right [50]
+                0.00    0.00    2108/62540       move_right [51]
+-----------------------------------------------
+                0.00    0.00     565/565         en_passant_and_castle [24]
+[29]     0.1    0.00    0.00     565         check_black_long_castle [29]
+                0.00    0.00     565/14219       isAttacked_by_black [18]
+                0.00    0.00     557/2368615     main [44]
+-----------------------------------------------
+                0.00    0.00     565/565         en_passant_and_castle [24]
+[30]     0.1    0.00    0.00     565         check_white_short_castle [30]
+                0.00    0.00     565/14219       isAttacked_by_black [18]
+                0.00    0.00      41/2368615     main [44]
+-----------------------------------------------
+                0.00    0.00     456/4971        whitepawn [36]
+                0.00    0.00    4515/4971        blackpawn [25]
+[31]     0.1    0.00    0.00    4971         pawn_straight [31]
+                0.00    0.00    4971/142870      is_endgame [12]
+                0.00    0.00    9299/2368615     main [44]
+-----------------------------------------------
+                0.00    0.00     622/622         moves_of_piece [10]
+[32]     0.1    0.00    0.00     622         bishop [32]
+                0.00    0.00    1244/1866        move_in_straight_lines [27]
+-----------------------------------------------
+                0.00    0.00     456/456         moves_of_piece [10]
+[33]     0.0    0.00    0.00     456         knight [33]
+                0.00    0.00    2647/5782        blackpawn [25]
+                0.00    0.00    3893/339282      pass_up [46]
+                0.00    0.00    3833/27200       change_the_square [58]
+-----------------------------------------------
+                0.00    0.00    1186/1186        moves_of_piece [10]
+[34]     0.0    0.00    0.00    1186         king [34]
+                0.00    0.00     622/65684       pawn_eat_right [13]
+                0.00    0.00     622/50937       move_left [22]
+                0.00    0.00     622/69908       move_down_left [21]
+                0.00    0.00     253/5782        blackpawn [25]
+                0.00    0.00     622/61328       move_up_left [23]
+                0.00    0.00     875/27200       change_the_square [58]
+                0.00    0.00     622/53450       move_up [53]
+                0.00    0.00     622/50716       move_down [54]
+                0.00    0.00     622/62540       move_right [51]
+                0.00    0.00     622/72750       move_up_right [50]
+-----------------------------------------------
+                0.00    0.00     622/622         moves_of_piece [10]
+[35]     0.0    0.00    0.00     622         queen [35]
+                0.00    0.00     622/1866        move_in_straight_lines [27]
+                0.00    0.00     622/1923        move_down_right [65]
+                0.00    0.00     622/27200       change_the_square [58]
+-----------------------------------------------
+                0.00    0.00    4515/4515        moves_of_piece [10]
+[36]     0.0    0.00    0.00    4515         whitepawn [36]
+                0.00    0.00     835/5782        blackpawn [25]
+                0.00    0.00     456/4971        pawn_straight [31]
+                0.00    0.00    1291/27200       change_the_square [58]
+                0.00    0.00     844/9299        colid_with_enemy [61]
+                0.00    0.00     456/4971        pawn_eat_left [64]
+-----------------------------------------------
+                                                 <spontaneous>
+[37]     0.0    0.00    0.00                 get_best_move_black [37]
+                0.00    0.00      20/8122        ht_insert [14]
+                0.00    0.00      20/24819       commit_a_move_for_white [19]
+                0.00    0.00      40/7582        uci_parse [38]
+                0.00    0.00       1/1           setup_start_board [43]
+                0.00    0.00      21/27200       change_the_square [58]
+                0.00    0.00      20/8122        ht_contains [63]
+                0.00    0.00       1/622         get_max_moves_of_piece [67]
+-----------------------------------------------
+                0.00    0.00      40/7582        get_best_move_black [37]
+                0.00    0.00    7542/7582        evaluate_minimax_for_black [9]
+[38]     0.0    0.00    0.00    7582         uci_parse [38]
+                0.00    0.00       1/1           player_move [40]
+                0.00    0.00       1/2           check_src [42]
+                0.00    0.00       1/1           check_bot_promotion [71]
+-----------------------------------------------
+                                                 <spontaneous>
+[39]     0.0    0.00    0.00                 commit_en_passant_for_black [39]
+                0.00    0.00       6/55040       get_piece_in_square [7]
+-----------------------------------------------
+                0.00    0.00       1/1           uci_parse [38]
+[40]     0.0    0.00    0.00       1         player_move [40]
+                0.00    0.00      11/55050       create_a_move [17]
+                0.00    0.00       1/2700        can_en_passant_next_move [26]
+                0.00    0.00      11/27200       change_the_square [58]
+                0.00    0.00       1/1           check_endgame [72]
+                0.00    0.00       1/622         get_max_moves_of_piece [67]
+                0.00    0.00       1/55039       get_src_square [52]
+                0.00    0.00       1/2368615     main [44]
+-----------------------------------------------
+                0.00    0.00       1/1           bot_move [1]
+[41]     0.0    0.00    0.00       1         translate_piece_symbol [41]
+                0.00    0.00       1/55050       create_a_move [17]
+-----------------------------------------------
+                0.00    0.00       1/2           setup_start_board [43]
+                0.00    0.00       1/2           uci_parse [38]
+[42]     0.0    0.00    0.00       2         check_src [42]
+                0.00    0.00       1/79617       en_passant_and_castle [24]
+-----------------------------------------------
+                0.00    0.00       1/1           get_best_move_black [37]
+[43]     0.0    0.00    0.00       1         setup_start_board [43]
+                0.00    0.00       1/2           check_src [42]
+-----------------------------------------------
+                0.00    0.00       1/2368615     player_move [40]
+                0.00    0.00       1/2368615     check_bot_promotion [71]
+                0.00    0.00       1/2368615     check_endgame [72]
+                0.00    0.00      41/2368615     check_white_long_castle [68]
+                0.00    0.00      41/2368615     check_white_short_castle [30]
+                0.00    0.00     557/2368615     check_black_long_castle [29]
+                0.00    0.00     557/2368615     check_black_short_castle [76]
+                0.00    0.00    2712/2368615     commit_a_move_for_white [19]
+                0.00    0.00    9299/2368615     pawn_straight [31]
+                0.00    0.00    9946/2368615     moves_of_piece [10]
+                0.00    0.00   25007/2368615     commit_a_move_for_black [5]
+                0.00    0.00   36906/2368615     find_king_square [89]
+                0.00    0.00   44205/2368615     can_en_passant_next_move [26]
+                0.00    0.00   51578/2368615     get_all_moves [6]
+                0.00    0.00   79619/2368615     en_passant_and_castle [24]
+                0.00    0.00  124201/2368615     isAttacked_by_black [18]
+                0.00    0.00  183272/2368615     isAttacked_by_white [11]
+                0.00    0.00  339282/2368615     pass_up [46]
+                0.00    0.00  482688/2368615     evaluate_by_points [15]
+                0.00    0.00  482688/2368615     is_endgame [12]
+                0.00    0.00  496013/2368615     colid_with_ally [45]
+[44]     0.0    0.00    0.00 2368615         main [44]
+-----------------------------------------------
+                0.00    0.00    4350/496013      pawn_eat_left [64]
+                0.00    0.00    4350/496013      pawn_eat_right [13]
+                0.00    0.00   50716/496013      move_left [22]
+                0.00    0.00   50937/496013      move_right [51]
+                0.00    0.00   53450/496013      move_down [54]
+                0.00    0.00   61328/496013      move_up_right [50]
+                0.00    0.00   62540/496013      move_up_left [23]
+                0.00    0.00   65684/496013      move_up [53]
+                0.00    0.00   69908/496013      move_down_right [65]
+                0.00    0.00   72750/496013      move_down_left [21]
+[45]     0.0    0.00    0.00  496013         colid_with_ally [45]
+                0.00    0.00  496013/2368615     main [44]
+-----------------------------------------------
+                0.00    0.00    3893/339282      knight [33]
+                0.00    0.00   29964/339282      move_up_right [50]
+                0.00    0.00   31102/339282      move_up_left [23]
+                0.00    0.00   35379/339282      move_up [53]
+                0.00    0.00   35385/339282      move_down [54]
+                0.00    0.00   50082/339282      move_left [22]
+                0.00    0.00   50273/339282      move_down_right [65]
+                0.00    0.00   50303/339282      move_right [51]
+                0.00    0.00   52901/339282      move_down_left [21]
+[46]     0.0    0.00    0.00  339282         pass_up [46]
+                0.00    0.00  339282/2368615     main [44]
+-----------------------------------------------
+                0.00    0.00   53442/195696      move_down [54]
+                0.00    0.00   69774/195696      move_down_right [65]
+                0.00    0.00   72480/195696      move_down_left [21]
+[47]     0.0    0.00    0.00  195696         pass_right [47]
+-----------------------------------------------
+                0.00    0.00   61160/188863      move_up_right [50]
+                0.00    0.00   62153/188863      move_up_left [23]
+                0.00    0.00   65550/188863      move_up [53]
+[48]     0.0    0.00    0.00  188863         pass_down [48]
+-----------------------------------------------
+                0.00    0.00    4971/139393      pawn_eat_left [64]
+                0.00    0.00   30985/139393      move_up_right [50]
+                0.00    0.00   50937/139393      move_right [51]
+                0.00    0.00   52500/139393      move_down_right [65]
+[49]     0.0    0.00    0.00  139393         pass_left [49]
+-----------------------------------------------
+                0.00    0.00     622/72750       king [34]
+                0.00    0.00    2417/72750       move_in_diagonal_lines [28]
+                0.00    0.00   17734/72750       isAttacked_by_black [18]
+                0.00    0.00   51977/72750       isAttacked_by_white [11]
+[50]     0.0    0.00    0.00   72750         move_up_right [50]
+                0.00    0.00   61328/496013      colid_with_ally [45]
+                0.00    0.00   61160/188863      pass_down [48]
+                0.00    0.00   30985/139393      pass_left [49]
+                0.00    0.00   29964/339282      pass_up [46]
+-----------------------------------------------
+                0.00    0.00     622/62540       king [34]
+                0.00    0.00    2108/62540       move_in_diagonal_lines [28]
+                0.00    0.00   28249/62540       isAttacked_by_white [11]
+                0.00    0.00   31561/62540       isAttacked_by_black [18]
+[51]     0.0    0.00    0.00   62540         move_right [51]
+                0.00    0.00   50937/496013      colid_with_ally [45]
+                0.00    0.00   50937/139393      pass_left [49]
+                0.00    0.00   50303/339282      pass_up [46]
+-----------------------------------------------
+                0.00    0.00       1/55039       player_move [40]
+                0.00    0.00       2/55039       bot_move [1]
+                0.00    0.00    2700/55039       can_en_passant_next_move [26]
+                0.00    0.00   24819/55039       commit_a_move_for_white [19]
+                0.00    0.00   27517/55039       commit_promotion_for_black [20]
+[52]     0.0    0.00    0.00   55039         get_src_square [52]
+-----------------------------------------------
+                0.00    0.00     622/53450       king [34]
+                0.00    0.00    2183/53450       move_in_straight_lines [27]
+                0.00    0.00   18526/53450       isAttacked_by_black [18]
+                0.00    0.00   32119/53450       isAttacked_by_white [11]
+[53]     0.0    0.00    0.00   53450         move_up [53]
+                0.00    0.00   65684/496013      colid_with_ally [45]
+                0.00    0.00   65550/188863      pass_down [48]
+                0.00    0.00   35379/339282      pass_up [46]
+-----------------------------------------------
+                0.00    0.00     622/50716       king [34]
+                0.00    0.00    1979/50716       move_in_straight_lines [27]
+                0.00    0.00   19447/50716       isAttacked_by_black [18]
+                0.00    0.00   28668/50716       isAttacked_by_white [11]
+[54]     0.0    0.00    0.00   50716         move_down [54]
+                0.00    0.00   53450/496013      colid_with_ally [45]
+                0.00    0.00   53442/195696      pass_right [47]
+                0.00    0.00   35385/339282      pass_up [46]
+-----------------------------------------------
+                0.00    0.00       2/32490       ht_destroy [3]
+                0.00    0.00   16244/32490       ht_insert [14]
+                0.00    0.00   16244/32490       ht_contains [63]
+[55]     0.0    0.00    0.00   32490         ht_is_initialized [55]
+-----------------------------------------------
+                0.00    0.00    2700/27519       commit_a_move_for_white [19]
+                0.00    0.00   24819/27519       commit_a_move_for_black [5]
+[56]     0.0    0.00    0.00   27519         get_is_long_castle [56]
+-----------------------------------------------
+                0.00    0.00    2700/27519       commit_a_move_for_white [19]
+                0.00    0.00   24819/27519       commit_a_move_for_black [5]
+[57]     0.0    0.00    0.00   27519         get_promotion_choice [57]
+-----------------------------------------------
+                0.00    0.00       4/27200       evaluate_minimax_for_black [9]
+                0.00    0.00      11/27200       player_move [40]
+                0.00    0.00      21/27200       get_best_move_black [37]
+                0.00    0.00     622/27200       queen [35]
+                0.00    0.00     623/27200       en_passant_and_castle [24]
+                0.00    0.00     875/27200       king [34]
+                0.00    0.00    1244/27200       get_all_moves [6]
+                0.00    0.00    1291/27200       whitepawn [36]
+                0.00    0.00    2311/27200       move_in_straight_lines [27]
+                0.00    0.00    3524/27200       move_in_diagonal_lines [28]
+                0.00    0.00    3833/27200       knight [33]
+                0.00    0.00   12841/27200       blackpawn [25]
+[58]     0.0    0.00    0.00   27200         change_the_square [58]
+-----------------------------------------------
+                0.00    0.00    1120/13389       evaluate_minimax_for_white [4]
+                0.00    0.00   12269/13389       evaluate_minimax_for_black [9]
+[59]     0.0    0.00    0.00   13389         ht_lookup [59]
+                0.00    0.00   13389/29633       _ht_hash [106]
+                0.00    0.00    5295/5305        _ht_equal [111]
+-----------------------------------------------
+                0.00    0.00    9946/9946        get_all_moves [6]
+[60]     0.0    0.00    0.00    9946         color_of_piece [60]
+-----------------------------------------------
+                0.00    0.00     844/9299        whitepawn [36]
+                0.00    0.00    8455/9299        blackpawn [25]
+[61]     0.0    0.00    0.00    9299         colid_with_enemy [61]
+-----------------------------------------------
+                0.00    0.00      57/9275        print_board [69]
+                0.00    0.00      57/9275        check_white_long_castle [68]
+                0.00    0.00    1579/9275        is_move_valid [8]
+                0.00    0.00    7582/9275        evaluate_minimax_for_white [4]
+[62]     0.0    0.00    0.00    9275         get_is_short_castle [62]
+-----------------------------------------------
+                0.00    0.00      20/8122        get_best_move_black [37]
+                0.00    0.00     560/8122        evaluate_minimax_for_white [4]
+                0.00    0.00    7542/8122        evaluate_minimax_for_black [9]
+[63]     0.0    0.00    0.00    8122         ht_contains [63]
+                0.00    0.00   16244/32490       ht_is_initialized [55]
+                0.00    0.00    8122/29633       _ht_hash [106]
+                0.00    0.00       5/5305        _ht_equal [111]
+-----------------------------------------------
+                0.00    0.00     456/4971        whitepawn [36]
+                0.00    0.00    4515/4971        blackpawn [25]
+[64]     0.0    0.00    0.00    4971         pawn_eat_left [64]
+                0.00    0.00    4971/139393      pass_left [49]
+                0.00    0.00    4350/496013      colid_with_ally [45]
+-----------------------------------------------
+                0.00    0.00     622/1923        queen [35]
+                0.00    0.00    1301/1923        rook [66]
+[65]     0.0    0.00    0.00    1923         move_down_right [65]
+                0.00    0.00   69908/496013      colid_with_ally [45]
+                0.00    0.00   69774/195696      pass_right [47]
+                0.00    0.00   52500/139393      pass_left [49]
+                0.00    0.00   50273/339282      pass_up [46]
+-----------------------------------------------
+                0.00    0.00    1244/1244        moves_of_piece [10]
+[66]     0.0    0.00    0.00    1244         rook [66]
+                0.00    0.00    1301/1923        move_down_right [65]
+-----------------------------------------------
+                0.00    0.00       1/622         player_move [40]
+                0.00    0.00       1/622         get_best_move_black [37]
+                0.00    0.00      56/622         evaluate_minimax_for_white [4]
+                0.00    0.00     564/622         evaluate_minimax_for_black [9]
+[67]     0.0    0.00    0.00     622         get_max_moves_of_piece [67]
+-----------------------------------------------
+                0.00    0.00      57/57          en_passant_and_castle [24]
+[68]     0.0    0.00    0.00      57         check_white_long_castle [68]
+                0.00    0.00      57/9275        get_is_short_castle [62]
+                0.00    0.00      41/2368615     main [44]
+-----------------------------------------------
+                0.00    0.00      57/57          en_passant_and_castle [24]
+[69]     0.0    0.00    0.00      57         print_board [69]
+                0.00    0.00      57/9275        get_is_short_castle [62]
+-----------------------------------------------
+                0.00    0.00       2/2           commit_a_move_for_black [5]
+[70]     0.0    0.00    0.00       2         commit_a_long_castle_for_black [70]
+-----------------------------------------------
+                0.00    0.00       1/1           uci_parse [38]
+[71]     0.0    0.00    0.00       1         check_bot_promotion [71]
+                0.00    0.00       1/2368615     main [44]
+-----------------------------------------------
+                0.00    0.00       1/1           player_move [40]
+[72]     0.0    0.00    0.00       1         check_endgame [72]
+                0.00    0.00       1/2368615     main [44]
+-----------------------------------------------
+                0.00    0.00       1/1           bot_move [1]
+[73]     0.0    0.00    0.00       1         get_best_move_white [73]
+-----------------------------------------------
+                0.00    0.00       1/1           uci_main [104]
+[74]     0.0    0.00    0.00       1         ht_setup [74]
+                0.00    0.00       1/2           _ht_allocate [112]
+-----------------------------------------------
+                                   3             uci_main [104]
+[104]    0.0    0.00    0.00       0+3       uci_main [104]
+                0.00    0.00       1/1           ht_setup [74]
+                                   3             uci_main [104]
+-----------------------------------------------
+                0.00    0.00   29633/29633       _ht_hash [106]
+[105]    0.0    0.00    0.00   29633         _ht_default_hash [105]
+-----------------------------------------------
+                0.00    0.00    8122/29633       ht_insert [14]
+                0.00    0.00    8122/29633       ht_contains [63]
+                0.00    0.00   13389/29633       ht_lookup [59]
+[106]    0.0    0.00    0.00   29633         _ht_hash [106]
+                0.00    0.00   29633/29633       _ht_default_hash [105]
+-----------------------------------------------
+                0.00    0.00    8122/8122        _ht_push_front [16]
+[107]    0.0    0.00    0.00    8122         _ht_create_node [107]
+-----------------------------------------------
+                0.00    0.00    8122/8122        ht_destroy [3]
+[108]    0.0    0.00    0.00    8122         _ht_destroy_node [108]
+-----------------------------------------------
+                0.00    0.00    8122/8122        ht_insert [14]
+[109]    0.0    0.00    0.00    8122         _ht_should_grow [109]
+-----------------------------------------------
+                0.00    0.00    5305/5305        _ht_equal [111]
+[110]    0.0    0.00    0.00    5305         _ht_default_compare [110]
+-----------------------------------------------
+                0.00    0.00       5/5305        ht_insert [14]
+                0.00    0.00       5/5305        ht_contains [63]
+                0.00    0.00    5295/5305        ht_lookup [59]
+[111]    0.0    0.00    0.00    5305         _ht_equal [111]
+                0.00    0.00    5305/5305        _ht_default_compare [110]
+-----------------------------------------------
+                0.00    0.00       1/2           ht_setup [74]
+                0.00    0.00       1/2           ht_clear [2]
+[112]    0.0    0.00    0.00       2         _ht_allocate [112]
 -----------------------------------------------
 
  This table describes the call tree of the program, and was sorted by
@@ -752,27 +813,29 @@ notice and this notice are preserved.
 
 Index by function name
 
- [104] _ht_allocate           [62] commit_en_passant_for_black [13] knight
- [102] _ht_create_node        [61] commit_en_passant_for_white [40] move_down
-  [99] _ht_default_compare    [44] create_a_move          [38] move_down_left
-  [97] _ht_default_hash       [19] en_passant_and_castle  [34] move_down_right
- [100] _ht_equal               [6] evaluate_by_points     [15] move_in_diagonal_lines
-  [98] _ht_hash                [5] evaluate_minimax_for_black [14] move_in_straight_lines
- [103] _ht_push_front          [8] evaluate_minimax_for_white [36] move_left
- [101] _ht_should_grow        [45] find_king_square       [39] move_right
-  [18] bishop                  [9] get_all_moves          [35] move_up
-  [12] blackpawn               [2] get_best_move_white    [32] move_up_left
-  [48] can_en_passant_next_move [42] get_dst_square       [37] move_up_right
-  [41] change_the_square      [47] get_is_long_castle     [11] moves_of_piece
-  [22] check_black_long_castle [46] get_is_short_castle   [29] pass_down
-  [23] check_black_short_castle [52] get_max_moves_of_piece [30] pass_left
-   [1] check_miminax          [25] get_piece_in_square    [31] pass_right
-  [59] check_white_long_castle [43] get_src_square        [28] pass_up
-  [24] check_white_short_castle [55] ht_insert            [57] pawn_eat_left
-  [27] colid_with_ally        [49] ht_is_initialized      [58] pawn_eat_right
-  [26] colid_with_enemy       [56] ht_lookup              [54] pawn_straight
-  [33] color_of_piece         [64] ht_setup               [65] print_board
-  [63] commit_a_long_castle_for_black [53] isAttacked_by_black [17] queen
-  [50] commit_a_move_for_black [7] isAttacked_by_white    [16] rook
-  [51] commit_a_move_for_white [10] is_move_valid         [20] whitepawn
-  [60] commit_a_short_castle_for_white [21] king           [4] <cycle 1>
+ [112] _ht_allocate           [17] create_a_move          [65] move_down_right
+ [107] _ht_create_node        [24] en_passant_and_castle  [28] move_in_diagonal_lines
+ [110] _ht_default_compare    [15] evaluate_by_points     [27] move_in_straight_lines
+ [105] _ht_default_hash       [73] get_best_move_white    [22] move_left
+ [108] _ht_destroy_node       [56] get_is_long_castle     [51] move_right
+ [111] _ht_equal              [62] get_is_short_castle    [53] move_up
+ [106] _ht_hash               [67] get_max_moves_of_piece [23] move_up_left
+  [16] _ht_push_front          [7] get_piece_in_square    [50] move_up_right
+ [109] _ht_should_grow        [57] get_promotion_choice   [10] moves_of_piece
+  [32] bishop                 [52] get_src_square         [48] pass_down
+  [25] blackpawn               [2] ht_clear               [49] pass_left
+  [26] can_en_passant_next_move [63] ht_contains          [47] pass_right
+  [58] change_the_square       [3] ht_destroy             [46] pass_up
+  [29] check_black_long_castle [14] ht_insert             [64] pawn_eat_left
+  [71] check_bot_promotion    [55] ht_is_initialized      [13] pawn_eat_right
+  [72] check_endgame          [59] ht_lookup              [31] pawn_straight
+  [42] check_src              [74] ht_setup               [40] player_move
+  [68] check_white_long_castle [18] isAttacked_by_black   [69] print_board
+  [30] check_white_short_castle [11] isAttacked_by_white  [35] queen
+  [45] colid_with_ally        [12] is_endgame             [66] rook
+  [61] colid_with_enemy        [8] is_move_valid          [43] setup_start_board
+  [60] color_of_piece         [34] king                   [41] translate_piece_symbol
+  [70] commit_a_long_castle_for_black [33] knight         [38] uci_parse
+   [5] commit_a_move_for_black [44] main                  [36] whitepawn
+  [19] commit_a_move_for_white [54] move_down
+  [20] commit_promotion_for_black [21] move_down_left

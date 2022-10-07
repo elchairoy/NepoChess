@@ -164,7 +164,7 @@ move get_best_move_white(board *b,char depth,char pre_frontier, HashTable *ht) {
     while (all_moves[i] != 0) {
         commit_a_move_for_white(&temp_board,all_moves[i]); /* Commits the move. */
         /* The razoring: */
-        if (depth > pre_frontier && max - evaluate_minimax_for_black(&temp_board,depth - 2,pre_frontier, ht) >= 2) { /* If making the move will lead to a loss of 2 points in less moves: */
+        if (depth > pre_frontier && max - evaluate_minimax_for_black(&temp_board,depth - 2,pre_frontier, ht) >= EVAL_TO_PRUNE) { /* If making the move will lead to a loss of 2 points in less moves: */
             i++;
             temp_board = *b;
             continue;
@@ -204,7 +204,7 @@ move get_best_move_black(board *b,char depth, char pre_frontier, HashTable *ht) 
 
     while (all_moves[i] != END) {
         commit_a_move_for_black(&temp_board,all_moves[i]); /* Commits the move. */
-        if (depth > pre_frontier && evaluate_minimax_for_white(&temp_board,depth - 2,pre_frontier, ht) - min >= 2) {
+     if (depth > pre_frontier && evaluate_minimax_for_white(&temp_board,depth - 2,pre_frontier, ht) - min >= EVAL_TO_PRUNE) {
             i++;
             temp_board = *b;
             continue;
