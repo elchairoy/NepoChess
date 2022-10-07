@@ -153,7 +153,7 @@ move get_best_move_white(board *b,char depth, HashTable *ht) {
         i++;
     }
     free(all_moves);
-    printf("number of moves %ld",number_of_moves);
+    printf("number of moves %ld\n",number_of_moves);
     return best;
 }
 
