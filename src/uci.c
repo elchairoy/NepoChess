@@ -260,16 +260,15 @@ void bot_move(board *the_board, HashTable *ht)
 {
     move bot_move;
     int depth = 5;
-    int prefrontier = 4;
     if (the_board->whos_turn == WHITE)
     {
-        bot_move = get_best_move_white(the_board, depth, prefrontier, ht);
+        bot_move = get_best_move_white(the_board, depth, ht);
         printf("bestmove %s%s%c\n", get_square_loc(get_src_square(bot_move)),get_square_loc(get_dst_square(bot_move)), check_bot_promotion(the_board, bot_move));
         commit_a_move_for_white(the_board, bot_move);
     }
     else
     {
-        bot_move = get_best_move_black(the_board, depth, prefrontier, ht);
+        bot_move = get_best_move_black(the_board, depth, ht);
         printf("bestmove %s%s%c\n", get_square_loc(get_src_square(bot_move)),get_square_loc(get_dst_square(bot_move)), check_bot_promotion(the_board, bot_move));
         commit_a_move_for_black(the_board, bot_move);
     }

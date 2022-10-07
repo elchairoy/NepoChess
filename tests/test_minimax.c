@@ -29,7 +29,7 @@ void check_miminax() {
     print_board(&START_BOARD);
     HashTable ht;
     ht_setup(&ht,sizeof(board),sizeof(double *),100000000);
-    move m = get_best_move_white(&START_BOARD,7,2,&ht);
+    move m = get_best_move_white(&START_BOARD,7,&ht);
     printf("from %d to %d\n",get_src_square(m),get_dst_square(m));
 }
 /* RECORD: (outdated)
