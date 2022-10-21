@@ -7,6 +7,7 @@ int test_useful_functions() {
     char arr[32] = {0xb5,0x01,0x71,0x01,0x05,0x01,0x01,0xb1,0x01,0x01,0x91,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x00,0x00,0x01,0x01,0x05,0xb5,0x01,0x01,0x01};
     
     int i;
+    move m;
 
     /* Copy arr to to board: */
     for (i = 0; i < 32; i++)
@@ -31,12 +32,13 @@ int test_useful_functions() {
     }
 
     /* Test create_a_move: */
-    if (create_a_move(1,2,3,1,0) != 0x7081) {
+    create_a_move(m,1,2,3,1,0)
+    if (m != 0x7081) {
         printf("Error in create_a_move.");
         return 1;
     }
 
-    move m = create_a_move(1,2,3,1,0);
+    create_a_move(m,1,2,3,1,0);
 
     /* Test get_src_square */
     if (get_src_square(m) != 1) {

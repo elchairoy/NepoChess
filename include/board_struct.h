@@ -21,11 +21,15 @@
 #define LEFT -1 /* To the left. */
 #define RIGHT 1 /* To the right. */
 
+#define MAX_POSSIBLE_MOVES 100 /* Maximum number of moves possible in a position. */
+
 enum types {empty,white_knight,white_rook,white_queen,white_king,white_pawn,white_bishop,black_knight,black_rook,black_queen,black_king,black_pawn,black_bishop}; /* What cat be on a square. */
 enum columns {a,b,c,d,e,f,g,h}; /* The columns there are. */
 enum promotions {promote_to_queen, promote_to_rook, promote_to_knight, promote_to_bishop}; /* What can be promoted to */
 
 typedef unsigned short int move;
+
+typedef unsigned short irreversible_move_info;
 
 typedef struct {
     char squares[NUMBER_OF_SQUARES / 2]; /* List of all the squares in the board.
@@ -39,9 +43,7 @@ typedef struct {
     unsigned whos_turn : 1; /* 1 if it's white turn, 0 if it's black turn. */
 
     /* To read about en passant - https://www.chess.com/terms/en-passant. */
-    unsigned pawn_en_passant_right : 7; /* The square of the pawn that can en passant to the right. (if no pawns can en passant, it's 0)  */
-    unsigned pawn_en_passant_left : 7; /* The square of the pawn that can en passant to the left. (if no other pawns can en passant, it's 0)  */
-
+    unsigned en_passant_pawn : 7; /* The square of the pawn that can by eaten by en passant. (if no pawns can en passant, it's 0)  */
 }board;
 
 

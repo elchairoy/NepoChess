@@ -1,16 +1,17 @@
 #include <stdio.h>
 #include "../include/test_minimax.h"
 #include "../include/uci.h"
-#include "../include/hashtable.h"
 
 /*
   Created by Elchairoy Meir on 29/11/2021.
 */
 
-extern long int number_of_moves;
-
+extern long int moves;
 int main() {
   setbuf(stdout, NULL); // Set no stdout buffering
-  uci_main();
+  /*uci_main();*/
+  board b;
+  setup_start_board(&b);
+  moves_in_depth(4,&b);
   return 0;
 }

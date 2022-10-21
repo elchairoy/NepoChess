@@ -1,5 +1,7 @@
 #include "../include/uci.h"
 
+long int moves = 0; /* The number of positions scaned. */
+
 char initial_board[32] = {
         white_rook << 4 | white_knight, white_bishop << 4 | white_queen, white_king << 4 | white_bishop, white_knight << 4 | white_rook,
         white_pawn << 4 | white_pawn, white_pawn << 4 | white_pawn, white_pawn << 4 | white_pawn, white_pawn << 4 | white_pawn,
@@ -28,8 +30,7 @@ char fen_to_board(char *fen, board *b)
     b->can_black_castle_short = 0;
     b->can_white_castle_long = 0;
     b->can_white_castle_short = 0;
-    b->pawn_en_passant_left = 0;
-    b->pawn_en_passant_right = 0;
+    b->en_passant_pawn = 0;
 
     while (fen[i] != '\0' && number_of_whitespaces <= 5 /* If thats more than 5, than it's the end of the actual fen */)
     {   
@@ -63,6 +64,7 @@ char fen_to_board(char *fen, board *b)
         i+=2;
 
     }
+    i += 1;
     b->whos_turn = (fen[i] == 'w' ? WHITE : BLACK);
     i += 2;
     while (fen[i] != ' ')
@@ -95,30 +97,12 @@ char fen_to_board(char *fen, board *b)
     if (b->whos_turn == WHITE)
         if (fen[i] != '-') {
             square = get_square_number(fen[i],fen[i+1]);
-            if (get_column(square) != 7)
-            {
-                if (get_piece_in_square(b,square+DOWN_RIGHT) == white_pawn)
-                    b->pawn_en_passant_left = square+DOWN_RIGHT;
-            }
-            if (get_column(square) != 0)
-            {
-                if (get_piece_in_square(b,square+DOWN_LEFT) == white_pawn)
-                    b->pawn_en_passant_right = square+DOWN_LEFT;
-            }
+            b->en_passant_pawn = square + DOWN;
         }
     if (b->whos_turn == BLACK) {
         if (fen[i] != '-') {
             square = get_square_number(fen[i],fen[i+1]);
-            if (get_column(square) != 7)
-            {
-                if (get_piece_in_square(b,square+UP_RIGHT) == black_pawn)
-                    b->pawn_en_passant_left = square+UP_RIGHT;
-            }
-            if (get_column(square) != 0)
-            {
-                if (get_piece_in_square(b,square+UP_LEFT) == black_pawn)
-                    b->pawn_en_passant_left = square+UP_LEFT;
-            }
+            b->en_passant_pawn = square + UP;
         }
     return 1;
     }
@@ -129,8 +113,9 @@ int player_move(board *the_board, char *str)
     /*ask for a move, validate it then comite the moveand request more info from user if needed*/
     int i = 0;
     char move_str[6];
-    move *all_moves;
+    move all_moves[MAX_POSSIBLE_MOVES];
     char src_square, dst_square;
+    move temp;
 
     /* If there is a whitespace - ignore what comes after it. */
     while (str[i] != '\0')
@@ -149,7 +134,7 @@ int player_move(board *the_board, char *str)
     if (check_src(the_board, src_square))
     {
         dst_square = get_square_number(move_str[2], move_str[3]);
-        all_moves = get_all_moves(the_board);
+        get_all_moves(the_board,all_moves);
         i = 0;
         while (all_moves[i] != END)
         {
@@ -157,24 +142,26 @@ int player_move(board *the_board, char *str)
             {
                 if (the_board->whos_turn == WHITE)
                 {
-                    if (get_piece_in_square(the_board, src_square) == white_pawn && get_row(src_square) == 6)
-                        commit_a_move_for_white(the_board, create_a_move(src_square, dst_square, translate_promotion(move_str[4]), 0, 0));
+                    if (get_piece_in_square(the_board, src_square) == white_pawn && get_row(src_square) == 6) {
+                        create_a_move(temp, src_square, dst_square, translate_promotion(move_str[4]), 0, 0)
+                        commit_a_move_for_white(the_board, temp);
+                    }
                     else
                         commit_a_move_for_white(the_board, all_moves[i]);
                 }
                 else
                 {
-                    if (get_piece_in_square(the_board, src_square) == black_pawn && get_row(src_square) == 1)
-                        commit_a_move_for_black(the_board, create_a_move(src_square, dst_square, translate_promotion(move_str[4]), 0, 0));
+                    if (get_piece_in_square(the_board, src_square) == black_pawn && get_row(src_square) == 1) {
+                        create_a_move(temp, src_square, dst_square, translate_promotion(move_str[4]), 0, 0)
+                        commit_a_move_for_black(the_board, temp);
+                    }
                     else
                         commit_a_move_for_black(the_board, all_moves[i]);
                 }
-                free(all_moves);
                 return 0;
             }
             i++;
         }
-        free(all_moves);
     }
     printf("invalid move\n");
 }
@@ -259,17 +246,15 @@ char check_bot_promotion(board *the_board, move the_move)
 void bot_move(board *the_board, HashTable *ht)
 {
     move bot_move;
-    int depth = 5;
+    int depth = 4;
     if (the_board->whos_turn == WHITE)
     {
-        get_best_move_white(the_board, depth-1, ht);
         bot_move = get_best_move_white(the_board, depth, ht);
         printf("bestmove %s%s%c\n", get_square_loc(get_src_square(bot_move)),get_square_loc(get_dst_square(bot_move)), check_bot_promotion(the_board, bot_move));
         commit_a_move_for_white(the_board, bot_move);
     }
     else
     {
-        get_best_move_black(the_board, depth-1, ht);
         bot_move = get_best_move_black(the_board, depth, ht);
         printf("bestmove %s%s%c\n", get_square_loc(get_src_square(bot_move)),get_square_loc(get_dst_square(bot_move)), check_bot_promotion(the_board, bot_move));
         commit_a_move_for_black(the_board, bot_move);
@@ -279,9 +264,10 @@ void bot_move(board *the_board, HashTable *ht)
 
 int check_endgame(board *the_board)
 {
+    move all_moves[MAX_POSSIBLE_MOVES];
     if (the_board->whos_turn == WHITE)
     {
-        if (get_all_moves(the_board)[0] == END)
+        if (get_all_moves(the_board,all_moves)[0] == END)
         {
             if (isAttacked_by_black(the_board, find_king_square(the_board, WHITE)))
                 printf("CHECKMATE 0-1\n");
@@ -292,7 +278,7 @@ int check_endgame(board *the_board)
     }
     else
     {
-        if (get_all_moves(the_board)[0] == END)
+        if (get_all_moves(the_board,all_moves)[0] == END)
         {
             if (isAttacked_by_white(the_board, find_king_square(the_board, BLACK)))
                 printf("CHECKMATE 1-0\n");
@@ -321,8 +307,7 @@ void setup_start_board(board *b)
     b->can_black_castle_short = 1;
     b->can_white_castle_long = 1;
     b->can_white_castle_short = 1;
-    b->pawn_en_passant_left = 0;
-    b->pawn_en_passant_right = 0;
+    b->en_passant_pawn = 0;
     b->whos_turn = WHITE;
     for (i = 0; i < 32; i++)
         b->squares[i] = initial_board[i];
@@ -333,7 +318,7 @@ int uci_main()
     board b;
     setup_start_board(&b);
     HashTable ht;
-    ht_setup(&ht, sizeof(board), sizeof(double), 100000000);
+    /* ht_setup(&ht, sizeof(board), sizeof(double), 100000000); */
 
 	setbuf (stdin, NULL);
 	setbuf (stdout, NULL);
@@ -343,7 +328,7 @@ int uci_main()
 	printf ("uciok\n");
 	fflush (stdout);
 
-	while (uci_parse(&b, &ht));
+	while(uci_parse(&b, &ht));
 
 	return 0;
 }
@@ -352,7 +337,7 @@ char line[10000];
 
 char uci_parse(board *b, HashTable *ht)
 {  
-    fgets (line, 8192, stdin);
+    fgets (line, 8192, stdin);  
 
 	if (!strncmp (line, "isready", 7))
 		printf ("readyok\n");
@@ -372,7 +357,7 @@ char uci_parse(board *b, HashTable *ht)
 			fen_to_board(posline + 4, b);
 		}
 
-		// need to make some moves on this position as well?
+		/* need to make some moves on this position as well? */
 		posline = strstr (line, "moves");
 
 		if (posline)
@@ -400,4 +385,41 @@ char uci_parse(board *b, HashTable *ht)
 
     return 1;
 
+}
+
+//irreversible_move_info all_info[10000];
+//long int top = 0;
+
+void moves_in_depth(char d,board *b) {
+    //print_board(b);
+    move all_moves[100];
+    move m;
+    char i = 0;
+    irreversible_move_info temp;
+    if (d == 0) {
+        moves++;
+        return;
+    }
+    get_all_moves(b,all_moves);
+    m = all_moves[i];
+    while (m != END)
+    {
+        temp = get_irrev_move_info(b,m);
+        if (b->whos_turn == WHITE){
+            commit_a_move_for_white(b,m);
+            moves_in_depth(d-1,b);
+            unmake_move(b,m,temp);
+        }
+        else {
+            commit_a_move_for_black(b,m);
+            moves_in_depth(d-1,b);
+            unmake_move(b,m,temp);
+        }
+        i++;
+        m = all_moves[i];
+    }
+    if (d == 4) {
+        printf("%ld",moves);
+    }
+    return;
 }

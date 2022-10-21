@@ -46,11 +46,11 @@ test_against_itself:
 	python3 tests/play_against_stockfish.py
 
 # We are compiling here the sources as well, because the tester code uses the c code.
-${BIN}/${TEST_EXECUTABLE}: ${TESTS_SOURCES} ${SOURCES}
+${BIN}/${TEST_EXECUTABLE}: ${TESTS_SOURCES} ${SOURCES} ${HEADERS}
 	mkdir bin -p
 	${CC} ${TESTS_SOURCES} ${SOURCES} ${CC_TESTS_FLAGS} -o $@
 
-${BIN}/${TEST_EXECUTABLE2}: ${TESTS_SOURCES} ${SOURCES}
+${BIN}/${TEST_EXECUTABLE2}: ${TESTS_SOURCES} ${SOURCES} ${HEADERS}
 	mkdir bin -p
 	${CC} ${TESTS_SOURCES} ${SOURCES} ${CC_TESTS_FLAGS} -o $@
 

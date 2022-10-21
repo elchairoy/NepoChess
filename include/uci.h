@@ -20,6 +20,8 @@ char uci_parse(board *b, HashTable *ht);
 int uci_main();
 int player_move(board *the_board, char *move_str);
 char translate_piece_symbol(char piece_symbol);
+void moves_in_depth(char d, board *b);
+void setup_start_board(board *b); 
 
 
 #endif /* AFD0BF27_C006_46B4_89E6_171B4DC00121 */

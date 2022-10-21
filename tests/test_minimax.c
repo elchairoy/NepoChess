@@ -9,8 +9,7 @@ void check_miminax() {
     START_BOARD.can_black_castle_short = 1;
     START_BOARD.can_white_castle_long = 1;
     START_BOARD.can_white_castle_short = 1;
-    START_BOARD.pawn_en_passant_left = 1;
-    START_BOARD.pawn_en_passant_right = 1;
+    START_BOARD.en_passant_pawn = 0;
     START_BOARD.whos_turn=1;
 
     int i;
@@ -18,14 +17,6 @@ void check_miminax() {
     {
         START_BOARD.squares[i] = initial_board[i];
     }
-    commit_a_move_for_white(&START_BOARD,create_a_move(3,21,0,0,0));
-    commit_a_move_for_black(&START_BOARD,create_a_move(48,40,0,0,0));
-    commit_a_move_for_white(&START_BOARD,create_a_move(12,28,0,0,0));
-    commit_a_move_for_black(&START_BOARD,create_a_move(40,32,0,0,0));
-    commit_a_move_for_white(&START_BOARD,create_a_move(11,19,0,0,0));
-    commit_a_move_for_black(&START_BOARD,create_a_move(32,24,0,0,0));
-    commit_a_move_for_white(&START_BOARD,create_a_move(5,26,0,0,0));
-    commit_a_move_for_black(&START_BOARD,create_a_move(62,47,0,0,0));
     print_board(&START_BOARD);
     HashTable ht;
     ht_setup(&ht,sizeof(board),sizeof(double *),100000000);

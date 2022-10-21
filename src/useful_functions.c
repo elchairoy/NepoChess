@@ -33,44 +33,6 @@ void change_the_square(board *b,unsigned char square_number ,char new_piece) {
         b->squares[square_number / 2] = (b->squares[square_number / 2] & MASK_FOR_A_HALF) /* - clears the second half */ | (new_piece << 4); /* - places the new piece in the second half */
 }
 
-/* This function gets the data needed for a move and returns a short representing the move.*/
-short create_a_move(unsigned char src_loc,unsigned char dst_loc,unsigned char promote_to,unsigned char castle_long,unsigned char castle_short) {
-    move result = 0;
-
-    result |= (src_loc << SRC_LOC_INDEX); /* Enters the src loc. */
-    result |= (dst_loc << DST_LOC_INDEX); /* Enters the dst loc. */
-    result |= (promote_to << PROMOTE_TO_INDEX); /* Enters the promotion choice. */
-    result |= (castle_long << IS_LONG_CASTLE_INDEX); /* Enters if it's a long castle. */
-    result |= (castle_short << IS_SHORT_CASTLE_INDEX); /* Enters if it's a short castle. */
-
-    return result;
-}
-
-/* This function gets a move and returns the src square */
-char get_src_square(move m) {
-    return (m & (MASK_FOR_6BITS << SRC_LOC_INDEX)) >> SRC_LOC_INDEX;
-}
-
-/* This function gets a move and returns the dst square */
-char get_dst_square(move m) {
-    return (m & (MASK_FOR_6BITS << DST_LOC_INDEX)) >> DST_LOC_INDEX;
-}
-
-/* This function gets a move and returns what to promote to */
-char get_promotion_choice(move m) {
-    return (m & (MASK_FOR_2BITS << PROMOTE_TO_INDEX)) >> PROMOTE_TO_INDEX;
-}
-
-/* This function gets a move and returns if it's a long castle */
-char get_is_long_castle(move m) {
-    return (m & (1 << IS_LONG_CASTLE_INDEX)) >> IS_LONG_CASTLE_INDEX;
-}
-
-/* This function gets a move and returns if it's a short castle */
-char get_is_short_castle(move m) {
-    return (m & (1 << IS_SHORT_CASTLE_INDEX)) >> IS_SHORT_CASTLE_INDEX;
-}
-
 char isAttacked_by_black(board *the_board, char square) {
     char piece;
     int i = 0;
@@ -400,6 +362,10 @@ void print_line(){
 
 void print_board(board *the_board){
     int i, x, square_in_line, first_square_in_line, line, piece;
+    if (get_piece_in_square(the_board,57) == empty) {
+        printf("1");
+
+    }
     /*
     Line - current line number.
     First_square_in_line - number of the first square in the 'Line'
@@ -439,10 +405,10 @@ char check_white_long_castle(board *the_board){
                 && get_piece_in_square(the_board, DEAFULT_WHITE_KING_SQUARE + LEFT) == empty 
                 && get_piece_in_square(the_board, DEAFULT_WHITE_KING_SQUARE + LEFT*2) == empty 
                 && get_piece_in_square(the_board, DEAFULT_WHITE_KING_SQUARE + LEFT*3) == empty){
-            temp = create_a_move(DEAFULT_WHITE_KING_SQUARE, DEAFULT_WHITE_KING_SQUARE + LEFT, 0, 0, 0);
-            if(is_move_valid(*the_board, temp, WHITE)){
-                    temp = create_a_move(DEAFULT_WHITE_KING_SQUARE, DEAFULT_WHITE_KING_SQUARE + LEFT*2, 0, 1, 0);
-                    if(is_move_valid(*the_board, temp, WHITE)){
+            create_a_move(temp, DEAFULT_WHITE_KING_SQUARE, DEAFULT_WHITE_KING_SQUARE + LEFT, 0, 0, 0);
+            if(is_move_valid(the_board, temp, WHITE)){
+                    create_a_move(temp, DEAFULT_WHITE_KING_SQUARE, DEAFULT_WHITE_KING_SQUARE + LEFT*2, 0, 1, 0);
+                    if(is_move_valid(the_board, temp, WHITE)){
                         return 1;
                     }
                 }
@@ -457,10 +423,10 @@ char check_white_short_castle(board *the_board){
         if(the_board->can_white_castle_short 
                 && get_piece_in_square(the_board, DEAFULT_WHITE_KING_SQUARE + RIGHT) == empty
                 && get_piece_in_square(the_board, DEAFULT_WHITE_KING_SQUARE + RIGHT*2) == empty){
-            temp = create_a_move(DEAFULT_WHITE_KING_SQUARE, DEAFULT_WHITE_KING_SQUARE + RIGHT, 0, 0, 0);
-            if(is_move_valid(*the_board, temp, WHITE)){
-                    temp = create_a_move(DEAFULT_WHITE_KING_SQUARE, DEAFULT_WHITE_KING_SQUARE + RIGHT*2, 0, 0, 1);
-                    if(is_move_valid(*the_board, temp, WHITE)){
+            create_a_move(temp, DEAFULT_WHITE_KING_SQUARE, DEAFULT_WHITE_KING_SQUARE + RIGHT, 0, 0, 0);
+            if(is_move_valid(the_board, temp, WHITE)){
+                    create_a_move(temp, DEAFULT_WHITE_KING_SQUARE, DEAFULT_WHITE_KING_SQUARE + RIGHT*2, 0, 0, 1);
+                    if(is_move_valid(the_board, temp, WHITE)){
                         return 1;
                     }
                 }
@@ -476,10 +442,10 @@ char check_black_long_castle(board *the_board){
                 && get_piece_in_square(the_board, DEAFULT_BLACK_KING_SQUARE + LEFT) == empty
                 && get_piece_in_square(the_board, DEAFULT_BLACK_KING_SQUARE + LEFT * 2) == empty
                 && get_piece_in_square(the_board, DEAFULT_BLACK_KING_SQUARE + LEFT * 3) == empty){
-            temp = create_a_move(DEAFULT_BLACK_KING_SQUARE, DEAFULT_BLACK_KING_SQUARE + LEFT, 0, 0, 0);
-            if(is_move_valid(*the_board, temp, BLACK)){
-                temp = create_a_move(DEAFULT_BLACK_KING_SQUARE, DEAFULT_BLACK_KING_SQUARE + LEFT * 2, 0, 1, 0);
-                if(is_move_valid(*the_board, temp, BLACK)){
+            create_a_move(temp, DEAFULT_BLACK_KING_SQUARE, DEAFULT_BLACK_KING_SQUARE + LEFT, 0, 0, 0);
+            if(is_move_valid(the_board, temp, BLACK)){
+                create_a_move(temp, DEAFULT_BLACK_KING_SQUARE, DEAFULT_BLACK_KING_SQUARE + LEFT * 2, 0, 1, 0);
+                if(is_move_valid(the_board, temp, BLACK)){
                     return 1;
                 }
             }
@@ -494,10 +460,10 @@ char check_black_short_castle(board *the_board){
         if(the_board->can_black_castle_short 
                 && get_piece_in_square(the_board, DEAFULT_BLACK_KING_SQUARE + RIGHT) == empty
                 && get_piece_in_square(the_board, DEAFULT_BLACK_KING_SQUARE + RIGHT*2) == empty){
-            temp = create_a_move(DEAFULT_BLACK_KING_SQUARE, DEAFULT_BLACK_KING_SQUARE + RIGHT, 0, 0, 0);
-            if(is_move_valid(*the_board, temp, BLACK)){
-                    temp = create_a_move(DEAFULT_BLACK_KING_SQUARE, DEAFULT_BLACK_KING_SQUARE + RIGHT*2, 0, 0, 1);
-                    if(is_move_valid(*the_board, temp, BLACK)){
+            create_a_move(temp, DEAFULT_BLACK_KING_SQUARE, DEAFULT_BLACK_KING_SQUARE + RIGHT, 0, 0, 0);
+            if(is_move_valid(the_board, temp, BLACK)){
+                    create_a_move(temp, DEAFULT_BLACK_KING_SQUARE, DEAFULT_BLACK_KING_SQUARE + RIGHT*2, 0, 0, 1);
+                    if(is_move_valid(the_board, temp, BLACK)){
                         return 1;
                     }
                 }
@@ -519,4 +485,34 @@ char *strrev(char *str)
             *p1 ^= *p2;
       }
       return str;
+}
+
+irreversible_move_info get_irrev_move_info(board *b, move m) {
+    char src, dst, piece, piece_taken, en_passant_pawn = b->en_passant_pawn;
+    irreversible_move_info inf;
+    if (b->whos_turn == WHITE) {
+            src = get_src_square(m);
+            dst = get_dst_square(m);
+            piece = get_piece_in_square(b,src);
+            piece_taken = get_piece_in_square(b,dst);
+            if (piece == white_pawn && piece_taken != black_pawn && dst != src + UP && dst != src + UP + UP) { /* En passant: */
+                create_a_irrev_move_info(inf, piece_taken, 0, 1, en_passant_pawn);
+            }
+            else {
+                create_a_irrev_move_info(inf, piece_taken, ((piece == white_pawn && 56 <= dst) ? 1 : 0), 0, en_passant_pawn);
+            }
+        }
+    if (b->whos_turn == BLACK) {
+        src = get_src_square(m);
+        dst = get_dst_square(m);
+        piece = get_piece_in_square(b,src);
+        piece_taken = get_piece_in_square(b,dst);
+        if (piece == black_pawn && piece_taken != white_pawn && dst != src + DOWN && dst != src + DOWN + DOWN) { /* En passant: */
+            create_a_irrev_move_info(inf, piece_taken, 0, 1, en_passant_pawn);
+        }
+        else {
+            create_a_irrev_move_info(inf, piece_taken, ((piece == black_pawn && dst <= 7) ? 1 : 0), 0, en_passant_pawn);
+        }
+    }
+    return inf;
 }

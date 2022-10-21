@@ -30,7 +30,7 @@ char pass_up(char src){
 }
 
 /*check if peice will get on a square that an ally is on which means he can't*/
-char colid_with_ally(char square, board *the_board, char color)
+char colid_with_allay(char square, board *the_board, char color)
 {
     char piece = get_piece_in_square(the_board, square);
     if(color)
@@ -94,7 +94,7 @@ char pawn_eat_right(char src, board *the_board, char color){
 char move_up(char src, board *the_board, char color){
     if(colid_with_enemy(src, the_board, color) || pass_up(src))
         return 0;
-    if(colid_with_ally(src + UP, the_board, color))
+    if(colid_with_allay(src + UP, the_board, color))
         return 0;
     return 1;
 }
@@ -103,7 +103,7 @@ char move_up(char src, board *the_board, char color){
 char move_down(char src, board *the_board, char color){
     if(colid_with_enemy(src, the_board, color) || pass_down(src))
         return 0;
-    if(colid_with_ally(src + DOWN, the_board, color))
+    if(colid_with_allay(src + DOWN, the_board, color))
         return 0;
     return 1;
 }
@@ -112,7 +112,7 @@ char move_down(char src, board *the_board, char color){
 char move_left(char src, board *the_board, char color){
     if(colid_with_enemy(src, the_board, color) || pass_left(src))
         return 0;
-    if(colid_with_ally(src + LEFT, the_board, color))
+    if(colid_with_allay(src + LEFT, the_board, color))
         return 0;
     return 1;
 }
@@ -121,7 +121,7 @@ char move_left(char src, board *the_board, char color){
 char move_right(char src, board *the_board, char color){
     if(colid_with_enemy(src, the_board, color) || pass_right(src))
         return 0;
-    if(colid_with_ally(src + RIGHT, the_board, color))
+    if(colid_with_allay(src + RIGHT, the_board, color))
         return 0;
     return 1;
 }
@@ -130,7 +130,7 @@ char move_right(char src, board *the_board, char color){
 char move_up_left(char src, board *the_board, char color){
     if(colid_with_enemy(src, the_board, color) || pass_up(src) || pass_left(src))
         return 0;
-    if(colid_with_ally(src + UP_LEFT, the_board, color))
+    if(colid_with_allay(src + UP_LEFT, the_board, color))
         return 0;
     return 1;
 }
@@ -139,7 +139,7 @@ char move_up_left(char src, board *the_board, char color){
 char move_up_right(char src, board *the_board, char color){
     if(colid_with_enemy(src, the_board, color) || pass_up(src) || pass_right(src))
         return 0;
-    if(colid_with_ally(src + UP_RIGHT, the_board, color))
+    if(colid_with_allay(src + UP_RIGHT, the_board, color))
         return 0;
     return 1;
 }
@@ -148,7 +148,7 @@ char move_up_right(char src, board *the_board, char color){
 char move_down_left(char src, board *the_board, char color){
     if(colid_with_enemy(src, the_board, color) || pass_down(src) || pass_left(src))
         return 0;
-    if(colid_with_ally(src + DOWN_LEFT, the_board, color))
+    if(colid_with_allay(src + DOWN_LEFT, the_board, color))
         return 0;
     return 1;
 }
@@ -157,7 +157,7 @@ char move_down_left(char src, board *the_board, char color){
 char move_down_right(char src, board *the_board, char color){
     if(colid_with_enemy(src, the_board, color) || pass_down(src) || pass_right(src))
         return 0;
-    if(colid_with_ally(src + DOWN_RIGHT, the_board, color))
+    if(colid_with_allay(src + DOWN_RIGHT, the_board, color))
         return 0;
     return 1;
 }
@@ -169,9 +169,9 @@ int move_in_straight_lines(char square, board *the_board, char color, move *move
     move temp;
     /*rook up*/
     while(move_up(square + i*UP, the_board, color)){
-        temp = create_a_move(square, square + (i+1)*UP, 0, 0, 0);
+        create_a_move(temp, square, square + (i+1)*UP, 0, 0, 0);
         i++;
-        if(is_move_valid(*the_board, temp, color)){
+        if(is_move_valid(the_board, temp, color)){
             moves[move_num] = temp;
             move_num ++;
         }
@@ -179,9 +179,9 @@ int move_in_straight_lines(char square, board *the_board, char color, move *move
     /*rook down*/
     i = 0;
     while(move_down(square + i*DOWN, the_board, color)){
-        temp = create_a_move(square, square + (i+1)*DOWN, 0, 0, 0);
+        create_a_move(temp, square, square + (i+1)*DOWN, 0, 0, 0);
         i++;
-        if(is_move_valid(*the_board, temp, color)){
+        if(is_move_valid(the_board, temp, color)){
             moves[move_num] = temp;
             move_num ++;
         }
@@ -189,9 +189,9 @@ int move_in_straight_lines(char square, board *the_board, char color, move *move
     /*rook left*/
     i = 0;
     while(move_left(square + i*LEFT, the_board, color)){
-        temp = create_a_move(square, square + (i+1)*LEFT, 0, 0, 0);
+        create_a_move(temp, square, square + (i+1)*LEFT, 0, 0, 0);
         i++;
-        if(is_move_valid(*the_board, temp, color)){
+        if(is_move_valid(the_board, temp, color)){
             moves[move_num] = temp;
             move_num ++;
         }
@@ -199,9 +199,9 @@ int move_in_straight_lines(char square, board *the_board, char color, move *move
     /*rook right*/
     i = 0;
     while(move_right(square + i*RIGHT, the_board, color)){
-        temp = create_a_move(square, square + (i+1)*RIGHT, 0, 0, 0);
+        create_a_move(temp, square, square + (i+1)*RIGHT, 0, 0, 0);
         i++;
-        if(is_move_valid(*the_board, temp, color)){
+        if(is_move_valid(the_board, temp, color)){
             moves[move_num] = temp;
             move_num ++;
         }
@@ -215,41 +215,41 @@ int move_in_diagonal_lines(char square, board *the_board, char color, move *move
     int i = 0;
     int move_num = 0;
     move temp;
-    /*bishop up left*/
+    /* up left*/
     while(move_up_left(square + i*UP_LEFT, the_board, color)){
-        temp = create_a_move(square, square + (i+1)*UP_LEFT, 0, 0, 0);
+        create_a_move(temp, square, square + (i+1)*UP_LEFT, 0, 0, 0);
         i++;
-        if(is_move_valid(*the_board, temp, color)){
+        if(is_move_valid(the_board, temp, color)){
             moves[move_num] = temp;
             move_num ++;
         }
     }
-    /*bishop up right*/
+    /* up right*/
     i = 0;
     while(move_up_right(square + i*UP_RIGHT, the_board, color)){
-        temp = create_a_move(square, square + (i+1)*UP_RIGHT, 0, 0, 0);
+        create_a_move(temp, square, square + (i+1)*UP_RIGHT, 0, 0, 0);
         i++;
-        if(is_move_valid(*the_board, temp, color)){
+        if(is_move_valid(the_board, temp, color)){
             moves[move_num] = temp;
             move_num ++;
         }
     }
-    /*bishop down right*/
+    /* down right*/
     i = 0;
     while(move_down_right(square + i*DOWN_RIGHT, the_board, color)){
-        temp = create_a_move(square, square + (i+1)*DOWN_RIGHT, 0, 0, 0);
+        create_a_move(temp, square, square + (i+1)*DOWN_RIGHT, 0, 0, 0);
         i++;
-        if(is_move_valid(*the_board, temp, color)){
+        if(is_move_valid(the_board, temp, color)){
             moves[move_num] = temp;
             move_num ++;
         }
     }
-    /*bishop down left*/
+    /* down left*/
     i = 0;
     while(move_down_left(square + i*DOWN_LEFT, the_board, color)){
-        temp = create_a_move(square, square + (i+1)*DOWN_LEFT, 0, 0, 0);
+        create_a_move(temp, square, square + (i+1)*DOWN_LEFT, 0, 0, 0);
         i++;
-        if(is_move_valid(*the_board, temp, color)){
+        if(is_move_valid(the_board, temp, color)){
             moves[move_num] = temp;
             move_num ++;
         }
@@ -270,22 +270,11 @@ int bishop(char square, board *the_board, char color, move *moves){
 
 /*creats 2 lists 1 for striaght lins and one for diagonal and conects them to one which is the final*/
 int queen(char square, board *the_board, char color, move *moves){
-    move array1 [ROOK_MAX_MOVES + 1];
-    move array2 [BISHOP_MAX_MOVES + 1];
     int i = 0;
-    int move_num = 0;
-    int len1 = move_in_straight_lines(square, the_board, color, array1);
-    int len2 = move_in_diagonal_lines(square, the_board, color, array2);
-    for(i = 0;i<len1;i++){
-        moves[move_num] = array1[i];
-        move_num ++;
-    }
-    for(i = 0;i<len2;i++){
-        moves[move_num] = array2[i];
-        move_num ++;
-    }
-    moves[move_num] = END;
-    return move_num;
+    int len1 = move_in_straight_lines(square, the_board, color, moves);
+    int len2 = move_in_diagonal_lines(square, the_board, color, moves+len1);
+    moves[len1+len2] = END;
+    return len1 + len2;
 }
 
 /*checks every possible move of the king out of 8*/
@@ -293,57 +282,57 @@ int king(char square, board *the_board, char color, move *moves){
     int move_num = 0;
     move temp;
     if(move_up(square, the_board, color)){
-        temp = create_a_move(square, square+UP, 0, 0, 0);
-        if(is_move_valid(*the_board, temp, color)){
+        create_a_move(temp, square, square+UP, 0, 0, 0);
+        if(is_move_valid(the_board, temp, color)){
             moves[move_num] = temp;
             move_num ++;
         }
     }
     if(move_down(square, the_board, color)){
-        temp = create_a_move(square, square+DOWN, 0, 0, 0);
-        if(is_move_valid(*the_board, temp, color)){
+        create_a_move(temp, square, square+DOWN, 0, 0, 0);
+        if(is_move_valid(the_board, temp, color)){
             moves[move_num] = temp;
             move_num ++;
         }
     }
     if(move_left(square, the_board, color)){
-        temp = create_a_move(square, square+LEFT, 0, 0, 0);
-        if(is_move_valid(*the_board, temp, color)){
+        create_a_move(temp, square, square+LEFT, 0, 0, 0);
+        if(is_move_valid(the_board, temp, color)){
             moves[move_num] = temp;
             move_num ++;
         }
     }
     if(move_right(square, the_board, color)){
-        temp = create_a_move(square, square+RIGHT, 0, 0, 0);
-        if(is_move_valid(*the_board, temp, color)){
+        create_a_move(temp, square, square+RIGHT, 0, 0, 0);
+        if(is_move_valid(the_board, temp, color)){
             moves[move_num] = temp;
             move_num ++;
         }
     }
     if(move_up_right(square, the_board, color)){
-        temp = create_a_move(square, square+UP_RIGHT, 0, 0, 0);
-        if(is_move_valid(*the_board, temp, color)){
+        create_a_move(temp, square, square+UP_RIGHT, 0, 0, 0);
+        if(is_move_valid(the_board, temp, color)){
             moves[move_num] = temp;
             move_num ++;
         }
     }
     if(move_up_left(square, the_board, color)){
-        temp = create_a_move(square, square+UP_LEFT, 0, 0, 0);
-        if(is_move_valid(*the_board, temp, color)){
+        create_a_move(temp, square, square+UP_LEFT, 0, 0, 0);
+        if(is_move_valid(the_board, temp, color)){
             moves[move_num] = temp;
             move_num ++;
         }
     }
     if(move_down_right(square, the_board, color)){
-        temp = create_a_move(square, square+DOWN_RIGHT, 0, 0, 0);
-        if(is_move_valid(*the_board, temp, color)){
+        create_a_move(temp, square, square+DOWN_RIGHT, 0, 0, 0);
+        if(is_move_valid(the_board, temp, color)){
             moves[move_num] = temp;
             move_num ++;
         }
     }
     if(move_down_left(square, the_board, color)){
-        temp = create_a_move(square, square+DOWN_LEFT, 0, 0, 0);
-        if(is_move_valid(*the_board, temp, color)){
+        create_a_move(temp, square, square+DOWN_LEFT, 0, 0, 0);
+        if(is_move_valid(the_board, temp, color)){
             moves[move_num] = temp;
             move_num ++;
         }
@@ -358,9 +347,9 @@ int knight(char square, board *the_board, char color, move *moves){
     move temp;
     /*knight up up right*/
     if(get_column(square) < 7 && get_row(square) < 6){
-        if(!colid_with_ally(square+KNIGHT_UP_UP_RIGHT, the_board, color)){
-            temp = create_a_move(square, square+KNIGHT_UP_UP_RIGHT, 0, 0, 0);
-            if(is_move_valid(*the_board, temp, color)){
+        if(!colid_with_allay(square+KNIGHT_UP_UP_RIGHT, the_board, color)){
+            create_a_move(temp, square, square+KNIGHT_UP_UP_RIGHT, 0, 0, 0);
+            if(is_move_valid(the_board, temp, color)){
                 moves[move_num] = temp;
                 move_num ++;
             }
@@ -368,9 +357,9 @@ int knight(char square, board *the_board, char color, move *moves){
     }
     /*knight up up left*/
     if(get_column(square) > 0 && get_row(square) < 6){
-        if(!colid_with_ally(square+KNIGHT_UP_UP_LEFT, the_board, color)){
-            temp = create_a_move(square, square+KNIGHT_UP_UP_LEFT, 0, 0, 0);
-            if(is_move_valid(*the_board, temp, color)){
+        if(!colid_with_allay(square+KNIGHT_UP_UP_LEFT, the_board, color)){
+            create_a_move(temp, square, square+KNIGHT_UP_UP_LEFT, 0, 0, 0);
+            if(is_move_valid(the_board, temp, color)){
                 moves[move_num] = temp;
                 move_num ++;
             }
@@ -378,9 +367,9 @@ int knight(char square, board *the_board, char color, move *moves){
     }
     /*knight up right right*/
     if(get_column(square) < 6 && get_row(square) < 7){
-        if(!colid_with_ally(square+KNIGHT_UP_RIGHT_RIGHT, the_board, color)){
-            temp = create_a_move(square, square+KNIGHT_UP_RIGHT_RIGHT, 0, 0, 0);
-            if(is_move_valid(*the_board, temp, color)){
+        if(!colid_with_allay(square+KNIGHT_UP_RIGHT_RIGHT, the_board, color)){
+            create_a_move(temp, square, square+KNIGHT_UP_RIGHT_RIGHT, 0, 0, 0);
+            if(is_move_valid(the_board, temp, color)){
                 moves[move_num] = temp;
                 move_num ++;
             }
@@ -388,9 +377,9 @@ int knight(char square, board *the_board, char color, move *moves){
     }
     /*knight up left left*/
     if(get_column(square) > 1 && get_row(square) < 7){
-        if(!colid_with_ally(square+KNIGHT_UP_LEFT_LEFT, the_board, color)){
-            temp = create_a_move(square, square+KNIGHT_UP_LEFT_LEFT, 0, 0, 0);
-            if(is_move_valid(*the_board, temp, color)){
+        if(!colid_with_allay(square+KNIGHT_UP_LEFT_LEFT, the_board, color)){
+            create_a_move(temp, square, square+KNIGHT_UP_LEFT_LEFT, 0, 0, 0);
+            if(is_move_valid(the_board, temp, color)){
                 moves[move_num] = temp;
                 move_num ++;
             }
@@ -398,9 +387,9 @@ int knight(char square, board *the_board, char color, move *moves){
     }
     /*knight down down right*/
     if(get_column(square) < 7 && get_row(square) > 1){
-        if(!colid_with_ally(square+KNIGHT_DOWN_DOWN_RIGHT, the_board, color)){
-            temp = create_a_move(square, square+KNIGHT_DOWN_DOWN_RIGHT, 0, 0, 0);
-            if(is_move_valid(*the_board, temp, color)){
+        if(!colid_with_allay(square+KNIGHT_DOWN_DOWN_RIGHT, the_board, color)){
+            create_a_move(temp, square, square+KNIGHT_DOWN_DOWN_RIGHT, 0, 0, 0);
+            if(is_move_valid(the_board, temp, color)){
                 moves[move_num] = temp;
                 move_num ++;
             }
@@ -408,9 +397,9 @@ int knight(char square, board *the_board, char color, move *moves){
     }
     /*knight down down left*/
     if(get_column(square) > 0 && get_row(square) > 1){
-        if(!colid_with_ally(square+KNIGHT_DOWN_DOWN_LEFT, the_board, color)){
-            temp = create_a_move(square, square+KNIGHT_DOWN_DOWN_LEFT, 0, 0, 0);
-            if(is_move_valid(*the_board, temp, color)){
+        if(!colid_with_allay(square+KNIGHT_DOWN_DOWN_LEFT, the_board, color)){
+            create_a_move(temp, square, square+KNIGHT_DOWN_DOWN_LEFT, 0, 0, 0);
+            if(is_move_valid(the_board, temp, color)){
                 moves[move_num] = temp;
                 move_num ++;
             }
@@ -418,9 +407,9 @@ int knight(char square, board *the_board, char color, move *moves){
     }
     /*knight down right right*/
     if(get_column(square) < 6 && get_row(square) > 0){
-        if(!colid_with_ally(square+KNIGHT_DOWN_RIGHT_RIGHT, the_board, color)){
-            temp = create_a_move(square, square+KNIGHT_DOWN_RIGHT_RIGHT, 0, 0, 0);
-            if(is_move_valid(*the_board, temp, color)){
+        if(!colid_with_allay(square+KNIGHT_DOWN_RIGHT_RIGHT, the_board, color)){
+            create_a_move(temp, square, square+KNIGHT_DOWN_RIGHT_RIGHT, 0, 0, 0);
+            if(is_move_valid(the_board, temp, color)){
                 moves[move_num] = temp;
                 move_num ++;
             }
@@ -428,9 +417,9 @@ int knight(char square, board *the_board, char color, move *moves){
     }
     /*knight down left left*/
     if(get_column(square) > 1 && get_row(square) > 0){
-        if(!colid_with_ally(square+KNIGHT_DOWN_LEFT_LEFT, the_board, color)){
-            temp = create_a_move(square, square+KNIGHT_DOWN_LEFT_LEFT, 0, 0, 0);
-            if(is_move_valid(*the_board, temp, color)){
+        if(!colid_with_allay(square+KNIGHT_DOWN_LEFT_LEFT, the_board, color)){
+            create_a_move(temp, square, square+KNIGHT_DOWN_LEFT_LEFT, 0, 0, 0);
+            if(is_move_valid(the_board, temp, color)){
                 moves[move_num] = temp;
                 move_num ++;
             }
@@ -440,8 +429,8 @@ int knight(char square, board *the_board, char color, move *moves){
     return move_num;
 }
 
-/*checks every special move the pawn can do exept for the usual on which also gets checked but its minor, anyway there is 2 func
-because the pawn for each color moves only in one diriction and its the exact oppised of the other*/
+/* Checks every special move the pawn can do exept for the usual on which also gets checked but its minor, anyway there is 2 func
+because the pawn for each color moves only in one diriction and its the exact oppised of the other. */
 int whitepawn(char square, board *the_board, move *moves){
     int move_num = 0;
     int crown;
@@ -451,33 +440,36 @@ int whitepawn(char square, board *the_board, move *moves){
     if(get_row(square) == 6)
         x = 3;
 
-    for(crown = 0; crown <= x; crown++){
+    if(get_row(square) == 1){
         if(pawn_straight(square, the_board, WHITE)){
-            if(get_row(square) == 1){
-                if(pawn_straight(square+UP, the_board, WHITE)){
-                    temp = create_a_move(square, square+(UP*2), 0, 0, 0);
-                    if(is_move_valid(*the_board, temp, WHITE)){
-                        moves[move_num] = temp;
-                        move_num ++;
-                    }
+            if(pawn_straight(square+UP, the_board, WHITE)){
+                create_a_move(temp, square, square+(UP*2), 0, 0, 0);
+                if(is_move_valid(the_board, temp, WHITE)){
+                    moves[move_num] = temp;
+                    move_num ++;
                 }
             }
-            temp = create_a_move(square, square+UP, crown, 0, 0);
-            if(is_move_valid(*the_board, temp, WHITE)){
+        }
+    }
+
+    for(crown = 0; crown <= x; crown++){
+        if(pawn_straight(square, the_board, WHITE)){
+            create_a_move(temp, square, square+UP, crown, 0, 0);
+            if(is_move_valid(the_board, temp, WHITE)){
                 moves[move_num] = temp;
                 move_num ++;
             }
         }
         if(pawn_eat_right(square, the_board, WHITE)){
-            temp = create_a_move(square, square+UP_RIGHT, crown, 0, 0);
-            if(is_move_valid(*the_board, temp, WHITE)){
+            create_a_move(temp, square, square+UP_RIGHT, crown, 0, 0);
+            if(is_move_valid(the_board, temp, WHITE)){
                 moves[move_num] = temp;
                 move_num ++;
             }
         }  
         if(pawn_eat_left(square, the_board, WHITE)){
-            temp = create_a_move(square, square+UP_LEFT, crown, 0, 0);
-            if(is_move_valid(*the_board, temp, WHITE)){
+            create_a_move(temp, square, square+UP_LEFT, crown, 0, 0);
+            if(is_move_valid(the_board, temp, WHITE)){
                 moves[move_num] = temp;
                 move_num ++;
             }
@@ -495,33 +487,35 @@ int blackpawn(char square, board *the_board, move *moves){
     int x = 0;
     if(get_row(square) == 1)
         x = 3;
-    for(crown = 0; crown <= x; crown++){
+    if(get_row(square) == 6){
         if(pawn_straight(square, the_board, BLACK)){
-            if(get_row(square) == 6){
-                if(pawn_straight(square+DOWN, the_board, BLACK)){
-                    temp = create_a_move(square, square+(DOWN*2), 0, 0, 0);
-                    if(is_move_valid(*the_board, temp, BLACK)){
-                        moves[move_num] = temp;
-                        move_num ++;
-                    }
+            if(pawn_straight(square+DOWN, the_board, BLACK)){
+                create_a_move(temp, square, square+(DOWN*2), 0, 0, 0);
+                if(is_move_valid(the_board, temp, BLACK)){
+                    moves[move_num] = temp;
+                    move_num ++;
                 }
             }
-            temp = create_a_move(square, square+DOWN, crown, 0, 0);
-            if(is_move_valid(*the_board, temp, BLACK)){
+        }
+    }
+    for(crown = 0; crown <= x; crown++){
+        if(pawn_straight(square, the_board, BLACK)){
+            create_a_move(temp, square, square+DOWN, crown, 0, 0);
+            if(is_move_valid(the_board, temp, BLACK)){
                 moves[move_num] = temp;
                 move_num ++;
             }
         }
         if(pawn_eat_right(square, the_board, BLACK)){
-            temp = create_a_move(square, square+DOWN_RIGHT, crown, 0, 0);
-            if(is_move_valid(*the_board, temp, BLACK)){
+            create_a_move(temp, square, square+DOWN_RIGHT, crown, 0, 0);
+            if(is_move_valid(the_board, temp, BLACK)){
                 moves[move_num] = temp;
                 move_num ++;
             }
         }
         if(pawn_eat_left(square, the_board, BLACK)){
-            temp = create_a_move(square, square+DOWN_LEFT, crown, 0, 0);
-            if(is_move_valid(*the_board, temp, BLACK)){
+            create_a_move(temp, square, square+DOWN_LEFT, crown, 0, 0);
+            if(is_move_valid(the_board, temp, BLACK)){
                 moves[move_num] = temp;
                 move_num ++;
             }
@@ -532,18 +526,23 @@ int blackpawn(char square, board *the_board, move *moves){
 }
 
 /* This function checks if a square is attacked. */
-
-
-char is_move_valid(board the_board, move the_move, char color){
+char is_move_valid(board *the_board, move the_move, char color){
+    irreversible_move_info inf = get_irrev_move_info(the_board, the_move);
     if(color){
-         commit_a_move_for_white(&the_board, the_move);
-         if(isAttacked_by_black(&the_board, find_king_square(&the_board, WHITE)))
+        commit_a_move_for_white(the_board, the_move);
+        if(isAttacked_by_black(the_board, find_king_square(the_board, WHITE))) {
+            unmake_move(the_board, the_move, inf);
             return 0;
+        }
+        unmake_move(the_board, the_move, inf);
         return 1;
     } 
-    commit_a_move_for_black(&the_board, the_move);
-    if(isAttacked_by_white(&the_board, find_king_square(&the_board, BLACK)))
+    commit_a_move_for_black(the_board, the_move);
+    if(isAttacked_by_white(the_board, find_king_square(the_board, BLACK))) {
+        unmake_move(the_board, the_move, inf);
         return 0;
+    }
+    unmake_move(the_board, the_move, inf);
     return 1;  
 }
 
@@ -552,66 +551,69 @@ int en_passant_and_castle(board *the_board, move *moves, char color){
     int move_num = 0;
     char square = 0;
     move temp;
-    if(the_board->pawn_en_passant_right){
-        square = the_board->pawn_en_passant_right;
-        if(color_of_piece(square, the_board) == WHITE && color == WHITE){
-            temp = create_a_move(square, square + UP_RIGHT, 0, 0, 0);
-                if(is_move_valid(*the_board, temp, WHITE)){
-                    moves[move_num] = temp;
-                    move_num ++;
-                }
+    if(the_board->en_passant_pawn){
+        if (!pass_left(the_board->en_passant_pawn + LEFT)) { /* En passant right: */
+            square = the_board->en_passant_pawn + LEFT; 
+            if(color_of_piece(square, the_board) == WHITE && color == WHITE){ /* WHITE: */
+                create_a_move(temp, square, square + UP_RIGHT, 0, 0, 0);
+                    if(is_move_valid(the_board, temp, WHITE)){
+                        moves[move_num] = temp;
+                        move_num ++;
+                    }
+            }
+            if(color_of_piece(square, the_board) == BLACK && color == BLACK){ /* BLACK: */
+                create_a_move(temp, square, square + DOWN_RIGHT, 0, 0, 0);
+                if(is_move_valid(the_board, temp, BLACK)){
+                        moves[move_num] = temp;
+                        move_num ++;
+                    }
+            }
         }
-        if(color_of_piece(square, the_board) == BLACK && color == BLACK){
-            temp = create_a_move(square, square + DOWN_RIGHT, 0, 0, 0);
-            if(is_move_valid(*the_board, temp, BLACK)){
-                    moves[move_num] = temp;
-                    move_num ++;
-                }
-        }
-    }
-    if(the_board->pawn_en_passant_left){
-        square = the_board->pawn_en_passant_left;
-        if(color_of_piece(square, the_board) == WHITE && color == WHITE){
-            temp = create_a_move(square, square + UP_LEFT, 0, 0, 0);
-            if(is_move_valid(*the_board, temp, WHITE)){
-                    moves[move_num] = temp;
-                    move_num ++;
-                }
-        }
-        if(color_of_piece(square, the_board) == BLACK && color == BLACK){
-            temp = create_a_move(square, square + DOWN_LEFT, 0, 0, 0);
-            if(is_move_valid(*the_board, temp, BLACK)){
-                    moves[move_num] = temp;
-                    move_num ++;
-                }
+        if (!pass_right(the_board->en_passant_pawn + RIGHT)) { /* En passant left: */
+            square = the_board->en_passant_pawn + RIGHT;
+            if(color_of_piece(square, the_board) == WHITE && color == WHITE){ /* WHITE: */
+                create_a_move(temp, square, square + UP_LEFT, 0, 0, 0);
+                if(is_move_valid(the_board, temp, WHITE)){
+                        moves[move_num] = temp;
+                        move_num ++;
+                    }
+            }
+            if(color_of_piece(square, the_board) == BLACK && color == BLACK){ /* BLACK: */
+                create_a_move(temp, square, square + DOWN_LEFT, 0, 0, 0);
+                if(is_move_valid(the_board, temp, BLACK)){
+                        moves[move_num] = temp;
+                        move_num ++;
+                    }
+            }
         }
     }
     if(color){
         if(check_white_long_castle(the_board)){
-            moves[move_num] = create_a_move(DEAFULT_WHITE_KING_SQUARE, DEAFULT_WHITE_KING_SQUARE-2, 0, 1, 0);
+            create_a_move(temp, DEAFULT_WHITE_KING_SQUARE, DEAFULT_WHITE_KING_SQUARE-2, 0, 1, 0);
+            moves[move_num] = temp;
             move_num ++;
         }
         if(check_white_short_castle(the_board)){
-            moves[move_num] = create_a_move(DEAFULT_WHITE_KING_SQUARE, DEAFULT_WHITE_KING_SQUARE+2, 0, 0, 1);
+            create_a_move(temp, DEAFULT_WHITE_KING_SQUARE, DEAFULT_WHITE_KING_SQUARE+2, 0, 0, 1);
+            moves[move_num] = temp;
             move_num ++;
         }
     }
     if(!color){
         if(check_black_long_castle(the_board)){
-            moves[move_num] = create_a_move(DEAFULT_BLACK_KING_SQUARE, DEAFULT_BLACK_KING_SQUARE-2, 0, 1, 0);
+            create_a_move(temp, DEAFULT_BLACK_KING_SQUARE, DEAFULT_BLACK_KING_SQUARE-2, 0, 1, 0);
+            moves[move_num] = temp; 
             move_num ++;
         }
         if(check_black_short_castle(the_board)){
-            moves[move_num] = create_a_move(DEAFULT_BLACK_KING_SQUARE, DEAFULT_BLACK_KING_SQUARE+2, 0, 0, 1);
+            create_a_move(temp,DEAFULT_BLACK_KING_SQUARE, DEAFULT_BLACK_KING_SQUARE+2, 0, 0, 1);
+            moves[move_num] = temp;
             move_num ++;
         }
     }
     moves[move_num] = END;
     return move_num;
 }
-
-
-
 
 
 char color_of_piece(char square, board *the_board){
@@ -712,19 +714,98 @@ char get_max_moves_of_piece(char piece) {
     }
 }
 
+void unmake_move(board *b, move m, irreversible_move_info inf) {
+    //print_board(b);
+    char src = get_src_square(m);
+    char dst = get_dst_square(m);
+    char piece = get_piece_in_square(b,dst);
+    if (b->whos_turn == WHITE) {
+        b->whos_turn = BLACK;
+        if (piece == black_king) {
+            if (dst == 62 && src == 60) { /* The move was a short castle. */
+                change_the_square(b, 60, black_king);
+                change_the_square(b, 63, black_rook);
+                change_the_square(b, 62, empty);
+                change_the_square(b, 61, empty);
+                b->can_black_castle_short = 1;
+            }
+            else if (dst == 58 && src == 60) { /* The move was a short castle. */
+                change_the_square(b, 60, black_king);
+                change_the_square(b, 56, black_rook);
+                change_the_square(b, 58, empty);
+                change_the_square(b, 59, empty);
+                b->can_black_castle_long = 1;
+            }
+            else {
+                change_the_square(b, src, black_king);
+                change_the_square(b, dst, get_piece_taken(inf));
+            }
+        }
+        else if (get_is_en_passant(inf) != 0) { /* The move was an en passant. */
+            change_the_square(b,dst+UP,white_pawn);
+            change_the_square(b, src, black_pawn);
+            change_the_square(b, dst, empty);
+        }
+        else if (get_is_promoted(inf) == 1) {
+            change_the_square(b, src, black_pawn);
+            change_the_square(b, dst, get_piece_taken(inf));
+        }
+        else {
+            change_the_square(b, src, piece);
+            change_the_square(b, dst, get_piece_taken(inf));
+        }
+    }
+    else {
+        b->whos_turn = WHITE;
+        if (piece == white_king) {
+            if (dst == 6 && src == 4) { /* The move was a short castle. */
+                change_the_square(b, 4, white_king);
+                change_the_square(b, 7, white_rook);
+                change_the_square(b, 6, empty);
+                change_the_square(b, 5, empty);
+                b->can_white_castle_short = 1;
+            }
+            else if (dst == 2 && src == 4) { /* The move was a short castle. */
+                change_the_square(b, 4, white_king);
+                change_the_square(b, 0, white_rook);
+                change_the_square(b, 2, empty);
+                change_the_square(b, 3, empty);
+                b->can_white_castle_long = 1;
+            }
+            else {
+                change_the_square(b, src, white_king);
+                change_the_square(b, dst, get_piece_taken(inf));
+            }
+        }
+        else if (get_is_en_passant(inf) != 0) { /* The move was an en passant. */
+            change_the_square(b,dst+UP,black_pawn);
+            change_the_square(b, src, white_pawn);
+            change_the_square(b, dst, empty);
+        }
+        else if (get_is_promoted(inf) == 1) {
+            change_the_square(b, src, white_pawn);
+            change_the_square(b, dst, get_piece_taken(inf));
+        }
+        else {
+            change_the_square(b, src, piece);
+            change_the_square(b, dst, get_piece_taken(inf));
+        }
+    }
+    b->en_passant_pawn = get_en_passant_pawn_last_move(inf);
+    //print_board(b);
+}
+
 /*main function*/
-move* get_all_moves(board *the_board){
+move* get_all_moves(board *the_board,move *all_moves){
     char color = the_board->whos_turn;
     char piece;
     int i = 0, len = 1, move_num = 0;
-    move *all_moves;
     for(i = 0; i<NUMBER_OF_SQUARES; i++){
     	piece = get_piece_in_square(the_board, i);
         if(color_of_piece(i, the_board) == color && piece != empty)
             len += get_max_moves_of_piece(piece);
     }
     len += 4;
-    all_moves = malloc(len * sizeof(move));
     if (all_moves == 0) {
         printf("no memory");
         exit(1);
@@ -738,8 +819,7 @@ move* get_all_moves(board *the_board){
     }
 
     len = en_passant_and_castle(the_board, all_moves+move_num, color);
-    /*for(x = 0; x < len; x++){
-        all_moves[move_num] = moves[x];*/
+
     move_num+=len;
     
     all_moves[move_num] = END;

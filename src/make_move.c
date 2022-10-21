@@ -23,7 +23,6 @@ void commit_a_long_castle_for_white(board * b){
 
 /* The function commit an en passant for white. */
 void commit_en_passant_for_white(board * b, unsigned char src_loc, unsigned char dst_loc){
-
     change_the_square(b, src_loc, empty); /* It changes the white pawn place to empty. */
     change_the_square(b, dst_loc, white_pawn); /* It puts the white pawn in his place. */
     change_the_square(b, dst_loc - 8, empty); /* It changes the black pawn place to empty. */
@@ -81,18 +80,10 @@ void can_en_passant_next_move(board * b, move m) {
     char piece = get_piece_in_square(b, src_loc); /* It gets the sole in the src square. */
 
     if (piece == white_pawn && dst_loc == src_loc + UP + UP) { /* A white pawn and goes 2 times forward. */
-        if (get_piece_in_square(b, dst_loc + LEFT) == black_pawn) /* If there is a black pawn next to it: */
-            b->pawn_en_passant_right = dst_loc + LEFT;
-
-        if (get_piece_in_square(b, dst_loc + RIGHT) == black_pawn) /* If there is a black pawn next to it: */
-            b->pawn_en_passant_left = dst_loc + RIGHT;
+        b->en_passant_pawn = dst_loc;
     }
     else if (piece == black_pawn && dst_loc == src_loc + DOWN + DOWN) { /* A black pawn and goes 2 times forward. */
-        if (get_piece_in_square(b, dst_loc + LEFT) == white_pawn) /* If there is a white pawn next to it: */
-            b->pawn_en_passant_right = dst_loc + LEFT;
-
-        if (get_piece_in_square(b, dst_loc + RIGHT) == white_pawn) /* If there is a white pawn next to it: */
-            b->pawn_en_passant_left = dst_loc + RIGHT;
+        b->en_passant_pawn = dst_loc;
     }
 }
 
@@ -102,8 +93,8 @@ void commit_a_move_for_white(board * b, move m){
     unsigned char src_loc = get_src_square(m); /* The src square. */
     unsigned char dst_loc = get_dst_square(m); /* The dst square. */
     char piece = get_piece_in_square(b, src_loc); /* It gets the sole in the src square. */
-    b->pawn_en_passant_left = 0; /* The pawns can't en passant anymore. */
-    b->pawn_en_passant_right = 0;
+    b->en_passant_pawn = 0; /* The pawns can't en passant anymore. */
+
 
     b->whos_turn = 0; /* It will be black's turn next. */
     if (get_is_short_castle(m) == 1) /* If this move is a short castle. */
@@ -141,8 +132,7 @@ void commit_a_move_for_black(board * b, move m){
     unsigned char src_loc = get_src_square(m); /* The src square. */
     unsigned char dst_loc = get_dst_square(m); /* The dst square. */
     char piece = get_piece_in_square(b, src_loc); /* It gets the sole in the src square. */
-    b->pawn_en_passant_left = 0; /* The pawns can't en passant anymore. */
-    b->pawn_en_passant_right = 0;
+    b->en_passant_pawn = 0; /* The pawns can't en passant anymore. */
 
     b->whos_turn = 1; /* It will be white's turn next. */
     if (get_is_short_castle(m) == 1) /* If this move is a short castle. */

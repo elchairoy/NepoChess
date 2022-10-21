@@ -15,7 +15,7 @@
 #define BISHOP_MAX_MOVES 13 /*as well*/
 #define KNIGHT_MAX_MOVES 8 /*as well*/
 #define ROOK_MAX_MOVES 14 /*as well*/
-#define END create_a_move(0,0,0,0,0) /*sign for the end of the array*/
+#define END 0 /*sign for the end of the array*/
 #define get_column(square) (square % NUMBER_OF_COLUMNS) /*get the column of a square*/
 #define get_row(square) (square / NUMBER_OF_ROWS) /*get a row of a square*/
 #define UP_RIGHT (UP + RIGHT) /*up in a diagonal to the left*/
@@ -89,15 +89,14 @@ because the pawn for each color moves only in one diriction and its the exact op
 int whitepawn(char square, board *the_board, move *moves);
 int blackpawn(char square, board *the_board, move *moves);
 
-
 /*calls the right func for the peice it was asked to check*/
 char moves_of_piece(char square, board *the_board, move * moves);
 char color_of_piece(char square, board *the_board);
-char is_move_valid(board the_board, move the_move, char color);
+char is_move_valid(board *the_board, move the_move, char color);
 /*main func*/
 int connect_arrays(move * array, move * array1, int array_len, int array1_len);
-
-move* get_all_moves(board *the_board);
+void unmake_move(board *b, move m, irreversible_move_info inf);
+move* get_all_moves(board *the_board,move *all_moves);
 
 
 
