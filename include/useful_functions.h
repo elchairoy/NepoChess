@@ -76,9 +76,9 @@ char get_piece_in_square(board *b ,unsigned char square_number);
    If there is an error - returns -1. */
 void change_the_square(board *b,unsigned char square_number ,char new_piece);
 
-char isAttacked_by_black(board *the_board, char square);
+char is_attacked_by_black(board *the_board, char square);
 
-char isAttacked_by_white(board *the_board, char square);
+char is_attacked_by_white(board *the_board, char square);
 
 char find_king_square(board *the_board, char color);
 

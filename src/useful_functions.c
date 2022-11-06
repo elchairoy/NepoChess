@@ -33,7 +33,7 @@ void change_the_square(board *b,unsigned char square_number ,char new_piece) {
         b->squares[square_number / 2] = (b->squares[square_number / 2] & MASK_FOR_A_HALF) /* - clears the second half */ | (new_piece << 4); /* - places the new piece in the second half */
 }
 
-char isAttacked_by_black(board *the_board, char square) {
+char is_attacked_by_black(board *the_board, char square) {
     char piece;
     int i = 0;
     /* Check danger from columns and rows: */
@@ -182,7 +182,7 @@ char isAttacked_by_black(board *the_board, char square) {
 }
 
 
-char isAttacked_by_white(board *the_board, char square) {
+char is_attacked_by_white(board *the_board, char square) {
     char piece;
     int i = 0;
     /* Check danger from columns and rows: */
@@ -332,7 +332,7 @@ char isAttacked_by_white(board *the_board, char square) {
 
 char find_king_square(board *the_board, char color){
     int i = 0;
-    char piece; 
+    char piece = 0; 
     if (color) {
         piece = white_king;
         if (get_piece_in_square(the_board,4) == white_king)
@@ -400,7 +400,7 @@ void print_board(board *the_board){
 
 char check_white_long_castle(board *the_board){
     move temp;
-    if(!isAttacked_by_black(the_board, DEAFULT_WHITE_KING_SQUARE)){
+    if(!is_attacked_by_black(the_board, DEAFULT_WHITE_KING_SQUARE)){
         if(the_board->can_white_castle_long 
                 && get_piece_in_square(the_board, DEAFULT_WHITE_KING_SQUARE + LEFT) == empty 
                 && get_piece_in_square(the_board, DEAFULT_WHITE_KING_SQUARE + LEFT*2) == empty 
@@ -419,7 +419,7 @@ char check_white_long_castle(board *the_board){
 
 char check_white_short_castle(board *the_board){
     move temp;
-    if(!isAttacked_by_black(the_board, DEAFULT_WHITE_KING_SQUARE)){
+    if(!is_attacked_by_black(the_board, DEAFULT_WHITE_KING_SQUARE)){
         if(the_board->can_white_castle_short 
                 && get_piece_in_square(the_board, DEAFULT_WHITE_KING_SQUARE + RIGHT) == empty
                 && get_piece_in_square(the_board, DEAFULT_WHITE_KING_SQUARE + RIGHT*2) == empty){
@@ -437,7 +437,7 @@ char check_white_short_castle(board *the_board){
 
 char check_black_long_castle(board *the_board){
     move temp;
-    if(!isAttacked_by_white(the_board, DEAFULT_BLACK_KING_SQUARE)){
+    if(!is_attacked_by_white(the_board, DEAFULT_BLACK_KING_SQUARE)){
         if(the_board->can_black_castle_long
                 && get_piece_in_square(the_board, DEAFULT_BLACK_KING_SQUARE + LEFT) == empty
                 && get_piece_in_square(the_board, DEAFULT_BLACK_KING_SQUARE + LEFT * 2) == empty
@@ -456,7 +456,7 @@ char check_black_long_castle(board *the_board){
 
 char check_black_short_castle(board *the_board){
     move temp;
-    if(!isAttacked_by_white(the_board, DEAFULT_BLACK_KING_SQUARE)){
+    if(!is_attacked_by_white(the_board, DEAFULT_BLACK_KING_SQUARE)){
         if(the_board->can_black_castle_short 
                 && get_piece_in_square(the_board, DEAFULT_BLACK_KING_SQUARE + RIGHT) == empty
                 && get_piece_in_square(the_board, DEAFULT_BLACK_KING_SQUARE + RIGHT*2) == empty){
@@ -495,7 +495,7 @@ irreversible_move_info get_irrev_move_info(board *b, move m) {
             dst = get_dst_square(m);
             piece = get_piece_in_square(b,src);
             piece_taken = get_piece_in_square(b,dst);
-            if (piece == white_pawn && piece_taken != black_pawn && dst != src + UP && dst != src + UP + UP) { /* En passant: */
+            if (piece == white_pawn && piece_taken == 0 && dst != src + UP && dst != src + UP + UP) { /* En passant: */
                 create_a_irrev_move_info(inf, piece_taken, 0, 1, en_passant_pawn);
             }
             else {
@@ -507,7 +507,7 @@ irreversible_move_info get_irrev_move_info(board *b, move m) {
         dst = get_dst_square(m);
         piece = get_piece_in_square(b,src);
         piece_taken = get_piece_in_square(b,dst);
-        if (piece == black_pawn && piece_taken != white_pawn && dst != src + DOWN && dst != src + DOWN + DOWN) { /* En passant: */
+        if (piece == black_pawn && piece_taken == 0 && dst != src + DOWN && dst != src + DOWN + DOWN) { /* En passant: */
             create_a_irrev_move_info(inf, piece_taken, 0, 1, en_passant_pawn);
         }
         else {

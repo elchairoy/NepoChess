@@ -16,12 +16,15 @@
 #define get_column(square) (square % NUMBER_OF_COLUMNS) /* Get the column of a square. */
 #define get_row(square) (square / NUMBER_OF_ROWS) /* Get a row of a square. */
 
+#define is_white(piece) ((piece) <= 6 && (piece) >= 1)
+#define is_black(piece) ((piece) >= 7)
+
 #define UP NUMBER_OF_COLUMNS /* Piece moves up. */
 #define DOWN -NUMBER_OF_COLUMNS /* and down. */
 #define LEFT -1 /* To the left. */
 #define RIGHT 1 /* To the right. */
 
-#define MAX_POSSIBLE_MOVES 100 /* Maximum number of moves possible in a position. */
+#define MAX_POSSIBLE_MOVES 200 /* Maximum number of moves possible in a position. */
 
 enum types {empty,white_knight,white_rook,white_queen,white_king,white_pawn,white_bishop,black_knight,black_rook,black_queen,black_king,black_pawn,black_bishop}; /* What cat be on a square. */
 enum columns {a,b,c,d,e,f,g,h}; /* The columns there are. */

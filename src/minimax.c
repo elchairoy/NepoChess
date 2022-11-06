@@ -17,7 +17,7 @@ double evaluate_minimax_for_white(board *b, char depth, double alpha, double bet
     void *tempvoid;
     //print_board(b);
     get_all_moves(b,all_moves); /* Gets all the moves possible. */
-    if (isAttacked_by_black(b,find_king_square(b,WHITE))) { /* Checks if it's a check: */
+    if (is_attacked_by_black(b,find_king_square(b,WHITE))) { /* Checks if it's a check: */
         if (all_moves[0] == END) { /* If it's a mate: */
             number_of_moves++;
             return MIN_EVAL * (5-depth);
@@ -88,7 +88,7 @@ double evaluate_minimax_for_black(board *b, char depth, double alpha, double bet
     void *tempvoid;
     //print_board(b);
     get_all_moves(b,all_moves); /* Gets all the moves possible. */
-    if (isAttacked_by_white(b,find_king_square(b,BLACK))) { /* Checks if it's a check: */
+    if (is_attacked_by_white(b,find_king_square(b,BLACK))) { /* Checks if it's a check: */
         if (all_moves[0] == END) { /* If it's a mate: */
             number_of_moves++;
             return MAX_EVAL * (5-depth);
@@ -162,7 +162,7 @@ move get_best_move_white(board *b,char depth, HashTable *ht) {
 
     get_all_moves(b,all_moves); /* Gets all the moves possible. */
     //print_board(b);
-    if (isAttacked_by_black(b,find_king_square(b,WHITE))) { 
+    if (is_attacked_by_black(b,find_king_square(b,WHITE))) { 
         if (all_moves[0] == END) {
             number_of_moves++;
             return MIN_EVAL * (5-depth);
@@ -226,7 +226,7 @@ move get_best_move_black(board *b,char depth, HashTable *ht) {
     void *tempvoid;
     //print_board(b);
     get_all_moves(b,all_moves); /* Gets all the moves possible. */
-    if (isAttacked_by_white(b,find_king_square(b,BLACK))) {
+    if (is_attacked_by_white(b,find_king_square(b,BLACK))) {
         if (all_moves[0] == END) {
             number_of_moves++;
             return MAX_EVAL * (5-depth);

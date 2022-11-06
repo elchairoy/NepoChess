@@ -96,7 +96,9 @@ char is_move_valid(board *the_board, move the_move, char color);
 /*main func*/
 int connect_arrays(move * array, move * array1, int array_len, int array1_len);
 void unmake_move(board *b, move m, irreversible_move_info inf);
-move* get_all_moves(board *the_board,move *all_moves);
+
+void get_all_moves(board *the_board,move *all_moves);
+void get_possible_moves(board *the_board,move *new_all_moves,move *all_moves_last_move, move last_move, irreversible_move_info inf);
 
 
 

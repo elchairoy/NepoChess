@@ -267,9 +267,10 @@ int check_endgame(board *the_board)
     move all_moves[MAX_POSSIBLE_MOVES];
     if (the_board->whos_turn == WHITE)
     {
-        if (get_all_moves(the_board,all_moves)[0] == END)
+        get_all_moves(the_board,all_moves);
+        if (all_moves[0] == END)
         {
-            if (isAttacked_by_black(the_board, find_king_square(the_board, WHITE)))
+            if (is_attacked_by_black(the_board, find_king_square(the_board, WHITE)))
                 printf("CHECKMATE 0-1\n");
             else
                 printf("STALMATE 0.5-0.5\n");
@@ -278,9 +279,10 @@ int check_endgame(board *the_board)
     }
     else
     {
-        if (get_all_moves(the_board,all_moves)[0] == END)
+        get_all_moves(the_board,all_moves);
+        if (all_moves[0] == END)
         {
-            if (isAttacked_by_white(the_board, find_king_square(the_board, BLACK)))
+            if (is_attacked_by_white(the_board, find_king_square(the_board, BLACK)))
                 printf("CHECKMATE 1-0\n");
             else
                 printf("STALMATE 0.5-0.5\n");
@@ -390,35 +392,86 @@ char uci_parse(board *b, HashTable *ht)
 //irreversible_move_info all_info[10000];
 //long int top = 0;
 
-void moves_in_depth(char d,board *b) {
-    //print_board(b);
-    move all_moves[100];
+void moves_in_depth(char d,board *b,move *all_moves_last_move, move last_move, irreversible_move_info inf) {
+    move all_moves[200];
+    move all_moves2[200];
     move m;
-    char i = 0;
+    int i;
+    char l1,l2,l3,l4;
+    board b2;
+    char fen[100] = "rnbqkbnr/pppp1ppp/8/3Np3/8/8/PPPPPPPP/R1BQKBNR b KQkq - 1 2";
     irreversible_move_info temp;
+    /*fen_to_board(fen, &b2);
+    for (i = 0; i <= 31; i++) {
+        if (b->squares[i] != b2.squares[i]) {
+            break;
+        }
+        if (i == 31) {
+            printf("\ngot it!\n");
+        }
+    } */
     if (d == 0) {
         moves++;
         return;
     }
-    get_all_moves(b,all_moves);
+    get_possible_moves(b,all_moves,all_moves_last_move, last_move, inf);
+        /* TEST */
+    /* 
+    get_all_moves(b, all_moves2);
+    for (l1 = 0; all_moves[l1] != 0; l1++);
+    for (l2 = 0; all_moves[l2+100] != 0; l2++);
+    for (l3 = 0; all_moves2[l3] != 0; l3++);
+    for (l4 = 0; all_moves2[l4+100] != 0; l4++);
+    //printf("%d:%d  %d:%d\n\n  ",l1,l3,l2,l4);
+    if (l1!=l3) {
+        printf("White moves not equal!\n");
+        for (i = 0; all_moves[i] != 0; i++) {
+            printf("%c%d%c%d ",get_column(get_src_square(all_moves[i]))+'a', get_row(get_src_square(all_moves[i])) + 1,get_column(get_dst_square(all_moves[i]))+'a', get_row(get_dst_square(all_moves[i])) + 1);
+        }
+        printf("\n\n");
+        for (i = 0; all_moves2[i] != 0; i++) {
+            printf("%c%d%c%d ",get_column(get_src_square(all_moves2[i]))+'a', get_row(get_src_square(all_moves2[i])) + 1,get_column(get_dst_square(all_moves2[i]))+'a', get_row(get_dst_square(all_moves2[i])) + 1);
+        }
+        printf("\n\n\n\n");
+        exit(0);
+    }
+    if (l2!=l4) {
+        print_board(b);
+        printf("Black moves not equal!\n");
+        for (i = 100; all_moves[i] != 0; i++) {
+            printf("%c%d%c%d ",get_column(get_src_square(all_moves[i]))+'a', get_row(get_src_square(all_moves[i])) + 1,get_column(get_dst_square(all_moves[i]))+'a', get_row(get_dst_square(all_moves[i])) + 1);
+        }       
+        printf("\n\n"); 
+        for (i = 100; all_moves2[i] != 0; i++) {
+            printf("%c%d%c%d ",get_column(get_src_square(all_moves2[i]))+'a', get_row(get_src_square(all_moves2[i])) + 1,get_column(get_dst_square(all_moves2[i]))+'a', get_row(get_dst_square(all_moves2[i])) + 1);
+        }
+        printf("\n\n\n\n");
+        exit(0);
+    }
+        /* TEST */
+
+    if (b->whos_turn == WHITE)
+        i = 0;
+    else
+        i = 100;
     m = all_moves[i];
     while (m != END)
     {
         temp = get_irrev_move_info(b,m);
         if (b->whos_turn == WHITE){
             commit_a_move_for_white(b,m);
-            moves_in_depth(d-1,b);
+            moves_in_depth(d-1,b,all_moves,m,temp);
             unmake_move(b,m,temp);
         }
         else {
             commit_a_move_for_black(b,m);
-            moves_in_depth(d-1,b);
+            moves_in_depth(d-1,b,all_moves,m,temp);
             unmake_move(b,m,temp);
         }
         i++;
         m = all_moves[i];
     }
-    if (d == 4) {
+    if (d == 5) {
         printf("%ld",moves);
     }
     return;

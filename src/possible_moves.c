@@ -258,6 +258,159 @@ int move_in_diagonal_lines(char square, board *the_board, char color, move *move
     return move_num;
 }
 
+/* This function returns the destination squares in the needed directions of a square: */
+int squares_in_directions(board *b, char square, char *dst_squares) {
+    int i = 0;
+    int squares_num = 0;
+
+        /* MOVE IN DIAGONALS: */
+
+    /* up left*/
+    while(!pass_left(square + i*UP_LEFT) && !pass_up(square + i*UP_LEFT)){
+        i++;
+        if (get_piece_in_square(b, square + i*UP_LEFT)) { /* If it's not empty: */
+            dst_squares[squares_num] = square + i*UP_LEFT;
+            squares_num++;
+            break;
+        }
+    }
+    /* up right*/
+    i = 0;
+    while(!pass_right(square + i*UP_RIGHT) && !pass_up(square + i*UP_RIGHT)){
+        i++;
+        if (get_piece_in_square(b, square + i*UP_RIGHT)) { /* If it's not empty: */
+            dst_squares[squares_num] = square + i*UP_RIGHT;
+            squares_num++;
+            break;
+        }
+    }
+    /* down right*/
+    i = 0;
+    while(!pass_right(square + i*DOWN_RIGHT) && !pass_down(square + i*DOWN_RIGHT)){
+        i++;
+        if (get_piece_in_square(b, square + i*DOWN_RIGHT)) { /* If it's not empty: */
+            dst_squares[squares_num] = square + i*DOWN_RIGHT;
+            squares_num++;
+            break;
+        }
+    }
+    /* down left*/
+    i = 0;
+    while(!pass_down(square + i*DOWN_LEFT) && !pass_left(square + i*DOWN_LEFT)){
+        i++;
+        if (get_piece_in_square(b, square + i*DOWN_LEFT)) { /* If it's not empty: */
+            dst_squares[squares_num] = square + i*DOWN_LEFT;
+            squares_num++;
+            break;
+        }
+    }
+
+        /* MOVE IN STRAIGHT LINES: */
+
+    /* up*/
+    i = 0;
+    while(!pass_up(square + i*UP_LEFT)){
+        i++;
+        if (get_piece_in_square(b, square + i*UP)) { /* If it's not empty: */
+            dst_squares[squares_num] = square + i*UP;
+            squares_num++;
+            break;
+        }
+    }
+    /* right */
+    i = 0;
+    while(!pass_right(square + i*RIGHT)){
+        i++;
+        if (get_piece_in_square(b, square + i*RIGHT)) { /* If it's not empty: */
+            dst_squares[squares_num] = square + i*RIGHT;
+            squares_num++;
+            break;
+        }
+    }
+    /* down */
+    i = 0;
+    while(!pass_down(square + i*DOWN)){
+        i++;
+        if (get_piece_in_square(b, square + i*DOWN)) { /* If it's not empty: */
+            dst_squares[squares_num] = square + i*DOWN;
+            squares_num++;
+            break;
+        }
+    }
+    /* left*/
+    i = 0;
+    while(!pass_left(square + i*DOWN_LEFT)){
+        i++;
+        if (get_piece_in_square(b, square + i*LEFT)) { /* If it's not empty: */
+            dst_squares[squares_num] = square + i*LEFT;
+            squares_num++;
+            break;
+        }
+    }
+
+        /* KNIGHT MOVES: */
+
+    /* Knight up up right*/
+    if(get_column(square) < 7 && get_row(square) < 6){
+        if (get_piece_in_square(b, square + KNIGHT_UP_UP_RIGHT)) { /* If it's not empty: */
+            dst_squares[squares_num] = square + KNIGHT_UP_UP_RIGHT;
+            squares_num++;
+        }
+    }
+    /* Knight up up left*/
+    if(get_column(square) > 0 && get_row(square) < 6){
+        if (get_piece_in_square(b, square + KNIGHT_UP_UP_LEFT)) { /* If it's not empty: */
+            dst_squares[squares_num] = square + KNIGHT_UP_UP_LEFT;
+            squares_num++;
+        }
+    }
+    /* Knight up right right*/
+    if(get_column(square) < 6 && get_row(square) < 7){
+        if (get_piece_in_square(b, square + KNIGHT_UP_RIGHT_RIGHT)) { /* If it's not empty: */
+            dst_squares[squares_num] = square + KNIGHT_UP_RIGHT_RIGHT;
+            squares_num++;
+        }
+    }
+    /* Knight up left left*/
+    if(get_column(square) > 1 && get_row(square) < 7){
+        if (get_piece_in_square(b, square + KNIGHT_UP_LEFT_LEFT)) { /* If it's not empty: */
+            dst_squares[squares_num] = square + KNIGHT_UP_LEFT_LEFT;
+            squares_num++;
+        }
+    }
+    /* Knight down down right*/
+    if(get_column(square) < 7 && get_row(square) > 1){
+        if (get_piece_in_square(b, square + KNIGHT_DOWN_DOWN_RIGHT)) { /* If it's not empty: */
+            dst_squares[squares_num] = square + KNIGHT_DOWN_DOWN_RIGHT;
+            squares_num++;
+        }
+    }
+    /* Knight down down left*/
+    if(get_column(square) > 0 && get_row(square) > 1){
+        if (get_piece_in_square(b, square + KNIGHT_DOWN_DOWN_LEFT)) { /* If it's not empty: */
+            dst_squares[squares_num] = square + KNIGHT_DOWN_DOWN_LEFT;
+            squares_num++;
+        }
+    }
+    /* Knight down right right*/
+    if(get_column(square) < 6 && get_row(square) > 0){
+        if (get_piece_in_square(b, square + KNIGHT_DOWN_RIGHT_RIGHT)) { /* If it's not empty: */
+            dst_squares[squares_num] = square + KNIGHT_DOWN_RIGHT_RIGHT;
+            squares_num++;
+        }
+    }
+    /* Knight down left left*/
+    if(get_column(square) > 1 && get_row(square) > 0){
+        if (get_piece_in_square(b, square + KNIGHT_DOWN_LEFT_LEFT)) { /* If it's not empty: */
+            dst_squares[squares_num] = square + KNIGHT_DOWN_LEFT_LEFT;
+            squares_num++;
+        }
+    }
+
+    dst_squares[squares_num] = -1;
+    return squares_num;
+}
+
 /*returns the rook moves list*/
 int rook(char square, board *the_board, char color, move *moves){
     return move_in_straight_lines(square, the_board, color, moves);
@@ -528,21 +681,26 @@ int blackpawn(char square, board *the_board, move *moves){
 /* This function checks if a square is attacked. */
 char is_move_valid(board *the_board, move the_move, char color){
     irreversible_move_info inf = get_irrev_move_info(the_board, the_move);
+    char whos_turn = the_board->whos_turn; /* Whos turn is it? (needed for advanced get_possible_moves). */
     if(color){
         commit_a_move_for_white(the_board, the_move);
-        if(isAttacked_by_black(the_board, find_king_square(the_board, WHITE))) {
+        if(is_attacked_by_black(the_board, find_king_square(the_board, WHITE))) {
             unmake_move(the_board, the_move, inf);
+            the_board->whos_turn = whos_turn;
             return 0;
         }
         unmake_move(the_board, the_move, inf);
+        the_board->whos_turn = whos_turn;
         return 1;
     } 
     commit_a_move_for_black(the_board, the_move);
-    if(isAttacked_by_white(the_board, find_king_square(the_board, BLACK))) {
+    if(is_attacked_by_white(the_board, find_king_square(the_board, BLACK))) {
         unmake_move(the_board, the_move, inf);
+        the_board->whos_turn = whos_turn;
         return 0;
     }
     unmake_move(the_board, the_move, inf);
+    the_board->whos_turn = whos_turn;
     return 1;  
 }
 
@@ -715,7 +873,6 @@ char get_max_moves_of_piece(char piece) {
 }
 
 void unmake_move(board *b, move m, irreversible_move_info inf) {
-    //print_board(b);
     char src = get_src_square(m);
     char dst = get_dst_square(m);
     char piece = get_piece_in_square(b,dst);
@@ -792,36 +949,172 @@ void unmake_move(board *b, move m, irreversible_move_info inf) {
         }
     }
     b->en_passant_pawn = get_en_passant_pawn_last_move(inf);
-    //print_board(b);
 }
 
-/*main function*/
-move* get_all_moves(board *the_board,move *all_moves){
-    char color = the_board->whos_turn;
-    char piece;
-    int i = 0, len = 1, move_num = 0;
-    for(i = 0; i<NUMBER_OF_SQUARES; i++){
-    	piece = get_piece_in_square(the_board, i);
-        if(color_of_piece(i, the_board) == color && piece != empty)
-            len += get_max_moves_of_piece(piece);
+void get_possible_moves(board *the_board, move *new_all_moves ,move *all_moves, move last_move, irreversible_move_info inf){
+    char pieces_to_recalculate[40]; /* The squares of the pieces that needs recalculation. */
+    char no_pieces_to_recalculate = 1;
+    unsigned char i,j,k,n, src, no_white_moves = 0, no_black_moves = 0;
+    move all_moves_copy[MAX_POSSIBLE_MOVES];
+
+    if (get_piece_in_square(the_board,35) == white_knight && get_piece_in_square(the_board,42) == black_pawn) {
+        i = 0;
     }
-    len += 4;
-    if (all_moves == 0) {
-        printf("no memory");
-        exit(1);
+
+    if (all_moves == 0 || all_moves[0] == END) { /* If there aren't any moves in all_moves... */
+        get_all_moves(the_board, new_all_moves); /* Get the moves the long way. */
+        return;
     }
-    all_moves[0] = END;
-    for(i = 0; i<NUMBER_OF_SQUARES; i++){
-        if(color_of_piece(i, the_board) == color && get_piece_in_square(the_board, i) != empty){
-            len = moves_of_piece(i, the_board, all_moves+move_num);
-            move_num+=len;
+
+    /* COPY ALL MOVES */
+    for (k = 0; all_moves[k] != END; k++) {
+        all_moves_copy[k] = all_moves[k];
+    }
+    all_moves_copy[k] = END;
+    for (k = MAX_POSSIBLE_MOVES/2; all_moves[k] != END; k++) {
+        all_moves_copy[k] = all_moves[k];
+    }
+    all_moves_copy[k] = END;
+
+    /* IS IT CHECK? */
+    if (the_board->whos_turn == WHITE) {
+        if (is_attacked_by_black(the_board,find_king_square(the_board, WHITE))) {
+            get_all_moves(the_board, new_all_moves); /* Get the moves the long way. */
+            return;
         }
     }
-
-    len = en_passant_and_castle(the_board, all_moves+move_num, color);
-
-    move_num+=len;
+    if (the_board->whos_turn == BLACK) {
+        if (is_attacked_by_white(the_board,find_king_square(the_board, BLACK))) {
+            get_all_moves(the_board, new_all_moves); /* Get the moves the long way. */
+            return;
+        }
+    }
+    pieces_to_recalculate[0] = get_dst_square(last_move);
+    no_pieces_to_recalculate += squares_in_directions(the_board, get_dst_square(last_move), pieces_to_recalculate + 1); /* Get the pieces to recalcule from this move.*/
     
-    all_moves[move_num] = END;
-    return all_moves;
+    unmake_move(the_board, last_move, inf); /* UNDO move. */
+    /* IS LAST MOVE CHECK? */
+    if (the_board->whos_turn == WHITE) {
+        if (is_attacked_by_black(the_board,find_king_square(the_board, WHITE))) {
+            get_all_moves(the_board, new_all_moves); /* Get the moves the long way. */
+            return;
+        }
+    }
+    if (the_board->whos_turn == BLACK) {
+        if (is_attacked_by_white(the_board,find_king_square(the_board, BLACK))) {
+            get_all_moves(the_board, new_all_moves); /* Get the moves the long way. */
+            return;
+        }
+    }
+    no_pieces_to_recalculate += squares_in_directions(the_board, get_src_square(last_move), pieces_to_recalculate + no_pieces_to_recalculate); /* Get the pieces to recalcule from last move.*/
+    /* REDO move. */
+    if (the_board->whos_turn == 1)
+        commit_a_move_for_white(the_board,last_move);
+    else
+        commit_a_move_for_black(the_board,last_move);
+    /* Recalculates the moves for needed pieces. Removes the previous moves of those pieces. 
+            Copies everything back to the origional array. */
+
+    /* Recalculates the moves. */
+    for (i = 0, j = 0, n = 0; i + j + n< no_pieces_to_recalculate;) { /* ('i' - the white moves index, 'j' - black, 'n' - number of duplicated moves so far). */
+        for (k = 0; k < i + j + n; k++) {
+            if (pieces_to_recalculate[i+j+n] == pieces_to_recalculate[k]) { /* If there is a duplicated move. */
+                n++;
+                break;
+            }
+        }
+        if (k != i + j + n) { /* If it was a duplication. */
+            continue;
+        }
+
+        if (is_white(get_piece_in_square(the_board, pieces_to_recalculate[i+j+n]))) {
+            no_white_moves += moves_of_piece(pieces_to_recalculate[i+j+n], the_board, new_all_moves+no_white_moves);
+            i++;
+        }
+        else {
+            no_black_moves += moves_of_piece(pieces_to_recalculate[i+j+n], the_board, new_all_moves+(no_black_moves+(int)MAX_POSSIBLE_MOVES/2)); /* The black moves start from the second half. */
+            j++;
+        }
+    }
+    i = no_white_moves;
+    j = no_black_moves;
+    /* COPY ALL WHITE MOVES */
+    for (k = 0; all_moves_copy[k] != 0; k++) {
+        if (all_moves_copy[k] == -1)
+            continue;
+        src = get_src_square(all_moves_copy[k]);
+        /* Remove the moves of the re-calculated pieces: */
+        for (n = 0; pieces_to_recalculate[n] != -1; n++) { 
+            if (src == pieces_to_recalculate[n] || src == get_src_square(last_move)) {
+                all_moves_copy[k] = -1;
+                break;
+            }
+        }
+        if (pieces_to_recalculate[n] != -1) {
+            continue;
+        }
+        if (get_piece_in_square(the_board,get_src_square(all_moves_copy[k])) == white_king && is_attacked_by_black(the_board,get_dst_square(all_moves_copy[k]))) { /* If the king will go into check. */
+            all_moves_copy[k] = -1;
+            continue;
+        }
+
+        new_all_moves[i] = all_moves_copy[k];
+        i++;
+    }
+    new_all_moves[i] = END;
+    /* COPY ALL BLACK MOVES */
+    for (k = 100; all_moves_copy[k] != 0; k++) {
+        if (all_moves_copy[k] == -1)
+            continue;
+        src = get_src_square(all_moves_copy[k]);
+        /* Remove the moves of the recalculated pieces: */
+        for (n = 0; pieces_to_recalculate[n] != -1; n++) { 
+            if (src == pieces_to_recalculate[n] || src == get_src_square(last_move)) {
+                all_moves_copy[k] = -1;
+                break;
+            }
+        }
+        if (pieces_to_recalculate[n] != -1) {
+            continue;
+        }
+        if (get_piece_in_square(the_board,get_src_square(all_moves_copy[k])) == black_king && is_attacked_by_white(the_board,get_dst_square(all_moves_copy[k]))) { /* If the king will go into check. */
+            all_moves_copy[k] = -1;
+            continue;
+        }
+        new_all_moves[j + MAX_POSSIBLE_MOVES/2] = all_moves_copy[k];
+        j++;
+    }
+    new_all_moves[j + MAX_POSSIBLE_MOVES/2] = END;
+    for (k = 0; k < 200; k++) {
+        new_all_moves[k] = new_all_moves[k];
+    }
+    //for (i = 0; new_all_moves[i] != 0; i++) {
+    //    printf("%c%d%c%d ",get_column(get_src_square(new_all_moves[i]))+'a', get_row(get_src_square(new_all_moves[i])) + 1,get_column(get_dst_square(new_all_moves[i]))+'a', get_row(get_dst_square(new_all_moves[i])) + 1);
+    //}
+    //for (i = 100; new_all_moves[i] != 0; i++) {
+    //    printf("%c%d%c%d ",get_column(get_src_square(new_all_moves[i]))+'a', get_row(get_src_square(new_all_moves[i])) + 1,get_column(get_dst_square(new_all_moves[i]))+'a', get_row(get_dst_square(new_all_moves[i])) + 1);
+    //}
+}
+
+/* This function gets the move the long way (calculates the moves of everything). */
+void get_all_moves(board *the_board,move *all_moves){
+    char color = BLACK;
+    char piece;
+    int i, j, len = 0, move_num = 0;
+
+    for (j = 0; j < 2; j++) {
+        move_num = j * MAX_POSSIBLE_MOVES / 2; /* First of all gets white's moves, than black's (in the middle of the array)*/
+        color = !color;
+        for(i = 0; i<NUMBER_OF_SQUARES; i++){
+            if(color_of_piece(i, the_board) == color && get_piece_in_square(the_board, i) != empty){
+                len = moves_of_piece(i, the_board, all_moves+move_num);
+                move_num+=len;
+            }
+        }
+
+        len = en_passant_and_castle(the_board, all_moves+move_num, color);
+        move_num+=len;
+        
+        all_moves[move_num] = END;
+    }
 }
