@@ -12,6 +12,6 @@ int main() {
   /*uci_main();*/
   board b;
   setup_start_board(&b);
-  moves_in_depth(5,&b,0,0,0);
+  moves_in_depth(4,&b,0,0,0);
   return 0;
 }

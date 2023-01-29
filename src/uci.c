@@ -394,12 +394,10 @@ char uci_parse(board *b, HashTable *ht)
 
 void moves_in_depth(char d,board *b,move *all_moves_last_move, move last_move, irreversible_move_info inf) {
     move all_moves[200];
-    move all_moves2[200];
     move m;
     int i;
-    char l1,l2,l3,l4;
-    board b2;
-    char fen[100] = "rnbqkbnr/pppp1ppp/8/3Np3/8/8/PPPPPPPP/R1BQKBNR b KQkq - 1 2";
+    //board b2;
+    //char fen[100] = "rnbqkbnr/ppp1pppp/8/3p4/Q1P5/8/PP1PPPPP/RNB1KBNR b KQkq - 1 2";
     irreversible_move_info temp;
     /*fen_to_board(fen, &b2);
     for (i = 0; i <= 31; i++) {
@@ -408,6 +406,7 @@ void moves_in_depth(char d,board *b,move *all_moves_last_move, move last_move, i
         }
         if (i == 31) {
             printf("\ngot it!\n");
+            print_board(b);
         }
     } */
     if (d == 0) {
@@ -415,40 +414,6 @@ void moves_in_depth(char d,board *b,move *all_moves_last_move, move last_move, i
         return;
     }
     get_possible_moves(b,all_moves,all_moves_last_move, last_move, inf);
-        /* TEST */
-    /* 
-    get_all_moves(b, all_moves2);
-    for (l1 = 0; all_moves[l1] != 0; l1++);
-    for (l2 = 0; all_moves[l2+100] != 0; l2++);
-    for (l3 = 0; all_moves2[l3] != 0; l3++);
-    for (l4 = 0; all_moves2[l4+100] != 0; l4++);
-    //printf("%d:%d  %d:%d\n\n  ",l1,l3,l2,l4);
-    if (l1!=l3) {
-        printf("White moves not equal!\n");
-        for (i = 0; all_moves[i] != 0; i++) {
-            printf("%c%d%c%d ",get_column(get_src_square(all_moves[i]))+'a', get_row(get_src_square(all_moves[i])) + 1,get_column(get_dst_square(all_moves[i]))+'a', get_row(get_dst_square(all_moves[i])) + 1);
-        }
-        printf("\n\n");
-        for (i = 0; all_moves2[i] != 0; i++) {
-            printf("%c%d%c%d ",get_column(get_src_square(all_moves2[i]))+'a', get_row(get_src_square(all_moves2[i])) + 1,get_column(get_dst_square(all_moves2[i]))+'a', get_row(get_dst_square(all_moves2[i])) + 1);
-        }
-        printf("\n\n\n\n");
-        exit(0);
-    }
-    if (l2!=l4) {
-        print_board(b);
-        printf("Black moves not equal!\n");
-        for (i = 100; all_moves[i] != 0; i++) {
-            printf("%c%d%c%d ",get_column(get_src_square(all_moves[i]))+'a', get_row(get_src_square(all_moves[i])) + 1,get_column(get_dst_square(all_moves[i]))+'a', get_row(get_dst_square(all_moves[i])) + 1);
-        }       
-        printf("\n\n"); 
-        for (i = 100; all_moves2[i] != 0; i++) {
-            printf("%c%d%c%d ",get_column(get_src_square(all_moves2[i]))+'a', get_row(get_src_square(all_moves2[i])) + 1,get_column(get_dst_square(all_moves2[i]))+'a', get_row(get_dst_square(all_moves2[i])) + 1);
-        }
-        printf("\n\n\n\n");
-        exit(0);
-    }
-        /* TEST */
 
     if (b->whos_turn == WHITE)
         i = 0;
@@ -471,7 +436,7 @@ void moves_in_depth(char d,board *b,move *all_moves_last_move, move last_move, i
         i++;
         m = all_moves[i];
     }
-    if (d == 5) {
+    if (d == 4) {
         printf("%ld",moves);
     }
     return;

@@ -22,7 +22,8 @@
         "evaluation.h": "c",
         "*.tcc": "c",
         "uci.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "random": "c"
     },
-    "C_Cpp.errorSquiggles": "Disabled"
+    "C_Cpp.errorSquiggles": "disabled"
 }

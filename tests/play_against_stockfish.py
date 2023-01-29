@@ -12,7 +12,6 @@ sf = 0
 nepo_chess = 0
 TIMEOUT = 1000
 
-
 def get_sf_move():
     move = sf.get_best_move()
     if move == None:
