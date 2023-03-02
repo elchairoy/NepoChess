@@ -41,6 +41,10 @@ char pass_left(char src);
 char pass_right(char src);
 char pass_down(char src);
 char pass_up(char src);
+char pass_up_right(char src);
+char pass_up_left(char src);
+char pass_down_right(char src);
+char pass_down_left(char src);
 
 /*check if peice will get on a square that an ally is on which means he can't*/
 char colid_with_ally(char dst, board *the_board, char color);
@@ -64,38 +68,36 @@ char move_down_left(char src, board *the_board, char color);
 char move_down_right(char src, board *the_board, char color);
 
 /*func to return for the rook and partly for the queen their move list in straight lines - left right up and down*/
-int move_in_straight_lines(char square, board *the_board, char color, move *moves);
+int move_in_straight_lines(char square, board *the_board, char color, move *moves, char is_pinned);
 
 /*this one returns the list of moves in diagonal lines - up_right up_left etc.*/
-int move_in_diagonal_lines(char square, board *the_board, char color, move *moves);
+int move_in_diagonal_lines(char square, board *the_board, char color, move *moves, char is_pinned);
 
 /*returns the rook moves list*/
-int rook(char square, board *the_board, char color, move *moves);
+int rook(char square, board *the_board, char color, move *moves, char *pinned_pieces);
 
 /*returns the bishop moves list*/
-int bishop(char square, board *the_board, char color, move *moves);
+int bishop(char square, board *the_board, char color, move *moves, char *pinned_pieces);
 
 /*creats 2 lists 1 for striaght lins and one for diagonal and conects them to one which is the final*/
-int queen(char square, board *the_board, char color, move *moves);
+int queen(char square, board *the_board, char color, move *moves, char *pinned_pieces);
 
 /*checks every possible move of the king out of 8*/
 int king(char square, board *the_board, char color, move *moves);
 
 /*checks every possible move of the king out of 8*/
-int knight(char square, board *the_board, char color, move *moves);
+int knight(char square, board *the_board, char color, move *moves, char *pinned_pieces);
 
 /*checks every special move the pawn can do exept for the usual on which also gets checked but its minor, anyway there is 2 func
 because the pawn for each color moves only in one diriction and its the exact oppised of the other*/
-int whitepawn(char square, board *the_board, move *moves);
-int blackpawn(char square, board *the_board, move *moves);
+int whitepawn(char square, board *the_board, move *moves, char *pinned_pieces);
+int blackpawn(char square, board *the_board, move *moves, char *pinned_pieces);
 
 /*calls the right func for the peice it was asked to check*/
-char moves_of_piece(char square, board *the_board, move * moves);
+char moves_of_piece(char square, board *the_board, move * moves, char *pinned_pieces);
 char color_of_piece(char square, board *the_board);
 char is_move_valid(board *the_board, move the_move, char color);
 /*main func*/
-int connect_arrays(move * array, move * array1, int array_len, int array1_len);
-void unmake_move(board *b, move m, irreversible_move_info inf);
 
 void get_all_moves(board *the_board,move *all_moves);
 void get_possible_moves(board *the_board,move *new_all_moves,move *all_moves_last_move, move last_move, irreversible_move_info inf);

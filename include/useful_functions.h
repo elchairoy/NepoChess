@@ -23,6 +23,10 @@
 #define IS_PROMOTED_INDEX 6 /* The place of the is_promoted bit in the char (irrev move info). */
 #define IS_EN_PASSANT_INDEX 7 /* The place of the is_en_passant bit in the char (irrev move info). */
 #define EN_PASSANT_PAWN_INDEX 8 /* The place of the en passant pwan of the last move in the char (irrev move info). */
+#define COULD_WHITE_SHORT_CASTLE_INDEX 14 /* The place of the could_white_short_castle bit in the char (irrev move info). */
+#define COULD_WHITE_LONG_CASTLE_INDEX 15 /* The place of the could_white_long_castle bit in the char (irrev move info). */
+#define COULD_BLACK_SHORT_CASTLE_INDEX 16 /* The place of the could_black_short_castle bit in the char (irrev move info). */
+#define COULD_BLACK_LONG_CASTLE_INDEX 17 /* The place of the could_black_long_castle bit in the char (irrev move info). */
 
 /* This macro gets a move and returns the src square */
 #define get_src_square(m) ((m & (MASK_FOR_6BITS << SRC_LOC_INDEX)) >> SRC_LOC_INDEX)
@@ -48,8 +52,21 @@
 /* This macro gets an irreversible move info and returns if the move is an en passant */
 #define get_is_en_passant(move_info) ((move_info & (1 << IS_EN_PASSANT_INDEX)) >> IS_EN_PASSANT_INDEX)
 
-/* This macro gets an irreversible move info and returns if the move the en passant pawn of the last move */
+/* This macro gets an irreversible move info and returns the en passant pawn of the last move */
 #define get_en_passant_pawn_last_move(move_info) ((move_info & (MASK_FOR_6BITS << EN_PASSANT_PAWN_INDEX)) >> EN_PASSANT_PAWN_INDEX)
+
+/* This macro gets an irreversible move info and returns if white could make a short castle before the move */
+#define get_could_white_short_castle_last_move(move_info) ((move_info & (1 << COULD_WHITE_SHORT_CASTLE_INDEX)) >> COULD_WHITE_SHORT_CASTLE_INDEX)
+
+/* This macro gets an irreversible move info and returns if white could make a long castle before the move */
+#define get_could_white_long_castle_last_move(move_info) ((move_info & (1 << COULD_WHITE_LONG_CASTLE_INDEX)) >> COULD_WHITE_LONG_CASTLE_INDEX)
+
+/* This macro gets an irreversible move info and returns if black could make a short castle before the move */
+#define get_could_black_short_castle_last_move(move_info) ((move_info & (1 << COULD_BLACK_SHORT_CASTLE_INDEX)) >> COULD_BLACK_SHORT_CASTLE_INDEX)
+
+/* This macro gets an irreversible move info and returns if black could make a long castle before the move */
+#define get_could_black_long_castle_last_move(move_info) ((move_info & (1 << COULD_BLACK_LONG_CASTLE_INDEX)) >> COULD_BLACK_LONG_CASTLE_INDEX)
+
 
 /* This macro gets the data needed for a move and returns a short representing the move.*/
 #define create_a_move(the_move, src_loc, dst_loc, promote_to,castle_long, castle_short)\
@@ -61,12 +78,16 @@
     (the_move) |= ((castle_short) << IS_SHORT_CASTLE_INDEX);
 
 /* This macro gets the data needed for a move and returns a short representing the move.*/
-#define create_a_irrev_move_info(the_move_info, piece_taken, is_promoted, is_en_passant, en_passant_pawn_last_move)\
+#define create_a_irrev_move_info(the_move_info, piece_taken, is_promoted, is_en_passant, en_passant_pawn_last_move, could_white_short_castle, could_white_long_castle, could_black_short_castle, could_black_long_castle)\
     (the_move_info) = 0; \
     (the_move_info) |= ((piece_taken) << PIECE_TAKEN_INDEX); \
     (the_move_info) |= ((is_promoted) << IS_PROMOTED_INDEX); \
     (the_move_info) |= ((is_en_passant) << IS_EN_PASSANT_INDEX); \
-    (the_move_info) |= ((is_en_passant) << EN_PASSANT_PAWN_INDEX);
+    (the_move_info) |= ((is_en_passant) << EN_PASSANT_PAWN_INDEX); \
+    (the_move_info) |= ((could_white_short_castle) << COULD_WHITE_SHORT_CASTLE_INDEX); \
+    (the_move_info) |= ((could_white_long_castle) << COULD_WHITE_LONG_CASTLE_INDEX); \
+    (the_move_info) |= ((could_black_short_castle) << COULD_BLACK_SHORT_CASTLE_INDEX); \
+    (the_move_info) |= ((could_black_long_castle) << COULD_BLACK_LONG_CASTLE_INDEX);
 
 /* Gives the piece in the given square.
    If there is an error - returns -1. */
@@ -94,6 +115,12 @@ char check_black_short_castle(board *the_board);
 
 char *strrev(char *str);
 
+char is_in_array(char *array, char value);
+
 irreversible_move_info get_irrev_move_info(board *b, move m);
+
+void unmake_move(board *b, move m, irreversible_move_info inf);
+
+char check_unmake_move(board *b, move m, irreversible_move_info inf);
 
 #endif /* AE5BDBF7_77C4_4AB2_867A_1994FFAC6C77 */

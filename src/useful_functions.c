@@ -4,16 +4,6 @@
 #include "../include/useful_functions.h"
 char * PIECES1[13] = {" " , "\u265E", "\u265C", "\u265B", "\u265A", "\u265F", "\u265D", "\u2658", "\u2656", "\u2655", "\u2654", "\u2659", "\u2657"};
 
-#define MASK_FOR_A_HALF 0x0f /* A mask to get only a half of a byte. */
-#define MASK_FOR_6BITS 0x003f /* A mask to get only 6 bits of a short. */
-#define MASK_FOR_2BITS 0x0003 /* A mask to get only 2 bits of a short. */
-
-#define SRC_LOC_INDEX 0 /* The place of the source square in the short. */
-#define DST_LOC_INDEX 6 /* The place of the destination square in the short. */
-#define PROMOTE_TO_INDEX 12 /* The place of the 'promote to what' in the short. */
-#define IS_LONG_CASTLE_INDEX 14 /* The place of the 'is long castle' in the short. */
-#define IS_SHORT_CASTLE_INDEX 15 /* The place of the 'is short castle' in the short. */
-
 /* Gives the piece in the given square. */
 char get_piece_in_square(board *b ,unsigned char square_number) {
     if (square_number % 2 == 1) /* If the square is in the first half a byte: */
@@ -348,6 +338,14 @@ char find_king_square(board *the_board, char color){
     return i;
 }
 
+char is_in_array(char *array, char value){
+    int i;
+    for (i = 0; array[i] != -1; i++) {
+        if (array[i] == value)
+            return 1;
+    }
+    return 0;
+}
 
 void print_line(){
     int z;
@@ -496,10 +494,10 @@ irreversible_move_info get_irrev_move_info(board *b, move m) {
             piece = get_piece_in_square(b,src);
             piece_taken = get_piece_in_square(b,dst);
             if (piece == white_pawn && piece_taken == 0 && dst != src + UP && dst != src + UP + UP) { /* En passant: */
-                create_a_irrev_move_info(inf, piece_taken, 0, 1, en_passant_pawn);
+                create_a_irrev_move_info(inf, piece_taken, 0, 1, en_passant_pawn, b->can_white_castle_short, b->can_white_castle_long, b->can_black_castle_short, b->can_black_castle_long);
             }
             else {
-                create_a_irrev_move_info(inf, piece_taken, ((piece == white_pawn && 56 <= dst) ? 1 : 0), 0, en_passant_pawn);
+                create_a_irrev_move_info(inf, piece_taken, ((piece == white_pawn && 56 <= dst) ? 1 : 0), 0, en_passant_pawn, b->can_white_castle_short, b->can_white_castle_long, b->can_black_castle_short, b->can_black_castle_long);
             }
         }
     if (b->whos_turn == BLACK) {
@@ -508,11 +506,90 @@ irreversible_move_info get_irrev_move_info(board *b, move m) {
         piece = get_piece_in_square(b,src);
         piece_taken = get_piece_in_square(b,dst);
         if (piece == black_pawn && piece_taken == 0 && dst != src + DOWN && dst != src + DOWN + DOWN) { /* En passant: */
-            create_a_irrev_move_info(inf, piece_taken, 0, 1, en_passant_pawn);
+            create_a_irrev_move_info(inf, piece_taken, 0, 1, en_passant_pawn, b->can_white_castle_short, b->can_white_castle_long, b->can_black_castle_short, b->can_black_castle_long);
         }
         else {
-            create_a_irrev_move_info(inf, piece_taken, ((piece == black_pawn && dst <= 7) ? 1 : 0), 0, en_passant_pawn);
+            create_a_irrev_move_info(inf, piece_taken, ((piece == black_pawn && dst <= 7) ? 1 : 0), 0, en_passant_pawn, b->can_white_castle_short, b->can_white_castle_long, b->can_black_castle_short, b->can_black_castle_long);
         }
     }
     return inf;
+}
+
+void unmake_move(board *b, move m, irreversible_move_info inf) {
+    char src = get_src_square(m);
+    char dst = get_dst_square(m);
+    char piece = get_piece_in_square(b,dst);
+    if (b->whos_turn == WHITE) {
+        b->whos_turn = BLACK;
+        if (piece == black_king) {
+            if (dst == 62 && src == 60) { /* The move was a short castle. */
+                change_the_square(b, 60, black_king);
+                change_the_square(b, 63, black_rook);
+                change_the_square(b, 62, empty);
+                change_the_square(b, 61, empty);
+            }
+            else if (dst == 58 && src == 60) { /* The move was a short castle. */
+                change_the_square(b, 60, black_king);
+                change_the_square(b, 56, black_rook);
+                change_the_square(b, 58, empty);
+                change_the_square(b, 59, empty);
+            }
+            else {
+                change_the_square(b, src, black_king);
+                change_the_square(b, dst, get_piece_taken(inf));
+            }
+        }
+        else if (get_is_en_passant(inf) != 0) { /* The move was an en passant. */
+            change_the_square(b,dst+UP,white_pawn);
+            change_the_square(b, src, black_pawn);
+            change_the_square(b, dst, empty);
+        }
+        else if (get_is_promoted(inf) == 1) {
+            change_the_square(b, src, black_pawn);
+            change_the_square(b, dst, get_piece_taken(inf));
+        }
+        else {
+            change_the_square(b, src, piece);
+            change_the_square(b, dst, get_piece_taken(inf));
+        }
+    }
+    else {
+        b->whos_turn = WHITE;
+        if (piece == white_king) {
+            if (dst == 6 && src == 4) { /* The move was a short castle. */
+                change_the_square(b, 4, white_king);
+                change_the_square(b, 7, white_rook);
+                change_the_square(b, 6, empty);
+                change_the_square(b, 5, empty);
+            }
+            else if (dst == 2 && src == 4) { /* The move was a short castle. */
+                change_the_square(b, 4, white_king);
+                change_the_square(b, 0, white_rook);
+                change_the_square(b, 2, empty);
+                change_the_square(b, 3, empty);
+            }
+            else {
+                change_the_square(b, src, white_king);
+                change_the_square(b, dst, get_piece_taken(inf));
+            }
+        }
+        else if (get_is_en_passant(inf) != 0) { /* The move was an en passant. */
+            change_the_square(b,dst+UP,black_pawn);
+            change_the_square(b, src, white_pawn);
+            change_the_square(b, dst, empty);
+        }
+        else if (get_is_promoted(inf) == 1) {
+            change_the_square(b, src, white_pawn);
+            change_the_square(b, dst, get_piece_taken(inf));
+        }
+        else {
+            change_the_square(b, src, piece);
+            change_the_square(b, dst, get_piece_taken(inf));
+        }
+    }
+    b->en_passant_pawn = get_en_passant_pawn_last_move(inf);
+    b->can_white_castle_short = get_could_white_short_castle_last_move(inf);
+    b->can_white_castle_long = get_could_white_long_castle_last_move(inf);
+    b->can_black_castle_short = get_could_black_short_castle_last_move(inf);
+    b->can_black_castle_long = get_could_black_long_castle_last_move(inf);
 }

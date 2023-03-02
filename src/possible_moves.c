@@ -29,6 +29,30 @@ char pass_up(char src){
     return 0;
 }
 
+char pass_up_left(char src){
+    if(pass_up(src) || pass_left(src))
+        return 1;
+    return 0;
+}
+
+char pass_up_right(char src){
+    if(pass_up(src) || pass_right(src))
+        return 1;
+    return 0;
+}
+
+char pass_down_left(char src){
+    if(pass_down(src) || pass_left(src))
+        return 1;
+    return 0;
+}
+
+char pass_down_right(char src){
+    if(pass_down(src) || pass_right(src))
+        return 1;
+    return 0;
+}
+
 /*check if peice will get on a square that an ally is on which means he can't*/
 char colid_with_allay(char square, board *the_board, char color)
 {
@@ -163,7 +187,7 @@ char move_down_right(char src, board *the_board, char color){
 }
 
 /*func to return for the rook and partly for the queen their move list in straight lines - left right up and down*/
-int move_in_straight_lines(char square, board *the_board, char color, move *moves){
+int move_in_straight_lines(char square, board *the_board, char color, move *moves, char is_pinned){
     int i = 0;
     int move_num = 0;
     move temp;
@@ -171,7 +195,7 @@ int move_in_straight_lines(char square, board *the_board, char color, move *move
     while(move_up(square + i*UP, the_board, color)){
         create_a_move(temp, square, square + (i+1)*UP, 0, 0, 0);
         i++;
-        if(is_move_valid(the_board, temp, color)){
+        if(!is_pinned || is_move_valid(the_board, temp, color)){ /* If not pinned there is no need to check if valid. */
             moves[move_num] = temp;
             move_num ++;
         }
@@ -181,7 +205,7 @@ int move_in_straight_lines(char square, board *the_board, char color, move *move
     while(move_down(square + i*DOWN, the_board, color)){
         create_a_move(temp, square, square + (i+1)*DOWN, 0, 0, 0);
         i++;
-        if(is_move_valid(the_board, temp, color)){
+        if(!is_pinned || is_move_valid(the_board, temp, color)){
             moves[move_num] = temp;
             move_num ++;
         }
@@ -191,7 +215,7 @@ int move_in_straight_lines(char square, board *the_board, char color, move *move
     while(move_left(square + i*LEFT, the_board, color)){
         create_a_move(temp, square, square + (i+1)*LEFT, 0, 0, 0);
         i++;
-        if(is_move_valid(the_board, temp, color)){
+        if(!is_pinned || is_move_valid(the_board, temp, color)){
             moves[move_num] = temp;
             move_num ++;
         }
@@ -201,7 +225,7 @@ int move_in_straight_lines(char square, board *the_board, char color, move *move
     while(move_right(square + i*RIGHT, the_board, color)){
         create_a_move(temp, square, square + (i+1)*RIGHT, 0, 0, 0);
         i++;
-        if(is_move_valid(the_board, temp, color)){
+        if(!is_pinned || is_move_valid(the_board, temp, color)){
             moves[move_num] = temp;
             move_num ++;
         }
@@ -211,7 +235,7 @@ int move_in_straight_lines(char square, board *the_board, char color, move *move
 }
 
 /*this one returns the list of moves in diagonal lines - up_right up_left etc.*/
-int move_in_diagonal_lines(char square, board *the_board, char color, move *moves){
+int move_in_diagonal_lines(char square, board *the_board, char color, move *moves, char is_pinned){
     int i = 0;
     int move_num = 0;
     move temp;
@@ -219,7 +243,7 @@ int move_in_diagonal_lines(char square, board *the_board, char color, move *move
     while(move_up_left(square + i*UP_LEFT, the_board, color)){
         create_a_move(temp, square, square + (i+1)*UP_LEFT, 0, 0, 0);
         i++;
-        if(is_move_valid(the_board, temp, color)){
+        if(!is_pinned || is_move_valid(the_board, temp, color)){
             moves[move_num] = temp;
             move_num ++;
         }
@@ -229,7 +253,7 @@ int move_in_diagonal_lines(char square, board *the_board, char color, move *move
     while(move_up_right(square + i*UP_RIGHT, the_board, color)){
         create_a_move(temp, square, square + (i+1)*UP_RIGHT, 0, 0, 0);
         i++;
-        if(is_move_valid(the_board, temp, color)){
+        if(!is_pinned || is_move_valid(the_board, temp, color)){
             moves[move_num] = temp;
             move_num ++;
         }
@@ -239,7 +263,7 @@ int move_in_diagonal_lines(char square, board *the_board, char color, move *move
     while(move_down_right(square + i*DOWN_RIGHT, the_board, color)){
         create_a_move(temp, square, square + (i+1)*DOWN_RIGHT, 0, 0, 0);
         i++;
-        if(is_move_valid(the_board, temp, color)){
+        if(!is_pinned || is_move_valid(the_board, temp, color)){
             moves[move_num] = temp;
             move_num ++;
         }
@@ -249,7 +273,7 @@ int move_in_diagonal_lines(char square, board *the_board, char color, move *move
     while(move_down_left(square + i*DOWN_LEFT, the_board, color)){
         create_a_move(temp, square, square + (i+1)*DOWN_LEFT, 0, 0, 0);
         i++;
-        if(is_move_valid(the_board, temp, color)){
+        if(!is_pinned || is_move_valid(the_board, temp, color)){
             moves[move_num] = temp;
             move_num ++;
         }
@@ -411,20 +435,22 @@ int squares_in_directions(board *b, char square, char *dst_squares) {
 }
 
 /*returns the rook moves list*/
-int rook(char square, board *the_board, char color, move *moves){
-    return move_in_straight_lines(square, the_board, color, moves);
+int rook(char square, board *the_board, char color, move *moves, char *pinned_pieces){
+    char i = 0, is_pinned = is_in_array(pinned_pieces, square);
+    return move_in_straight_lines(square, the_board, color, moves, is_pinned);
 }
 
 /*returns the bishop moves list*/
-int bishop(char square, board *the_board, char color, move *moves){
-    return move_in_diagonal_lines(square, the_board, color, moves);
+int bishop(char square, board *the_board, char color, move *moves, char *pinned_pieces){
+    char i = 0, is_pinned = is_in_array(pinned_pieces, square);
+    return move_in_diagonal_lines(square, the_board, color, moves, is_pinned);
 }
 
 /*creats 2 lists 1 for striaght lins and one for diagonal and conects them to one which is the final*/
-int queen(char square, board *the_board, char color, move *moves){
-    int i = 0;
-    int len1 = move_in_straight_lines(square, the_board, color, moves);
-    int len2 = move_in_diagonal_lines(square, the_board, color, moves+len1);
+int queen(char square, board *the_board, char color, move *moves, char *pinned_pieces){
+    char i = 0, is_pinned = is_in_array(pinned_pieces, square);
+    int len1 = move_in_straight_lines(square, the_board, color, moves, is_pinned);
+    int len2 = move_in_diagonal_lines(square, the_board, color, moves+len1, is_pinned);
     moves[len1+len2] = END;
     return len1 + len2;
 }
@@ -494,14 +520,16 @@ int king(char square, board *the_board, char color, move *moves){
 }
 
 /*checks every possible move for the knight out of 8*/
-int knight(char square, board *the_board, char color, move *moves){
+int knight(char square, board *the_board, char color, move *moves, char *pinned_pieces){
     int move_num = 0;
     move temp;
+    char i = 0;
+    char is_pinned = is_in_array(pinned_pieces, square);
     /*knight up up right*/
     if(get_column(square) < 7 && get_row(square) < 6){
         if(!colid_with_allay(square+KNIGHT_UP_UP_RIGHT, the_board, color)){
             create_a_move(temp, square, square+KNIGHT_UP_UP_RIGHT, 0, 0, 0);
-            if(is_move_valid(the_board, temp, color)){
+            if(!is_pinned || is_move_valid(the_board, temp, color)){ /* If not pinned there is no need to check if valid. */
                 moves[move_num] = temp;
                 move_num ++;
             }
@@ -511,7 +539,7 @@ int knight(char square, board *the_board, char color, move *moves){
     if(get_column(square) > 0 && get_row(square) < 6){
         if(!colid_with_allay(square+KNIGHT_UP_UP_LEFT, the_board, color)){
             create_a_move(temp, square, square+KNIGHT_UP_UP_LEFT, 0, 0, 0);
-            if(is_move_valid(the_board, temp, color)){
+            if(!is_pinned || is_move_valid(the_board, temp, color)){
                 moves[move_num] = temp;
                 move_num ++;
             }
@@ -521,7 +549,7 @@ int knight(char square, board *the_board, char color, move *moves){
     if(get_column(square) < 6 && get_row(square) < 7){
         if(!colid_with_allay(square+KNIGHT_UP_RIGHT_RIGHT, the_board, color)){
             create_a_move(temp, square, square+KNIGHT_UP_RIGHT_RIGHT, 0, 0, 0);
-            if(is_move_valid(the_board, temp, color)){
+            if(!is_pinned || is_move_valid(the_board, temp, color)){
                 moves[move_num] = temp;
                 move_num ++;
             }
@@ -531,7 +559,7 @@ int knight(char square, board *the_board, char color, move *moves){
     if(get_column(square) > 1 && get_row(square) < 7){
         if(!colid_with_allay(square+KNIGHT_UP_LEFT_LEFT, the_board, color)){
             create_a_move(temp, square, square+KNIGHT_UP_LEFT_LEFT, 0, 0, 0);
-            if(is_move_valid(the_board, temp, color)){
+            if(!is_pinned || is_move_valid(the_board, temp, color)){
                 moves[move_num] = temp;
                 move_num ++;
             }
@@ -541,7 +569,7 @@ int knight(char square, board *the_board, char color, move *moves){
     if(get_column(square) < 7 && get_row(square) > 1){
         if(!colid_with_allay(square+KNIGHT_DOWN_DOWN_RIGHT, the_board, color)){
             create_a_move(temp, square, square+KNIGHT_DOWN_DOWN_RIGHT, 0, 0, 0);
-            if(is_move_valid(the_board, temp, color)){
+            if(!is_pinned || is_move_valid(the_board, temp, color)){
                 moves[move_num] = temp;
                 move_num ++;
             }
@@ -551,7 +579,7 @@ int knight(char square, board *the_board, char color, move *moves){
     if(get_column(square) > 0 && get_row(square) > 1){
         if(!colid_with_allay(square+KNIGHT_DOWN_DOWN_LEFT, the_board, color)){
             create_a_move(temp, square, square+KNIGHT_DOWN_DOWN_LEFT, 0, 0, 0);
-            if(is_move_valid(the_board, temp, color)){
+            if(!is_pinned || is_move_valid(the_board, temp, color)){
                 moves[move_num] = temp;
                 move_num ++;
             }
@@ -561,7 +589,7 @@ int knight(char square, board *the_board, char color, move *moves){
     if(get_column(square) < 6 && get_row(square) > 0){
         if(!colid_with_allay(square+KNIGHT_DOWN_RIGHT_RIGHT, the_board, color)){
             create_a_move(temp, square, square+KNIGHT_DOWN_RIGHT_RIGHT, 0, 0, 0);
-            if(is_move_valid(the_board, temp, color)){
+            if(!is_pinned || is_move_valid(the_board, temp, color)){
                 moves[move_num] = temp;
                 move_num ++;
             }
@@ -571,7 +599,7 @@ int knight(char square, board *the_board, char color, move *moves){
     if(get_column(square) > 1 && get_row(square) > 0){
         if(!colid_with_allay(square+KNIGHT_DOWN_LEFT_LEFT, the_board, color)){
             create_a_move(temp, square, square+KNIGHT_DOWN_LEFT_LEFT, 0, 0, 0);
-            if(is_move_valid(the_board, temp, color)){
+            if(!is_pinned || is_move_valid(the_board, temp, color)){
                 moves[move_num] = temp;
                 move_num ++;
             }
@@ -583,11 +611,13 @@ int knight(char square, board *the_board, char color, move *moves){
 
 /* Checks every special move the pawn can do exept for the usual on which also gets checked but its minor, anyway there is 2 func
 because the pawn for each color moves only in one diriction and its the exact oppised of the other. */
-int whitepawn(char square, board *the_board, move *moves){
+int whitepawn(char square, board *the_board, move *moves, char *pinned_pieces){
     int move_num = 0;
     int crown;
     int x = 0;
     move temp;
+    char i = 0;
+    char is_pinned = is_in_array(pinned_pieces, square);
 
     if(get_row(square) == 6)
         x = 3;
@@ -596,7 +626,7 @@ int whitepawn(char square, board *the_board, move *moves){
         if(pawn_straight(square, the_board, WHITE)){
             if(pawn_straight(square+UP, the_board, WHITE)){
                 create_a_move(temp, square, square+(UP*2), 0, 0, 0);
-                if(is_move_valid(the_board, temp, WHITE)){
+                if(!is_pinned || is_move_valid(the_board, temp, WHITE)){ /* If not pinned there is no need to check if valid. */
                     moves[move_num] = temp;
                     move_num ++;
                 }
@@ -607,21 +637,21 @@ int whitepawn(char square, board *the_board, move *moves){
     for(crown = 0; crown <= x; crown++){
         if(pawn_straight(square, the_board, WHITE)){
             create_a_move(temp, square, square+UP, crown, 0, 0);
-            if(is_move_valid(the_board, temp, WHITE)){
+            if(!is_pinned || is_move_valid(the_board, temp, WHITE)){
                 moves[move_num] = temp;
                 move_num ++;
             }
         }
         if(pawn_eat_right(square, the_board, WHITE)){
             create_a_move(temp, square, square+UP_RIGHT, crown, 0, 0);
-            if(is_move_valid(the_board, temp, WHITE)){
+            if(!is_pinned || is_move_valid(the_board, temp, WHITE)){
                 moves[move_num] = temp;
                 move_num ++;
             }
         }  
         if(pawn_eat_left(square, the_board, WHITE)){
             create_a_move(temp, square, square+UP_LEFT, crown, 0, 0);
-            if(is_move_valid(the_board, temp, WHITE)){
+            if(!is_pinned || is_move_valid(the_board, temp, WHITE)){
                 moves[move_num] = temp;
                 move_num ++;
             }
@@ -632,18 +662,19 @@ int whitepawn(char square, board *the_board, move *moves){
 }
 
 
-int blackpawn(char square, board *the_board, move *moves){
+int blackpawn(char square, board *the_board, move *moves, char *pinned_pieces){
     int move_num = 0;
     move temp;
     char crown;
     int x = 0;
+    char is_pinned = is_in_array(pinned_pieces, square);
     if(get_row(square) == 1)
         x = 3;
     if(get_row(square) == 6){
         if(pawn_straight(square, the_board, BLACK)){
             if(pawn_straight(square+DOWN, the_board, BLACK)){
                 create_a_move(temp, square, square+(DOWN*2), 0, 0, 0);
-                if(is_move_valid(the_board, temp, BLACK)){
+                if(!is_pinned || is_move_valid(the_board, temp, BLACK)){ /* If not pinned there is no need to check if valid. */
                     moves[move_num] = temp;
                     move_num ++;
                 }
@@ -653,21 +684,21 @@ int blackpawn(char square, board *the_board, move *moves){
     for(crown = 0; crown <= x; crown++){
         if(pawn_straight(square, the_board, BLACK)){
             create_a_move(temp, square, square+DOWN, crown, 0, 0);
-            if(is_move_valid(the_board, temp, BLACK)){
+            if(!is_pinned || is_move_valid(the_board, temp, BLACK)){
                 moves[move_num] = temp;
                 move_num ++;
             }
         }
         if(pawn_eat_right(square, the_board, BLACK)){
             create_a_move(temp, square, square+DOWN_RIGHT, crown, 0, 0);
-            if(is_move_valid(the_board, temp, BLACK)){
+            if(!is_pinned || is_move_valid(the_board, temp, BLACK)){
                 moves[move_num] = temp;
                 move_num ++;
             }
         }
         if(pawn_eat_left(square, the_board, BLACK)){
             create_a_move(temp, square, square+DOWN_LEFT, crown, 0, 0);
-            if(is_move_valid(the_board, temp, BLACK)){
+            if(!is_pinned || is_move_valid(the_board, temp, BLACK)){
                 moves[move_num] = temp;
                 move_num ++;
             }
@@ -781,27 +812,27 @@ char color_of_piece(char square, board *the_board){
 }
 
 /*calls the right func for the peice it was asked to check*/
-char moves_of_piece(char square, board *the_board, move * moves){
+char moves_of_piece(char square, board *the_board, move * moves, char *pinned_pieces){
     char peice = get_piece_in_square(the_board, square);
     switch (peice)
     {
     case white_knight:
-        return knight(square, the_board, WHITE, moves);
+        return knight(square, the_board, WHITE, moves, pinned_pieces);
     
     case black_knight:
-        return knight(square, the_board, BLACK, moves);
+        return knight(square, the_board, BLACK, moves, pinned_pieces);
 
     case white_rook:
-        return rook(square, the_board, WHITE, moves);
+        return rook(square, the_board, WHITE, moves, pinned_pieces);
     
     case black_rook:
-        return rook(square, the_board, BLACK, moves);
+        return rook(square, the_board, BLACK, moves, pinned_pieces);
 
     case white_queen:
-        return queen(square, the_board, WHITE, moves);
+        return queen(square, the_board, WHITE, moves, pinned_pieces);
 
     case black_queen:
-        return queen(square, the_board, BLACK, moves);
+        return queen(square, the_board, BLACK, moves, pinned_pieces);
     
     case white_king:
         return king(square, the_board, WHITE, moves);
@@ -810,16 +841,16 @@ char moves_of_piece(char square, board *the_board, move * moves){
         return king(square, the_board, BLACK, moves);
 
     case white_bishop:
-        return bishop(square, the_board, WHITE, moves);
+        return bishop(square, the_board, WHITE, moves, pinned_pieces);
 
     case black_bishop:
-        return bishop(square, the_board, BLACK, moves);
+        return bishop(square, the_board, BLACK, moves, pinned_pieces);
 
     case white_pawn:
-        return whitepawn(square, the_board, moves);
+        return whitepawn(square, the_board, moves, pinned_pieces);
     
     case black_pawn:
-        return blackpawn(square, the_board, moves);
+        return blackpawn(square, the_board, moves, pinned_pieces);
 
     default:
         return 0;
@@ -871,83 +902,165 @@ char get_max_moves_of_piece(char piece) {
     }
 }
 
-void unmake_move(board *b, move m, irreversible_move_info inf) {
-    char src = get_src_square(m);
-    char dst = get_dst_square(m);
-    char piece = get_piece_in_square(b,dst);
-    if (b->whos_turn == WHITE) {
-        b->whos_turn = BLACK;
-        if (piece == black_king) {
-            if (dst == 62 && src == 60) { /* The move was a short castle. */
-                change_the_square(b, 60, black_king);
-                change_the_square(b, 63, black_rook);
-                change_the_square(b, 62, empty);
-                change_the_square(b, 61, empty);
-                b->can_black_castle_short = 1;
+char get_pinned_pieces(board *b, char color, char *pinned_pieces) {
+    char king_square = find_king_square(b, color);
+    char i = 0, j = 0;
+    char no_of_pinned_pieces = 0;
+    
+    while (!pass_up(king_square + i * UP)) {
+        i++;
+        if (colid_with_allay(king_square + i * UP, b, color)) {
+            if (j!=0) {
+                break;
             }
-            else if (dst == 58 && src == 60) { /* The move was a short castle. */
-                change_the_square(b, 60, black_king);
-                change_the_square(b, 56, black_rook);
-                change_the_square(b, 58, empty);
-                change_the_square(b, 59, empty);
-                b->can_black_castle_long = 1;
+            j = king_square + i * UP;
+        }
+        else if (colid_with_enemy(king_square + i * UP, b, color) && j!=0) {
+            if (get_piece_in_square(b, king_square + i * UP) == white_queen || get_piece_in_square(b, king_square + i * UP) == white_rook || get_piece_in_square(b, king_square + i * UP) == black_queen || get_piece_in_square(b, king_square + i * UP) == black_rook) {
+                pinned_pieces[no_of_pinned_pieces] = j;
+                no_of_pinned_pieces++;
             }
-            else {
-                change_the_square(b, src, black_king);
-                change_the_square(b, dst, get_piece_taken(inf));
-            }
-        }
-        else if (get_is_en_passant(inf) != 0) { /* The move was an en passant. */
-            change_the_square(b,dst+UP,white_pawn);
-            change_the_square(b, src, black_pawn);
-            change_the_square(b, dst, empty);
-        }
-        else if (get_is_promoted(inf) == 1) {
-            change_the_square(b, src, black_pawn);
-            change_the_square(b, dst, get_piece_taken(inf));
-        }
-        else {
-            change_the_square(b, src, piece);
-            change_the_square(b, dst, get_piece_taken(inf));
+            break;
         }
     }
-    else {
-        b->whos_turn = WHITE;
-        if (piece == white_king) {
-            if (dst == 6 && src == 4) { /* The move was a short castle. */
-                change_the_square(b, 4, white_king);
-                change_the_square(b, 7, white_rook);
-                change_the_square(b, 6, empty);
-                change_the_square(b, 5, empty);
-                b->can_white_castle_short = 1;
+
+    i = 0;
+    j = 0;
+    // make the same thing for the other directions
+    while (!pass_down(king_square + i * DOWN)) {
+        i++;
+        if (colid_with_allay(king_square + i * DOWN, b, color)) {
+            if (j!=0) {
+                break;
             }
-            else if (dst == 2 && src == 4) { /* The move was a short castle. */
-                change_the_square(b, 4, white_king);
-                change_the_square(b, 0, white_rook);
-                change_the_square(b, 2, empty);
-                change_the_square(b, 3, empty);
-                b->can_white_castle_long = 1;
+            j = king_square + i * DOWN;
+        }
+        else if (colid_with_enemy(king_square + i * DOWN, b, color) && j!=0) {
+            if (get_piece_in_square(b, king_square + i * DOWN) == white_queen || get_piece_in_square(b, king_square + i * DOWN) == white_rook || get_piece_in_square(b, king_square + i * DOWN) == black_queen || get_piece_in_square(b, king_square + i * DOWN) == black_rook) {
+                pinned_pieces[no_of_pinned_pieces] = j;
+                no_of_pinned_pieces++;
             }
-            else {
-                change_the_square(b, src, white_king);
-                change_the_square(b, dst, get_piece_taken(inf));
-            }
-        }
-        else if (get_is_en_passant(inf) != 0) { /* The move was an en passant. */
-            change_the_square(b,dst+UP,black_pawn);
-            change_the_square(b, src, white_pawn);
-            change_the_square(b, dst, empty);
-        }
-        else if (get_is_promoted(inf) == 1) {
-            change_the_square(b, src, white_pawn);
-            change_the_square(b, dst, get_piece_taken(inf));
-        }
-        else {
-            change_the_square(b, src, piece);
-            change_the_square(b, dst, get_piece_taken(inf));
+            break;
         }
     }
-    b->en_passant_pawn = get_en_passant_pawn_last_move(inf);
+
+    i = 0;
+    j = 0;
+    while (!pass_right(king_square + i * RIGHT)) {
+        i++;
+        if (colid_with_allay(king_square + i * RIGHT, b, color)) {
+            if (j!=0) {
+                break;
+            }
+            j = king_square + i * RIGHT;
+        }
+        else if (colid_with_enemy(king_square + i * RIGHT, b, color) && j!=0) {
+            if (get_piece_in_square(b, king_square + i * RIGHT) == white_queen || get_piece_in_square(b, king_square + i * RIGHT) == white_rook || get_piece_in_square(b, king_square + i * RIGHT) == black_queen || get_piece_in_square(b, king_square + i * RIGHT) == black_rook) {
+                pinned_pieces[no_of_pinned_pieces] = j;
+                no_of_pinned_pieces++;
+            }
+            break;
+        }
+    }
+    
+    i = 0;
+    j = 0;
+    while (!pass_left(king_square + i * LEFT)) {
+        i++;
+        if (colid_with_allay(king_square + i * LEFT, b, color)) {
+            if (j!=0) {
+                break;
+            }
+            j = king_square + i * LEFT;
+        }
+        else if (colid_with_enemy(king_square + i * LEFT, b, color) && j!=0) {
+            if (get_piece_in_square(b, king_square + i * LEFT) == white_queen || get_piece_in_square(b, king_square + i * LEFT) == white_rook || get_piece_in_square(b, king_square + i * LEFT) == black_queen || get_piece_in_square(b, king_square + i * LEFT) == black_rook) {
+                pinned_pieces[no_of_pinned_pieces] = j;
+                no_of_pinned_pieces++;
+            }
+            break;
+        }
+    }
+    
+    i = 0;
+    j = 0;
+    /* Check danger form diagonals: */
+    while (!pass_up_right(king_square + i * UP_RIGHT)) {
+        i++;
+        if (colid_with_allay(king_square + i * UP_RIGHT, b, color)) {
+            if (j!=0) {
+                break;
+            }
+            j = king_square + i * UP_RIGHT;
+        }
+        else if (colid_with_enemy(king_square + i * UP_RIGHT, b, color) && j!=0) {
+            if (get_piece_in_square(b, king_square + i * UP_RIGHT) == white_queen || get_piece_in_square(b, king_square + i * UP_RIGHT) == white_bishop || get_piece_in_square(b, king_square + i * UP_RIGHT) == black_queen || get_piece_in_square(b, king_square + i * UP_RIGHT) == black_bishop) {
+                pinned_pieces[no_of_pinned_pieces] = j;
+                no_of_pinned_pieces++;
+            }
+            break;
+        }
+    }
+
+
+    i = 0;
+    j = 0;
+    while (!pass_up_left(king_square + i * UP_LEFT)) {
+        i++;
+        if (colid_with_allay(king_square + i * UP_LEFT, b, color)) {
+            if (j!=0) {
+                break;
+            }
+            j = king_square + i * UP_LEFT;
+        }
+        else if (colid_with_enemy(king_square + i * UP_LEFT, b, color) && j!=0) {
+            if (get_piece_in_square(b, king_square + i * UP_LEFT) == white_queen || get_piece_in_square(b, king_square + i * UP_LEFT) == white_bishop || get_piece_in_square(b, king_square + i * UP_LEFT) == black_queen || get_piece_in_square(b, king_square + i * UP_LEFT) == black_bishop) {
+                pinned_pieces[no_of_pinned_pieces] = j;
+                no_of_pinned_pieces++;
+            }
+            break;
+        }
+    }
+
+    i = 0;
+    j = 0;
+    while (!pass_down_right(king_square + i * DOWN_RIGHT)) {
+        i++;
+        if (colid_with_allay(king_square + i * DOWN_RIGHT, b, color)) {
+            if (j!=0) {
+                break;
+            }
+            j = king_square + i * DOWN_RIGHT;
+        }
+        else if (colid_with_enemy(king_square + i * DOWN_RIGHT, b, color) && j!=0) {
+            if (get_piece_in_square(b, king_square + i * DOWN_RIGHT) == white_queen || get_piece_in_square(b, king_square + i * DOWN_RIGHT) == white_bishop || get_piece_in_square(b, king_square + i * DOWN_RIGHT) == black_queen || get_piece_in_square(b, king_square + i * DOWN_RIGHT) == black_bishop) {
+                pinned_pieces[no_of_pinned_pieces] = j;
+                no_of_pinned_pieces++;
+            }
+            break;
+        }
+    }
+
+    i = 0;
+    j = 0;
+    while (!pass_down_left(king_square + i * DOWN_LEFT)) {
+        i++;
+        if (colid_with_allay(king_square + i * DOWN_LEFT, b, color)) {
+            if (j!=0) {
+                break;
+            }
+            j = king_square + i * DOWN_LEFT;
+        }
+        else if (colid_with_enemy(king_square + i * DOWN_LEFT, b, color) && j!=0) {
+            if (get_piece_in_square(b, king_square + i * DOWN_LEFT) == white_queen || get_piece_in_square(b, king_square + i * DOWN_LEFT) == white_bishop || get_piece_in_square(b, king_square + i * DOWN_LEFT) == black_queen || get_piece_in_square(b, king_square + i * DOWN_LEFT) == black_bishop) {
+                pinned_pieces[no_of_pinned_pieces] = j;
+                no_of_pinned_pieces++;
+            }
+            break;
+        }
+    }
+    pinned_pieces[no_of_pinned_pieces] = -1;
+    return no_of_pinned_pieces;
 }
 
 void get_possible_moves(board *the_board, move *new_all_moves ,move *all_moves, move last_move, irreversible_move_info inf){
@@ -955,8 +1068,6 @@ void get_possible_moves(board *the_board, move *new_all_moves ,move *all_moves, 
     char no_pieces_to_recalculate = 2;
     unsigned char i,j,k,n, src, no_white_moves = 0, no_black_moves = 0;
     move all_moves_copy[MAX_POSSIBLE_MOVES];
-    move test_all_moves[MAX_POSSIBLE_MOVES];
-
     if (all_moves == 0 || all_moves[0] == END) { /* If there aren't any moves in all_moves... */
         get_all_moves(the_board, new_all_moves); /* Get the moves the long way. */
         return;
@@ -1015,7 +1126,8 @@ void get_possible_moves(board *the_board, move *new_all_moves ,move *all_moves, 
 
     /* Recalculates the moves for needed pieces. Removes the previous moves of those pieces. 
             Copies everything back to the origional array. */
-
+    char pinned_pieces[40];
+    get_pinned_pieces(the_board, the_board->whos_turn, pinned_pieces);
     /* Recalculates the moves. */
     for (i = 0, j = 0, n = 0; i + j + n< no_pieces_to_recalculate;) { /* ('i' - the white moves index, 'j' - black, 'n' - number of duplicated moves so far). */
         for (k = 0; k < i + j + n; k++) {
@@ -1029,16 +1141,17 @@ void get_possible_moves(board *the_board, move *new_all_moves ,move *all_moves, 
         }
 
         if (is_white(get_piece_in_square(the_board, pieces_to_recalculate[i+j+n]))) {
-            no_white_moves += moves_of_piece(pieces_to_recalculate[i+j+n], the_board, new_all_moves+no_white_moves);
-            moves_of_piece(pieces_to_recalculate[i+j+n], the_board, test_all_moves+no_white_moves);
+            no_white_moves += moves_of_piece(pieces_to_recalculate[i+j+n], the_board, new_all_moves+no_white_moves, pinned_pieces);
             i++;
         }
         else {
-            no_black_moves += moves_of_piece(pieces_to_recalculate[i+j+n], the_board, new_all_moves+(no_black_moves+(int)MAX_POSSIBLE_MOVES/2)); /* The black moves start from the second half. */
-            moves_of_piece(pieces_to_recalculate[i+j+n], the_board, test_all_moves+(no_black_moves+(int)MAX_POSSIBLE_MOVES/2)); /* The black moves start from the second half. */
+            no_black_moves += moves_of_piece(pieces_to_recalculate[i+j+n], the_board, new_all_moves+(no_black_moves+MAX_POSSIBLE_MOVES/2), pinned_pieces); /* The black moves start from the second half. */
             j++;
         }
     }
+    no_white_moves += en_passant_and_castle(the_board, new_all_moves+no_white_moves, WHITE);
+    no_black_moves += en_passant_and_castle(the_board, new_all_moves+(no_black_moves+MAX_POSSIBLE_MOVES/2), BLACK);
+    
 
     i = no_white_moves;
     j = no_black_moves;
@@ -1067,7 +1180,7 @@ void get_possible_moves(board *the_board, move *new_all_moves ,move *all_moves, 
     }
     new_all_moves[i] = END;
     /* COPY ALL BLACK MOVES */
-    for (k = 100; all_moves_copy[k] != 0; k++) {
+    for (k = MAX_POSSIBLE_MOVES/2; all_moves_copy[k] != 0; k++) {
         if (all_moves_copy[k] == -1)
             continue;
         src = get_src_square(all_moves_copy[k]);
@@ -1089,25 +1202,35 @@ void get_possible_moves(board *the_board, move *new_all_moves ,move *all_moves, 
         j++;
     }
     new_all_moves[j + MAX_POSSIBLE_MOVES/2] = END;
-
-    for (k = 0; all_moves[k] != END; k++) {
-        test_all_moves[k] = new_all_moves[k];
-    }
-    test_all_moves[k] = END;
 }
 
 /* This function gets the move the long way (calculates the moves of everything). */
 void get_all_moves(board *the_board,move *all_moves){
-    char color = BLACK;
+    char color = BLACK; /* Needed for the loop, DO NOT TOUCH */
     char piece;
     int i, j, len = 0, move_num = 0;
+    char pinned_pieces[65];
+
+    /* If it's a check - make all pieces of the checked player pinned: */
+    if ((the_board->whos_turn == WHITE && is_attacked_by_black(the_board, find_king_square(the_board, WHITE))) || (the_board->whos_turn == BLACK && is_attacked_by_white(the_board, find_king_square(the_board, BLACK)))) {
+        for (i = 0, j = 0; i < 64; i++) {
+            if (color_of_piece(i, the_board) == the_board->whos_turn) {
+                pinned_pieces[j] = i;
+                j++;
+            }
+        }
+        pinned_pieces[j] = -1;
+    }
+    else 
+        get_pinned_pieces(the_board, the_board->whos_turn, pinned_pieces); /* Gets the pinned pieces. */
+
 
     for (j = 0; j < 2; j++) {
         move_num = j * MAX_POSSIBLE_MOVES / 2; /* First of all gets white's moves, than black's (in the middle of the array)*/
         color = !color;
         for(i = 0; i<NUMBER_OF_SQUARES; i++){
             if(color_of_piece(i, the_board) == color && get_piece_in_square(the_board, i) != empty){
-                len = moves_of_piece(i, the_board, all_moves+move_num);
+                len = moves_of_piece(i, the_board, all_moves+move_num, pinned_pieces);
                 move_num+=len;
             }
         }

@@ -40,9 +40,11 @@ char fen_to_board(char *fen, board *b)
             i++;
         else if ('1' <= fen[i] && fen[i] <= '9')
         {
-            fen[i] = fen[i] - 1;
-            modified_fen[pointer_next_to_change] = '0';
-            pointer_next_to_change++;
+            for (int j = 0; j < fen[i] - '0'; j++) {
+                modified_fen[pointer_next_to_change] = '0';
+                pointer_next_to_change++;
+            }
+            i++;
         }
         else 
         {
@@ -134,8 +136,11 @@ int player_move(board *the_board, char *str)
     if (check_src(the_board, src_square))
     {
         dst_square = get_square_number(move_str[2], move_str[3]);
-        get_all_moves(the_board,all_moves);
-        i = 0;
+        get_possible_moves(the_board,all_moves, 0 ,0 ,0);
+        if (the_board->whos_turn == WHITE)
+            i = 0;
+        else
+            i = MAX_POSSIBLE_MOVES / 2;
         while (all_moves[i] != END)
         {
             if (src_square == get_src_square(all_moves[i]) && dst_square == get_dst_square(all_moves[i]))
@@ -249,13 +254,13 @@ void bot_move(board *the_board, HashTable *ht)
     int depth = 4;
     if (the_board->whos_turn == WHITE)
     {
-        bot_move = get_best_move_white(the_board, depth, ht);
+        bot_move = get_best_move_white(the_board, depth, 0, ht);
         printf("bestmove %s%s%c\n", get_square_loc(get_src_square(bot_move)),get_square_loc(get_dst_square(bot_move)), check_bot_promotion(the_board, bot_move));
         commit_a_move_for_white(the_board, bot_move);
     }
     else
     {
-        bot_move = get_best_move_black(the_board, depth, ht);
+        bot_move = get_best_move_black(the_board, depth, 0, ht);
         printf("bestmove %s%s%c\n", get_square_loc(get_src_square(bot_move)),get_square_loc(get_dst_square(bot_move)), check_bot_promotion(the_board, bot_move));
         commit_a_move_for_black(the_board, bot_move);
     }
@@ -395,7 +400,8 @@ char uci_parse(board *b, HashTable *ht)
 void moves_in_depth(char d,board *b,move *all_moves_last_move, move last_move, irreversible_move_info inf) {
     move all_moves[200];
     move m;
-    int i;
+    int i, j, temp2;
+    move all_moves2[200];
     //board b2;
     //char fen[100] = "rnbqkbnr/ppp1pppp/8/3p4/Q1P5/8/PP1PPPPP/RNB1KBNR b KQkq - 1 2";
     irreversible_move_info temp;
@@ -409,12 +415,39 @@ void moves_in_depth(char d,board *b,move *all_moves_last_move, move last_move, i
             print_board(b);
         }
     } */
+    print_board(b);
     if (d == 0) {
         moves++;
         return;
     }
     get_possible_moves(b,all_moves,all_moves_last_move, last_move, inf);
-
+    get_all_moves(b,all_moves2);
+    for (i = 0; i<100; i++) {
+        for (j = 0; j<100; j++) {
+            if (all_moves[i] == all_moves2[j]) {
+                all_moves2[j] = -1;
+                temp2 = 1;
+                break;
+            }
+        }
+        if (!temp2) {
+            printf("moves not equal!\n\n\n");
+            print_board(b);
+            for (j = 0; all_moves[j] != END; j++) {
+                printf("%c%d%c%d ", get_column(get_src_square(all_moves[j])) + 'a',get_row(get_src_square(all_moves[j])),get_column(get_dst_square(all_moves[j])) + 'a',get_row(get_dst_square(all_moves[j])) + 'a');
+            }
+            for (j = 100; all_moves[j] != END; j++) {
+                printf("%c%d%c%d ", get_column(get_src_square(all_moves[j])) + 'a',get_row(get_src_square(all_moves[j])),get_column(get_dst_square(all_moves[j])) + 'a',get_row(get_dst_square(all_moves[j])) + 'a');
+            }
+            for (j = 0; all_moves2[j] != END; j++) {
+                printf("%c%d%c%d ", get_column(get_src_square(all_moves2[j])) + 'a',get_row(get_src_square(all_moves2[j])),get_column(get_dst_square(all_moves2[j])) + 'a',get_row(get_dst_square(all_moves2[j])) + 'a');
+            }
+            for (j = 100; all_moves2[j] != END; j++) {
+                printf("%c%d%c%d ", get_column(get_src_square(all_moves2[j])) + 'a',get_row(get_src_square(all_moves2[j])),get_column(get_dst_square(all_moves2[j])) + 'a',get_row(get_dst_square(all_moves2[j])) + 'a');
+            }
+            break;
+        }
+    }
     if (b->whos_turn == WHITE)
         i = 0;
     else

@@ -9,6 +9,7 @@
 #include "minimax.h"
 #include "evaluation.h"
 
+char fen_to_board(char *fen, board *b); 
 int check(char color);
 int game(board *the_board, HashTable *ht, char color);
 int check_src(board *the_board, char src);

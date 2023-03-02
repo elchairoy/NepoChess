@@ -23,7 +23,8 @@
         "*.tcc": "c",
         "uci.h": "c",
         "stdio.h": "c",
-        "random": "c"
+        "random": "c",
+        "make_move.h": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

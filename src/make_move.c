@@ -89,7 +89,7 @@ void can_en_passant_next_move(board * b, move m) {
 
 
 /* A function that receives a move of the white and executes it. */
-void commit_a_move_for_white(board * b, move m){
+void commit_a_move_for_white(board *b, move m){
     unsigned char src_loc = get_src_square(m); /* The src square. */
     unsigned char dst_loc = get_dst_square(m); /* The dst square. */
     char piece = get_piece_in_square(b, src_loc); /* It gets the sole in the src square. */
