@@ -83,7 +83,7 @@
     (the_move_info) |= ((piece_taken) << PIECE_TAKEN_INDEX); \
     (the_move_info) |= ((is_promoted) << IS_PROMOTED_INDEX); \
     (the_move_info) |= ((is_en_passant) << IS_EN_PASSANT_INDEX); \
-    (the_move_info) |= ((is_en_passant) << EN_PASSANT_PAWN_INDEX); \
+    (the_move_info) |= ((en_passant_pawn_last_move) << EN_PASSANT_PAWN_INDEX); \
     (the_move_info) |= ((could_white_short_castle) << COULD_WHITE_SHORT_CASTLE_INDEX); \
     (the_move_info) |= ((could_white_long_castle) << COULD_WHITE_LONG_CASTLE_INDEX); \
     (the_move_info) |= ((could_black_short_castle) << COULD_BLACK_SHORT_CASTLE_INDEX); \
@@ -104,6 +104,8 @@ char is_attacked_by_white(board *the_board, char square);
 char find_king_square(board *the_board, char color);
 
 void print_board(board *the_board);
+
+void print_move(move the_move);
 
 char check_white_long_castle(board *the_board);
 

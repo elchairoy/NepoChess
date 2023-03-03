@@ -347,6 +347,10 @@ char is_in_array(char *array, char value){
     return 0;
 }
 
+void print_move(move the_move){
+    printf("%c%d%c%d\n",get_column(get_src_square(the_move)) + 'a',get_row(get_src_square(the_move)) + 1,get_column(get_dst_square(the_move)) + 'a',get_row(get_dst_square(the_move)) + 1);
+}
+
 void print_line(){
     int z;
     /*Print a row of lines to separate.*/
