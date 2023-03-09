@@ -713,23 +713,23 @@ char is_move_valid(board *the_board, move the_move, char color){
     irreversible_move_info inf = get_irrev_move_info(the_board, the_move);
     char whos_turn = the_board->whos_turn; /* Whos turn is it? (needed for advanced get_possible_moves). */
     if(color){
-        commit_a_move_for_white(the_board, the_move);
+        commit_a_move_for_white_in_position(the_board, the_move);
         if(is_attacked_by_black(the_board, find_king_square(the_board, WHITE))) {
-            unmake_move(the_board, the_move, inf);
+            unmake_move_in_board(the_board, the_move, inf);
             the_board->whos_turn = whos_turn;
             return 0;
         }
-        unmake_move(the_board, the_move, inf);
+        unmake_move_in_board(the_board, the_move, inf);
         the_board->whos_turn = whos_turn;
         return 1;
     } 
-    commit_a_move_for_black(the_board, the_move);
+    commit_a_move_for_black_in_position(the_board, the_move);
     if(is_attacked_by_white(the_board, find_king_square(the_board, BLACK))) {
-        unmake_move(the_board, the_move, inf);
+        unmake_move_in_board(the_board, the_move, inf);
         the_board->whos_turn = whos_turn;
         return 0;
     }
-    unmake_move(the_board, the_move, inf);
+    unmake_move_in_board(the_board, the_move, inf);
     the_board->whos_turn = whos_turn;
     return 1;  
 }
@@ -739,39 +739,52 @@ int en_passant_and_castle(board *the_board, move *moves, char color){
     int move_num = 0;
     char square = 0;
     move temp;
-    if(the_board->en_passant_pawn){
-        if (!pass_left(the_board->en_passant_pawn + LEFT)) { /* En passant right: */
+    if(the_board->en_passant_pawn){ /* If a pawn moves forward twice last move. */
+        if (!pass_left(the_board->en_passant_pawn)) { /* En passant right: */
             square = the_board->en_passant_pawn + LEFT; 
-            if(color_of_piece(square, the_board) == WHITE && color == WHITE){ /* WHITE: */
-                create_a_move(temp, square, square + UP_RIGHT, 0, 0, 0);
+            if (color == WHITE) { /* WHITE */
+                if(get_piece_in_square(the_board, square) != empty && get_piece_in_square(the_board, square) == white_pawn && color_of_piece(the_board->en_passant_pawn, the_board) == BLACK){ 
+                    //print_board(the_board);
+                    create_a_move(temp, square, square + UP_RIGHT, 0, 0, 0);
                     if(is_move_valid(the_board, temp, WHITE)){
                         moves[move_num] = temp;
                         move_num ++;
                     }
+                }
             }
-            if(color_of_piece(square, the_board) == BLACK && color == BLACK){ /* BLACK: */
-                create_a_move(temp, square, square + DOWN_RIGHT, 0, 0, 0);
-                if(is_move_valid(the_board, temp, BLACK)){
-                        moves[move_num] = temp;
-                        move_num ++;
-                    }
+            else { /* BLACK */
+                if(get_piece_in_square(the_board, square) != empty && get_piece_in_square(the_board, square) == black_pawn && color_of_piece(the_board->en_passant_pawn, the_board) == WHITE){ 
+                    //print_board(the_board);
+                    create_a_move(temp, square, square + DOWN_RIGHT, 0, 0, 0);
+                    if(is_move_valid(the_board, temp, BLACK)){
+                            moves[move_num] = temp;
+                            move_num ++;
+                        }
+                }
             }
         }
-        if (!pass_right(the_board->en_passant_pawn + RIGHT)) { /* En passant left: */
+
+        if (!pass_right(the_board->en_passant_pawn)) { /* En passant left: */
             square = the_board->en_passant_pawn + RIGHT;
-            if(color_of_piece(square, the_board) == WHITE && color == WHITE){ /* WHITE: */
-                create_a_move(temp, square, square + UP_LEFT, 0, 0, 0);
-                if(is_move_valid(the_board, temp, WHITE)){
-                        moves[move_num] = temp;
-                        move_num ++;
+            if (color == WHITE) { /* WHITE */
+                if(get_piece_in_square(the_board, square) != empty && get_piece_in_square(the_board, square) == white_pawn && color_of_piece(the_board->en_passant_pawn, the_board) == BLACK){ 
+                    //print_board(the_board);
+                    create_a_move(temp, square, square + UP_LEFT, 0, 0, 0);
+                    if(is_move_valid(the_board, temp, WHITE)){
+                            moves[move_num] = temp;
+                            move_num ++;
                     }
+                }
             }
-            if(color_of_piece(square, the_board) == BLACK && color == BLACK){ /* BLACK: */
-                create_a_move(temp, square, square + DOWN_LEFT, 0, 0, 0);
-                if(is_move_valid(the_board, temp, BLACK)){
-                        moves[move_num] = temp;
-                        move_num ++;
-                    }
+            else { /* BLACK */
+                if(get_piece_in_square(the_board, square) != empty && get_piece_in_square(the_board, square) == black_pawn && color_of_piece(the_board->en_passant_pawn, the_board) == WHITE){
+                    //print_board(the_board);
+                    create_a_move(temp, square, square + DOWN_LEFT, 0, 0, 0);
+                    if(is_move_valid(the_board, temp, BLACK)){
+                            moves[move_num] = temp;
+                            move_num ++;
+                        }
+                }
             }
         }
     }
@@ -1101,18 +1114,39 @@ void get_possible_moves(board *the_board, move *new_all_moves ,move *all_moves, 
 
     no_pieces_to_recalculate += squares_in_directions(the_board, get_dst_square(last_move), pieces_to_recalculate + 2); /* Get the pieces to recalcule from this move.*/
     
-    unmake_move(the_board, last_move, inf); /* UNDO move. */
+
+
+    /* If it's a castle: */
+    unsigned char rook_square_after_castle = -1;
+    if (get_is_short_castle(last_move)) {
+        rook_square_after_castle = get_dst_square(last_move) - 1;
+    }
+    else if (get_is_long_castle(last_move)) {
+        rook_square_after_castle = get_dst_square(last_move) + 1;
+    }
+    if (rook_square_after_castle != -1) {
+        pieces_to_recalculate[no_pieces_to_recalculate] = rook_square_after_castle;
+        no_pieces_to_recalculate += squares_in_directions(the_board, rook_square_after_castle, pieces_to_recalculate + no_pieces_to_recalculate); /* Get the pieces to recalcule because of the rook.*/
+    }
+
+    /* If it's an en passant: */
+    if (get_is_en_passant(inf))
+        no_pieces_to_recalculate += squares_in_directions(the_board, get_dst_square(last_move) + (the_board->whos_turn == WHITE ? -8 : 8), pieces_to_recalculate + no_pieces_to_recalculate); /* Get the pieces to recalcule because of the pawn eaten by en passant.*/
+
+
+
+    unmake_move_in_board(the_board, last_move, inf); /* UNDO move. */
     /* IS LAST MOVE CHECK? */
     if (the_board->whos_turn == WHITE) {
         if (is_attacked_by_black(the_board,find_king_square(the_board, WHITE))) {
-            commit_a_move_for_white(the_board,last_move);
+            commit_a_move_for_white_in_position(the_board,last_move);
             get_all_moves(the_board, new_all_moves); /* Get the moves the long way. */
             return;
         }
     }
     if (the_board->whos_turn == BLACK) {
         if (is_attacked_by_white(the_board,find_king_square(the_board, BLACK))) {
-            commit_a_move_for_black(the_board,last_move);
+            commit_a_move_for_black_in_position(the_board,last_move);
             get_all_moves(the_board, new_all_moves); /* Get the moves the long way. */
             return;
         }
@@ -1120,14 +1154,14 @@ void get_possible_moves(board *the_board, move *new_all_moves ,move *all_moves, 
     no_pieces_to_recalculate += squares_in_directions(the_board, get_src_square(last_move), pieces_to_recalculate + no_pieces_to_recalculate); /* Get the pieces to recalcule from last move.*/
     /* REDO move. */
     if (the_board->whos_turn == 1)
-        commit_a_move_for_white(the_board,last_move);
+        commit_a_move_for_white_in_position(the_board,last_move);
     else
-        commit_a_move_for_black(the_board,last_move);
+        commit_a_move_for_black_in_position(the_board,last_move);
 
     /* Recalculates the moves for needed pieces. Removes the previous moves of those pieces. 
             Copies everything back to the origional array. */
     char pinned_pieces[40];
-    get_pinned_pieces(the_board, the_board->whos_turn, pinned_pieces);
+    get_pinned_pieces(the_board, BLACK, pinned_pieces+ get_pinned_pieces(the_board, WHITE, pinned_pieces));
     /* Recalculates the moves. */
     for (i = 0, j = 0, n = 0; i + j + n< no_pieces_to_recalculate;) { /* ('i' - the white moves index, 'j' - black, 'n' - number of duplicated moves so far). */
         for (k = 0; k < i + j + n; k++) {
@@ -1221,9 +1255,9 @@ void get_all_moves(board *the_board,move *all_moves){
         }
         pinned_pieces[j] = -1;
     }
-    else 
-        get_pinned_pieces(the_board, the_board->whos_turn, pinned_pieces); /* Gets the pinned pieces. */
-
+    else {
+        get_pinned_pieces(the_board, BLACK, pinned_pieces + get_pinned_pieces(the_board, WHITE, pinned_pieces) /* Gets the pinned pieces of white. */); /* Gets the pinned pieces of black. */
+    }
 
     for (j = 0; j < 2; j++) {
         move_num = j * MAX_POSSIBLE_MOVES / 2; /* First of all gets white's moves, than black's (in the middle of the array)*/

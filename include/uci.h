@@ -10,18 +10,16 @@
 #include "evaluation.h"
 
 char fen_to_board(char *fen, board *b); 
-int check(char color);
-int game(board *the_board, HashTable *ht, char color);
-int check_src(board *the_board, char src);
-void bot_move(board *the_board, HashTable *ht);
-int check_endgame(board *the_board);
-int get_player_promotion_choice();
+void bot_move(game *the_game);
+int check_endgame(game *the_game);
 char translate_promotion(char promotion);
-char uci_parse(board *b, HashTable *ht);
+int check_src(board *the_board, char src);
+char uci_parse(game *the_game, char is_game_on);
 int uci_main();
-int player_move(board *the_board, char *move_str);
+int player_move(game *the_game, char *str);
 char translate_piece_symbol(char piece_symbol);
 void moves_in_depth(char d,board *b,move *all_moves_last_move, move last_move, irreversible_move_info inf);
+void create_game(game *g, board *initial_position);
 void setup_start_board(board *b); 
 
 

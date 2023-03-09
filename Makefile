@@ -9,7 +9,7 @@ CC_FLAGS       := -Wall -ansi -pedantic -ggdb -I${INCLUDE} -I${SRC} -lm
 CC_TESTS_FLAGS := -I${INCLUDE} -lm -DTEST -pg -g # I am not adding here the c90 standard, because it interferes with libtap.
 
 VALGRIND       := valgrind
-VALGRIND_FLAGS := --leak-check=yes --error-exitcode=2
+VALGRIND_FLAGS := --leak-check=yes --error-exitcode=2  --track-origins=yes 
 
 SOURCES       := $(shell find ${SRC} -type f -name '*.c')
 HEADERS       := $(shell find ${ROOT} -type f -name '*.h')

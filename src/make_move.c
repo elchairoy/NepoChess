@@ -73,7 +73,7 @@ void commit_promotion_for_black(board * b, unsigned char src_loc, unsigned char 
     else change_the_square(b, dst_loc, black_bishop); /* Promote to bishop. */
 }
 
-/* The function checks which pawns can en passant next move. */
+/* The function checks which pawns can be eaten by en passant next move, and changes the board. */
 void can_en_passant_next_move(board * b, move m) {
     unsigned char src_loc = get_src_square(m); /* The src square. */
     unsigned char dst_loc = get_dst_square(m); /* The dst square. */
@@ -87,9 +87,24 @@ void can_en_passant_next_move(board * b, move m) {
     }
 }
 
+/* A function that receives a move of the white and executes it. (For games) */
+void commit_a_move_for_white_in_game(game *the_game, move m){
+    commit_a_move_for_white_in_position(the_game->current_position, m); /* It commits the move for the board. */
+    the_game->moves[the_game->number_of_moves] = m; /* It puts the move in the moves array. */
+    the_game->number_of_moves++; /* It increases the number of moves. */
+    the_game->moves[the_game->number_of_moves] = 0; /* It puts 0 in the next move. */
+}
 
-/* A function that receives a move of the white and executes it. */
-void commit_a_move_for_white(board *b, move m){
+/* A function that receives a move of the black and executes it. (For games) */
+void commit_a_move_for_black_in_game(game *the_game, move m){
+    commit_a_move_for_black_in_position(the_game->current_position, m); /* It commits the move for the board. */
+    the_game->moves[the_game->number_of_moves] = m; /* It puts the move in the moves array. */
+    the_game->number_of_moves++; /* It increases the number of moves. */
+    the_game->moves[the_game->number_of_moves] = 0; /* It puts 0 in the next move. */
+}
+
+/* A function that receives a move of the white and executes it. (For boards) */
+void commit_a_move_for_white_in_position(board *b, move m){
     unsigned char src_loc = get_src_square(m); /* The src square. */
     unsigned char dst_loc = get_dst_square(m); /* The dst square. */
     char piece = get_piece_in_square(b, src_loc); /* It gets the sole in the src square. */
@@ -127,8 +142,8 @@ void commit_a_move_for_white(board *b, move m){
     }
 }
 
-/* A function that receives a move of the black and executes it. */
-void commit_a_move_for_black(board * b, move m){
+/* A function that receives a move of the black and executes it. (For boards) */
+void commit_a_move_for_black_in_position(board *b, move m){
     unsigned char src_loc = get_src_square(m); /* The src square. */
     unsigned char dst_loc = get_dst_square(m); /* The dst square. */
     char piece = get_piece_in_square(b, src_loc); /* It gets the sole in the src square. */

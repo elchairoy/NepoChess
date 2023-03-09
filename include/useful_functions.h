@@ -101,6 +101,8 @@ char is_attacked_by_black(board *the_board, char square);
 
 char is_attacked_by_white(board *the_board, char square);
 
+char compare_boards(board *board1, board *board2);
+
 char find_king_square(board *the_board, char color);
 
 void print_board(board *the_board);
@@ -121,8 +123,10 @@ char is_in_array(char *array, char value);
 
 irreversible_move_info get_irrev_move_info(board *b, move m);
 
-void unmake_move(board *b, move m, irreversible_move_info inf);
+void unmake_move_in_board(board *b, move m, irreversible_move_info inf);
 
-char check_unmake_move(board *b, move m, irreversible_move_info inf);
+void unmake_move_in_game(game *the_game, move m, irreversible_move_info inf);
+
+char check_repetition(game *the_game);
 
 #endif /* AE5BDBF7_77C4_4AB2_867A_1994FFAC6C77 */

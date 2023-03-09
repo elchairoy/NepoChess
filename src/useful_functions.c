@@ -333,8 +333,13 @@ char find_king_square(board *the_board, char color){
         if (get_piece_in_square(the_board,60) == black_king)
             return 60;
     }
-    while (get_piece_in_square(the_board,i) != piece) 
+    while (get_piece_in_square(the_board,i) != piece && i < NUMBER_OF_SQUARES) 
         i++;
+    if (i == NUMBER_OF_SQUARES) {
+        printf("Error: King not found!\n");
+        print_board(the_board);
+    }
+        
     return i;
 }
 
@@ -345,6 +350,29 @@ char is_in_array(char *array, char value){
             return 1;
     }
     return 0;
+}
+
+char compare_boards(board *board1, board *board2){
+    int i;
+    for (i = 0; i < NUMBER_OF_SQUARES; i++) {
+        if (get_piece_in_square(board1,i) != get_piece_in_square(board2,i))
+            return 0;
+    }
+    if (board1->en_passant_pawn != board2->en_passant_pawn)
+        return 0;
+    if (board1->can_white_castle_short != board2->can_white_castle_short)
+        return 0;
+    if (board1->can_white_castle_long != board2->can_white_castle_long)
+        return 0;
+    if (board1->can_black_castle_short != board2->can_black_castle_short)
+        return 0;
+    if (board1->can_black_castle_long != board2->can_black_castle_long)
+        return 0;
+    return 1;
+}
+
+void copy_boards(board *board1, board *board2){
+    memcpy(board1,board2,sizeof(board));
 }
 
 void print_move(move the_move){
@@ -519,81 +547,108 @@ irreversible_move_info get_irrev_move_info(board *b, move m) {
     return inf;
 }
 
-void unmake_move(board *b, move m, irreversible_move_info inf) {
+/* Unmake move for games: */
+void unmake_move_in_game(game *the_game, move m, irreversible_move_info inf) {
+    unmake_move_in_board(the_game->current_position, m, inf);
+    the_game->moves[the_game->number_of_moves-1] = 0;
+    the_game->number_of_moves--;
+}
+
+/* Unmake move for boards: */
+void unmake_move_in_board(board *the_board, move m, irreversible_move_info inf) {
     char src = get_src_square(m);
     char dst = get_dst_square(m);
-    char piece = get_piece_in_square(b,dst);
-    if (b->whos_turn == WHITE) {
-        b->whos_turn = BLACK;
+    char piece = get_piece_in_square(the_board,dst);
+    if (the_board->whos_turn == WHITE) {
+        the_board->whos_turn = BLACK;
         if (piece == black_king) {
             if (dst == 62 && src == 60) { /* The move was a short castle. */
-                change_the_square(b, 60, black_king);
-                change_the_square(b, 63, black_rook);
-                change_the_square(b, 62, empty);
-                change_the_square(b, 61, empty);
+                change_the_square(the_board, 60, black_king);
+                change_the_square(the_board, 63, black_rook);
+                change_the_square(the_board, 62, empty);
+                change_the_square(the_board, 61, empty);
             }
             else if (dst == 58 && src == 60) { /* The move was a short castle. */
-                change_the_square(b, 60, black_king);
-                change_the_square(b, 56, black_rook);
-                change_the_square(b, 58, empty);
-                change_the_square(b, 59, empty);
+                change_the_square(the_board, 60, black_king);
+                change_the_square(the_board, 56, black_rook);
+                change_the_square(the_board, 58, empty);
+                change_the_square(the_board, 59, empty);
             }
             else {
-                change_the_square(b, src, black_king);
-                change_the_square(b, dst, get_piece_taken(inf));
+                change_the_square(the_board, src, black_king);
+                change_the_square(the_board, dst, get_piece_taken(inf));
             }
         }
         else if (get_is_en_passant(inf) != 0) { /* The move was an en passant. */
-            change_the_square(b,dst+UP,white_pawn);
-            change_the_square(b, src, black_pawn);
-            change_the_square(b, dst, empty);
+            change_the_square(the_board,dst+UP,white_pawn);
+            change_the_square(the_board, src, black_pawn);
+            change_the_square(the_board, dst, empty);
         }
         else if (get_is_promoted(inf) == 1) {
-            change_the_square(b, src, black_pawn);
-            change_the_square(b, dst, get_piece_taken(inf));
+            change_the_square(the_board, src, black_pawn);
+            change_the_square(the_board, dst, get_piece_taken(inf));
         }
         else {
-            change_the_square(b, src, piece);
-            change_the_square(b, dst, get_piece_taken(inf));
+            change_the_square(the_board, src, piece);
+            change_the_square(the_board, dst, get_piece_taken(inf));
         }
     }
     else {
-        b->whos_turn = WHITE;
+        the_board->whos_turn = WHITE;
         if (piece == white_king) {
             if (dst == 6 && src == 4) { /* The move was a short castle. */
-                change_the_square(b, 4, white_king);
-                change_the_square(b, 7, white_rook);
-                change_the_square(b, 6, empty);
-                change_the_square(b, 5, empty);
+                change_the_square(the_board, 4, white_king);
+                change_the_square(the_board, 7, white_rook);
+                change_the_square(the_board, 6, empty);
+                change_the_square(the_board, 5, empty);
             }
             else if (dst == 2 && src == 4) { /* The move was a short castle. */
-                change_the_square(b, 4, white_king);
-                change_the_square(b, 0, white_rook);
-                change_the_square(b, 2, empty);
-                change_the_square(b, 3, empty);
+                change_the_square(the_board, 4, white_king);
+                change_the_square(the_board, 0, white_rook);
+                change_the_square(the_board, 2, empty);
+                change_the_square(the_board, 3, empty);
             }
             else {
-                change_the_square(b, src, white_king);
-                change_the_square(b, dst, get_piece_taken(inf));
+                change_the_square(the_board, src, white_king);
+                change_the_square(the_board, dst, get_piece_taken(inf));
             }
         }
         else if (get_is_en_passant(inf) != 0) { /* The move was an en passant. */
-            change_the_square(b,dst+UP,black_pawn);
-            change_the_square(b, src, white_pawn);
-            change_the_square(b, dst, empty);
+            change_the_square(the_board,dst+DOWN,black_pawn);
+            change_the_square(the_board, src, white_pawn);
+            change_the_square(the_board, dst, empty);
         }
         else if (get_is_promoted(inf) == 1) {
-            change_the_square(b, src, white_pawn);
-            change_the_square(b, dst, get_piece_taken(inf));
+            change_the_square(the_board, src, white_pawn);
+            change_the_square(the_board, dst, get_piece_taken(inf));
         }
         else {
-            change_the_square(b, src, piece);
-            change_the_square(b, dst, get_piece_taken(inf));
+            change_the_square(the_board, src, piece);
+            change_the_square(the_board, dst, get_piece_taken(inf));
         }
     }
-    b->en_passant_pawn = get_en_passant_pawn_last_move(inf);
-    b->can_white_castle_short = get_could_white_short_castle_last_move(inf);
-    b->can_white_castle_long = get_could_white_long_castle_last_move(inf);
-    b->can_black_castle_short = get_could_black_short_castle_last_move(inf);
-    b->can_black_castle_long = get_could_black_long_castle_last_move(inf);
+    the_board->en_passant_pawn = get_en_passant_pawn_last_move(inf);
+    the_board->can_white_castle_short = get_could_white_short_castle_last_move(inf);
+    the_board->can_white_castle_long = get_could_white_long_castle_last_move(inf);
+    the_board->can_black_castle_short = get_could_black_short_castle_last_move(inf);
+    the_board->can_black_castle_long = get_could_black_long_castle_last_move(inf);
+}
+
+char check_repetition(game *the_game) {
+    board temp = the_game->initial_position;
+    int i;
+    int number_of_repetitions = 0;
+    for (i = 0; i < the_game->number_of_moves; i++) {
+        if (temp.whos_turn == WHITE)
+            commit_a_move_for_white_in_position(&temp, the_game->moves[i]);
+        else 
+            commit_a_move_for_black_in_position(&temp, the_game->moves[i]);
+        if (compare_boards(&temp, the_game->current_position) == 1) {
+            number_of_repetitions++;
+        }
+    }
+    if (number_of_repetitions >= 2)
+        return 1;
+    else
+        return 0;
 }

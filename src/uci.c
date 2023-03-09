@@ -1,6 +1,6 @@
 #include "../include/uci.h"
 
-long int moves = 0; /* The number of positions scaned. */
+long int no_of_moves = 0; /* The number of positions scaned. */
 
 char initial_board[32] = {
         white_rook << 4 | white_knight, white_bishop << 4 | white_queen, white_king << 4 | white_bishop, white_knight << 4 | white_rook,
@@ -110,9 +110,10 @@ char fen_to_board(char *fen, board *b)
     }
 }
 
-int player_move(board *the_board, char *str)
+int player_move(game *the_game, char *str)
 {
     /*ask for a move, validate it then comite the moveand request more info from user if needed*/
+    board *the_board = the_game->current_position;
     int i = 0;
     char move_str[6];
     move all_moves[MAX_POSSIBLE_MOVES];
@@ -149,19 +150,19 @@ int player_move(board *the_board, char *str)
                 {
                     if (get_piece_in_square(the_board, src_square) == white_pawn && get_row(src_square) == 6) {
                         create_a_move(temp, src_square, dst_square, translate_promotion(move_str[4]), 0, 0)
-                        commit_a_move_for_white(the_board, temp);
+                        commit_a_move_for_white_in_game(the_game, temp);
                     }
                     else
-                        commit_a_move_for_white(the_board, all_moves[i]);
+                        commit_a_move_for_white_in_game(the_game, all_moves[i]);
                 }
                 else
                 {
                     if (get_piece_in_square(the_board, src_square) == black_pawn && get_row(src_square) == 1) {
                         create_a_move(temp, src_square, dst_square, translate_promotion(move_str[4]), 0, 0)
-                        commit_a_move_for_black(the_board, temp);
+                        commit_a_move_for_black_in_game(the_game, temp);
                     }
                     else
-                        commit_a_move_for_black(the_board, all_moves[i]);
+                        commit_a_move_for_black_in_game(the_game, all_moves[i]);
                 }
                 return 0;
             }
@@ -248,27 +249,30 @@ char check_bot_promotion(board *the_board, move the_move)
 }
 
 
-void bot_move(board *the_board, HashTable *ht)
+void bot_move(game *the_game)
 {
+    board *the_board = the_game->current_position;
     move bot_move;
-    int depth = 4;
+    int depth = 5;
     if (the_board->whos_turn == WHITE)
     {
-        bot_move = get_best_move_white(the_board, depth, 0, ht);
+        bot_move = get_best_move_white(the_game, depth, 0);
         printf("bestmove %s%s%c\n", get_square_loc(get_src_square(bot_move)),get_square_loc(get_dst_square(bot_move)), check_bot_promotion(the_board, bot_move));
-        commit_a_move_for_white(the_board, bot_move);
+        //printf("Eval: %lf\n",evaluate_minimax_for_white(the_game, 0, the_game->moves[no_of_moves-1],get_irrev_move_info(the_game->current_position, the_game->moves[no_of_moves-1]),depth,-10000,10000));
+        commit_a_move_for_white_in_game(the_game, bot_move);
     }
     else
     {
-        bot_move = get_best_move_black(the_board, depth, 0, ht);
+        bot_move = get_best_move_black(the_game, depth, 0);
         printf("bestmove %s%s%c\n", get_square_loc(get_src_square(bot_move)),get_square_loc(get_dst_square(bot_move)), check_bot_promotion(the_board, bot_move));
-        commit_a_move_for_black(the_board, bot_move);
+        //printf("Eval: %lf\n",evaluate_minimax_for_black(the_game, 0, the_game->moves[no_of_moves-1],get_irrev_move_info(the_game->current_position, the_game->moves[no_of_moves-1]),depth,-10000,10000));
+        commit_a_move_for_black_in_game(the_game, bot_move);
     }
-    /*ht_clear(ht);*/
 }
 
-int check_endgame(board *the_board)
+int check_endgame(game *the_game)
 {
+    board *the_board = the_game->current_position;
     move all_moves[MAX_POSSIBLE_MOVES];
     if (the_board->whos_turn == WHITE)
     {
@@ -279,6 +283,10 @@ int check_endgame(board *the_board)
                 printf("CHECKMATE 0-1\n");
             else
                 printf("STALMATE 0.5-0.5\n");
+            return 0;
+        }
+        if (check_repetition(the_game)) {
+            printf("REPETITION 0.5-0.5\n");
             return 0;
         }
     }
@@ -293,13 +301,17 @@ int check_endgame(board *the_board)
                 printf("STALMATE 0.5-0.5\n");
             return 0;
         }
+        if (check_repetition(the_game)) {
+            printf("REPETITION 0.5-0.5\n");
+            return 0;
+        }
     }
     return 1;
 }
 
+/* Validate src squear from user input. */
 int check_src(board *the_board, char src)
 {
-    /*validate src squear from user input*/
     if (get_piece_in_square(the_board, src) == empty)
         return 0;
     if (color_of_piece(src, the_board) != the_board->whos_turn)
@@ -320,13 +332,29 @@ void setup_start_board(board *b)
         b->squares[i] = initial_board[i];
 }
 
+/* Create a game: */
+void create_game(game *g, board *initial_position) {
+    g->current_position = initial_position;
+    g->moves[0] = 0;
+    /* Clear moves: */
+    for (int i = 0; i < 100; i++)
+        g->moves[i] = 0;
+    g->number_of_moves = 0;
+    g->result = -1;
+
+    /* Copy the initial position; */
+    for (int i = 0; i < 32; i++)
+        g->initial_position.squares[i] = initial_position->squares[i];
+    g->initial_position.can_white_castle_short = initial_position->can_white_castle_short;
+    g->initial_position.can_white_castle_long = initial_position->can_white_castle_long;
+    g->initial_position.can_black_castle_short = initial_position->can_black_castle_short;
+    g->initial_position.can_black_castle_long = initial_position->can_black_castle_long;
+    g->initial_position.en_passant_pawn = initial_position->en_passant_pawn;
+    g->initial_position.whos_turn = initial_position->whos_turn;
+}
+
 int uci_main()
 {
-    board b;
-    setup_start_board(&b);
-    HashTable ht;
-    /* ht_setup(&ht, sizeof(board), sizeof(double), 100000000); */
-
 	setbuf (stdin, NULL);
 	setbuf (stdout, NULL);
 
@@ -335,21 +363,35 @@ int uci_main()
 	printf ("uciok\n");
 	fflush (stdout);
 
-	while(uci_parse(&b, &ht));
+    game *the_game;
+    the_game = malloc(sizeof(game));
+    memset(the_game, 0xFF, sizeof(game));
+    char is_game_on = 0;
+	while(1) {
+        is_game_on = uci_parse(the_game, is_game_on);
+    }
 
 	return 0;
 }
 
 char line[10000];
 
-char uci_parse(board *b, HashTable *ht)
-{  
+/* This function parses the commands. */
+char uci_parse(game *the_game, char is_game_on)
+{   
+    board *init = malloc(sizeof(board));
+    memset(init, 0, sizeof(board));
     fgets (line, 8192, stdin);  
+    
 
 	if (!strncmp (line, "isready", 7))
 		printf ("readyok\n");
 
-    if (!strncmp (line, "ucinewgame", 10));
+    if (!strncmp (line, "ucinewgame", 10)){
+        setup_start_board(init);
+        create_game(the_game,init);
+        is_game_on = 1;
+    }
 
     if (!strncmp (line, "position", 8))
 	{
@@ -357,11 +399,15 @@ char uci_parse(board *b, HashTable *ht)
 
 		if (!strncmp (posline, "startpos", 8))
 		{
-			setup_start_board(b);
+			setup_start_board(init);
+            create_game(the_game,init);
+            is_game_on = 1;
 		}
 		else if (!strncmp (posline, "fen", 3))
 		{
-			fen_to_board(posline + 4, b);
+			fen_to_board(posline + 4, init);
+            create_game(the_game,init);
+            is_game_on = 1;
 		}
 
 		/* need to make some moves on this position as well? */
@@ -373,7 +419,7 @@ char uci_parse(board *b, HashTable *ht)
 
 			while (1)
 			{
-                player_move(b,posline);
+                player_move(the_game,posline);
 
 				posline = strstr (posline, " ");
 
@@ -386,11 +432,17 @@ char uci_parse(board *b, HashTable *ht)
 	}
     if (!strncmp (line, "go", 2))
 	{
-        print_board(b);
-		bot_move(b,ht);
+        if (is_game_on) {
+            print_board(the_game->current_position);
+            bot_move(the_game);
+            print_board(the_game->current_position);
+        }
+        else {
+            printf("Game not started. (use ucinewgame to start a new game)\n");
+        }
 	}
 
-    return 1;
+    return is_game_on;
 
 }
 
@@ -415,9 +467,9 @@ void moves_in_depth(char d,board *b,move *all_moves_last_move, move last_move, i
             print_board(b);
         }
     } */
-    print_board(b);
+    //print_board(b);
     if (d == 0) {
-        moves++;
+        no_of_moves++;
         return;
     }
     get_possible_moves(b,all_moves,all_moves_last_move, last_move, inf);
@@ -432,7 +484,7 @@ void moves_in_depth(char d,board *b,move *all_moves_last_move, move last_move, i
         }
         if (!temp2) {
             printf("moves not equal!\n\n\n");
-            print_board(b);
+            //print_board(b);
             for (j = 0; all_moves[j] != END; j++) {
                 printf("%c%d%c%d ", get_column(get_src_square(all_moves[j])) + 'a',get_row(get_src_square(all_moves[j])),get_column(get_dst_square(all_moves[j])) + 'a',get_row(get_dst_square(all_moves[j])) + 'a');
             }
@@ -457,20 +509,20 @@ void moves_in_depth(char d,board *b,move *all_moves_last_move, move last_move, i
     {
         temp = get_irrev_move_info(b,m);
         if (b->whos_turn == WHITE){
-            commit_a_move_for_white(b,m);
+            commit_a_move_for_white_in_position(b,m);
             moves_in_depth(d-1,b,all_moves,m,temp);
-            unmake_move(b,m,temp);
+            unmake_move_in_board(b,m,temp);
         }
         else {
-            commit_a_move_for_black(b,m);
+            commit_a_move_for_black_in_position(b,m);
             moves_in_depth(d-1,b,all_moves,m,temp);
-            unmake_move(b,m,temp);
+            unmake_move_in_board(b,m,temp);
         }
         i++;
         m = all_moves[i];
     }
     if (d == 4) {
-        printf("%ld",moves);
+        printf("%ld",no_of_moves);
     }
     return;
 }

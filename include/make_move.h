@@ -6,13 +6,17 @@
 #include "useful_functions.h"
 #include "possible_moves.h"
 
+/* A function that receives a move of the white and executes it. (For games) */
+void commit_a_move_for_white_in_game(game *the_game, move m);
 
+/* A function that receives a move of the black and executes it. (For games) */
+void commit_a_move_for_black_in_game(game *the_game, move m);
 
-/* A function that receives a move of the white and executes it*/
-void commit_a_move_for_white(board * b, move m);
+/* A function that receives a move of the white and executes it. (For boards) */
+void commit_a_move_for_white_in_position(board * b, move m);
 
-/* A function that receives a move of the black and executes it*/
-void commit_a_move_for_black(board * b, move m);
+/* A function that receives a move of the black and executes it. (For boards) */
+void commit_a_move_for_black_in_position(board * b, move m);
 
 
 

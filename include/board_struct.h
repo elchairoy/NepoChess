@@ -32,8 +32,9 @@ enum promotions {promote_to_queen, promote_to_rook, promote_to_knight, promote_t
 
 typedef unsigned short int move;
 
-typedef unsigned short irreversible_move_info;
+typedef unsigned int irreversible_move_info; 
 
+/* The struct of a position. */
 typedef struct {
     char squares[NUMBER_OF_SQUARES / 2]; /* List of all the squares in the board.
                                                         Each square represented by half a char. */
@@ -49,5 +50,14 @@ typedef struct {
     unsigned en_passant_pawn : 7; /* The square of the pawn that can by eaten by en passant. (if no pawns can en passant, it's 0)  */
 }board;
 
+
+/* The struct of a game: */
+typedef struct {
+    board *current_position; /* The current position of the game. */
+    board initial_position; /* The initial position of the game. */
+    move moves[100]; /* List of all the moves in the game. */
+    unsigned int number_of_moves; /* Number of moves in the game. */
+    char result; /* The result of the game. */
+}game;
 
 #endif /* DD0FAEFF_39F7_47FA_AB64_C1E01E82D91A */
