@@ -25,6 +25,7 @@ double evaluate_minimax_for_white(game *the_game, move *all_moves_last_move, mov
         }
         is_check = 1;
     }
+
     if (depth == 0) {
         number_of_moves++;
         return evaluate_by_points(b);
@@ -32,6 +33,9 @@ double evaluate_minimax_for_white(game *the_game, move *all_moves_last_move, mov
     if (!is_check) {
         get_possible_moves(b,all_moves,all_moves_last_move, last_move, inf); /* Gets all the moves possible. */
     }
+    if (all_moves[0] == 0 || check_repetition(the_game))/* Stalmate */
+        return 0;
+
     if (depth > 1) {
         prev_best = get_best_move_white(the_game, depth-1, all_moves);
         temp_inf = get_irrev_move_info(b,prev_best);
@@ -43,9 +47,6 @@ double evaluate_minimax_for_white(game *the_game, move *all_moves_last_move, mov
         if (temp > alpha) 
             alpha = temp;
     }
-
-    if (all_moves[0] == 0 || check_repetition(the_game))/* Stalmate */
-        alpha = 0;
 
     while (all_moves[i] != 0) {
         //print_board(b);
@@ -95,6 +96,8 @@ double evaluate_minimax_for_black(game *the_game, move *all_moves_last_move, mov
     if (!is_check) {
         get_possible_moves(b,all_moves,all_moves_last_move, last_move, inf); /* Gets all the moves possible. */
     }
+    if (all_moves[0] == 0 || check_repetition(the_game))/* Stalmate */
+        return 0;
     if (depth > 1) {
         prev_best = get_best_move_black(the_game, depth-1, all_moves);
         temp_inf = get_irrev_move_info(b,prev_best);
@@ -106,8 +109,6 @@ double evaluate_minimax_for_black(game *the_game, move *all_moves_last_move, mov
         if (temp < beta) 
             beta = temp;
     }
-    if (all_moves[0] == 0 || check_repetition(the_game))/* Stalmate */
-        beta = 0;
 
     while (all_moves[i] != 0) {
         if (all_moves[i] == prev_best) {
@@ -198,7 +199,7 @@ move get_best_move_white(game *the_game,char depth, move *all_moves_already_calc
         i++;
     }
     if (depth == 5) {
-        printf("Eval= %lf\n",max);
+        //printf("Eval= %lf\n",max);
     }
     return best;
 }
@@ -260,7 +261,7 @@ move get_best_move_black(game *the_game,char depth, move *all_moves_already_calc
         i++;
     }
     if (depth == 5) {
-        printf("Eval= %lf\n",min);
+        //printf("Eval= %lf\n",min);
     }
     /*printf("number of moves = %ld\n",number_of_moves);*/
     return best;

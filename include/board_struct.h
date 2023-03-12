@@ -55,7 +55,7 @@ typedef struct {
 typedef struct {
     board *current_position; /* The current position of the game. */
     board initial_position; /* The initial position of the game. */
-    move moves[100]; /* List of all the moves in the game. */
+    move moves[300]; /* List of all the moves in the game. */
     unsigned int number_of_moves; /* Number of moves in the game. */
     char result; /* The result of the game. */
 }game;

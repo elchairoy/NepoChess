@@ -336,8 +336,8 @@ char find_king_square(board *the_board, char color){
     while (get_piece_in_square(the_board,i) != piece && i < NUMBER_OF_SQUARES) 
         i++;
     if (i == NUMBER_OF_SQUARES) {
-        printf("Error: King not found!\n");
-        print_board(the_board);
+        //printf("Error: King not found!\n");
+        //print_board(the_board);
     }
         
     return i;
@@ -392,10 +392,6 @@ void print_line(){
 
 void print_board(board *the_board){
     int i, x, square_in_line, first_square_in_line, line, piece;
-    if (get_piece_in_square(the_board,57) == empty) {
-        printf("1");
-
-    }
     /*
     Line - current line number.
     First_square_in_line - number of the first square in the 'Line'
@@ -644,11 +640,16 @@ char check_repetition(game *the_game) {
         else 
             commit_a_move_for_black_in_position(&temp, the_game->moves[i]);
         if (compare_boards(&temp, the_game->current_position) == 1) {
+            print_board(&temp);
             number_of_repetitions++;
         }
     }
-    if (number_of_repetitions >= 2)
+    if (number_of_repetitions >= 2) {
+        for (i = 0; i < the_game->number_of_moves; i++) {
+            print_move(the_game->moves[i]);
+        }
         return 1;
+    }
     else
         return 0;
 }

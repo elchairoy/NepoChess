@@ -253,7 +253,7 @@ void bot_move(game *the_game)
 {
     board *the_board = the_game->current_position;
     move bot_move;
-    int depth = 5;
+    int depth = 4;
     if (the_board->whos_turn == WHITE)
     {
         bot_move = get_best_move_white(the_game, depth, 0);
@@ -279,10 +279,10 @@ int check_endgame(game *the_game)
         get_all_moves(the_board,all_moves);
         if (all_moves[0] == END)
         {
-            if (is_attacked_by_black(the_board, find_king_square(the_board, WHITE)))
-                printf("CHECKMATE 0-1\n");
-            else
-                printf("STALMATE 0.5-0.5\n");
+            if (is_attacked_by_black(the_board, find_king_square(the_board, WHITE))) {}
+                //printf("CHECKMATE 0-1\n");
+            else {}
+                //printf("STALMATE 0.5-0.5\n");
             return 0;
         }
         if (check_repetition(the_game)) {
@@ -295,10 +295,10 @@ int check_endgame(game *the_game)
         get_all_moves(the_board,all_moves);
         if (all_moves[0] == END)
         {
-            if (is_attacked_by_white(the_board, find_king_square(the_board, BLACK)))
-                printf("CHECKMATE 1-0\n");
-            else
-                printf("STALMATE 0.5-0.5\n");
+            if (is_attacked_by_white(the_board, find_king_square(the_board, BLACK))) {}
+                //printf("CHECKMATE 1-0\n");
+            else {}
+                //printf("STALMATE 0.5-0.5\n");
             return 0;
         }
         if (check_repetition(the_game)) {
@@ -429,16 +429,22 @@ char uci_parse(game *the_game, char is_game_on)
 				posline ++;
 			}
 		}
+        if (!check_endgame(the_game)) {
+            is_game_on = 0;
+        }
 	}
     if (!strncmp (line, "go", 2))
 	{
         if (is_game_on) {
-            print_board(the_game->current_position);
+            //print_board(the_game->current_position);
             bot_move(the_game);
-            print_board(the_game->current_position);
+            //print_board(the_game->current_position);
         }
         else {
             printf("Game not started. (use ucinewgame to start a new game)\n");
+        }
+        if (!check_endgame(the_game)) {
+            is_game_on = 0;
         }
 	}
 
