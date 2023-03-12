@@ -427,6 +427,7 @@ char uci_parse(game *the_game, char is_game_on)
 					break;
 
 				posline ++;
+                print_board(the_game->current_position);
 			}
 		}
         if (!check_endgame(the_game)) {
