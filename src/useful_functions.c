@@ -640,14 +640,10 @@ char check_repetition(game *the_game) {
         else 
             commit_a_move_for_black_in_position(&temp, the_game->moves[i]);
         if (compare_boards(&temp, the_game->current_position) == 1) {
-            //print_board(&temp);
             number_of_repetitions++;
         }
     }
     if (number_of_repetitions >= 3) {
-        for (i = 0; i < the_game->number_of_moves; i++) {
-            print_move(the_game->moves[i]);
-        }
         return 1;
     }
     else

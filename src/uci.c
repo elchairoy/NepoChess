@@ -440,12 +440,12 @@ char uci_parse(game *the_game, char is_game_on)
             //print_board(the_game->current_position);
             bot_move(the_game);
             //print_board(the_game->current_position);
+            if (!check_endgame(the_game)) {
+                is_game_on = 0;
+            }
         }
         else {
             printf("Game not started. (use ucinewgame to start a new game)\n");
-        }
-        if (!check_endgame(the_game)) {
-            is_game_on = 0;
         }
 	}
 
