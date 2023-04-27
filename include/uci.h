@@ -10,11 +10,11 @@
 #include "evaluation.h"
 
 char fen_to_board(char *fen, board *b); 
-void bot_move(game *the_game);
+void bot_move(game *the_game, HashTable *ht);
 int check_endgame(game *the_game);
 char translate_promotion(char promotion);
 int check_src(board *the_board, char src);
-char uci_parse(game *the_game, char is_game_on);
+char uci_parse(game *the_game, char is_game_on, HashTable *ht);
 int uci_main();
 int player_move(game *the_game, char *str);
 char translate_piece_symbol(char piece_symbol);

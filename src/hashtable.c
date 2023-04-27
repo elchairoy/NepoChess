@@ -437,3 +437,42 @@ void _ht_rehash(HashTable* table, HTNode** old, size_t old_capacity) {
 		}
 	}
 }
+
+/* Search a position in the hash table: */
+const void *_ht_search_pos(HashTable* table, game *key, char depth, enum node_type type) {
+	ht_board_struct bht;
+	const ht_move_eval_struct *value;
+	memset(&bht, 0, sizeof(ht_board_struct));
+	bht.board = *(key->current_position);
+	bht.depth = depth;
+	bht.type = PV_NODE;
+	/* First search for PV_NODE, then for the asked type (Because PV_NODE is always good). */
+	value = ht_const_lookup(table, &bht);
+	if (value != NULL || type == PV_NODE)
+		return value;
+	else {
+		bht.type = type;
+		return ht_const_lookup(table, &bht);
+	}
+}
+
+extern long int number_of_ht_inserted; /* The number of positions inserted to the hash table. */
+
+/* Insert a position into the hash table: */
+int _ht_insert_pos(HashTable* table, game *key, char depth, move best, double eval, enum node_type type) {
+	ht_board_struct *bht = malloc(sizeof(ht_board_struct));
+	ht_move_eval_struct *value = malloc(sizeof(ht_move_eval_struct));
+	/* Clear the memory: */
+	memset(bht, 0, sizeof(ht_board_struct));
+	bht->board = *(key->current_position);
+	bht->depth = depth;
+	bht->type = type;
+	value->best_move = best;
+	value->eval = eval;
+	value->type = type;
+	if (ht_contains(table, bht) != NULL) {
+		return HT_ERROR;
+	}
+	number_of_ht_inserted++;
+	return ht_insert(table, bht, value);
+}

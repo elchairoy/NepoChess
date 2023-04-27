@@ -630,6 +630,7 @@ void unmake_move_in_board(board *the_board, move m, irreversible_move_info inf) 
     the_board->can_black_castle_long = get_could_black_long_castle_last_move(inf);
 }
 
+/* Check if the game is a draw by repetition: */
 char check_repetition(game *the_game) {
     board temp = the_game->initial_position;
     int i;

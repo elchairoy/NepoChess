@@ -30,6 +30,8 @@ enum types {empty,white_knight,white_rook,white_queen,white_king,white_pawn,whit
 enum columns {a,b,c,d,e,f,g,h}; /* The columns there are. */
 enum promotions {promote_to_queen, promote_to_rook, promote_to_knight, promote_to_bishop}; /* What can be promoted to */
 
+enum node_type {PV_NODE, CUT_NODE, ALL_NODE}; /* The type of a node. */
+
 typedef unsigned short int move;
 
 typedef unsigned int irreversible_move_info; 

@@ -86,7 +86,7 @@ char fen_to_board(char *fen, board *b)
             break;
         
         case 'q':
-            b -> can_black_castle_short = 1;
+            b -> can_black_castle_long = 1;
             break;
 
         default:
@@ -249,21 +249,25 @@ char check_bot_promotion(board *the_board, move the_move)
 }
 
 
-void bot_move(game *the_game)
+void bot_move(game *the_game, HashTable *ht)
 {
     board *the_board = the_game->current_position;
     move bot_move;
-    int depth = 4;
+    int depth = 5;
     if (the_board->whos_turn == WHITE)
     {
-        bot_move = get_best_move_white(the_game, depth, 0);
+        for (int i = 1; i <= 5; i++) {
+            bot_move = get_best_move_white(the_game, i, 0, ht);
+        }
         printf("bestmove %s%s%c\n", get_square_loc(get_src_square(bot_move)),get_square_loc(get_dst_square(bot_move)), check_bot_promotion(the_board, bot_move));
         //printf("Eval: %lf\n",evaluate_minimax_for_white(the_game, 0, the_game->moves[no_of_moves-1],get_irrev_move_info(the_game->current_position, the_game->moves[no_of_moves-1]),depth,-10000,10000));
         commit_a_move_for_white_in_game(the_game, bot_move);
     }
     else
     {
-        bot_move = get_best_move_black(the_game, depth, 0);
+        for (int i = 1; i <= 5; i++) {
+            bot_move = get_best_move_black(the_game, i, 0, ht);
+        }
         printf("bestmove %s%s%c\n", get_square_loc(get_src_square(bot_move)),get_square_loc(get_dst_square(bot_move)), check_bot_promotion(the_board, bot_move));
         //printf("Eval: %lf\n",evaluate_minimax_for_black(the_game, 0, the_game->moves[no_of_moves-1],get_irrev_move_info(the_game->current_position, the_game->moves[no_of_moves-1]),depth,-10000,10000));
         commit_a_move_for_black_in_game(the_game, bot_move);
@@ -293,13 +297,12 @@ int check_endgame(game *the_game)
     else
     {
         get_all_moves(the_board,all_moves);
-        if (all_moves[0] == END)
+        if (all_moves[MAX_POSSIBLE_MOVES/2] == END)
         {
             if (is_attacked_by_white(the_board, find_king_square(the_board, BLACK))) {}
                 //printf("CHECKMATE 1-0\n");
-            else {}
-                //printf("STALMATE 0.5-0.5\n");
-            return 0;
+            else
+                return 0;
         }
         if (check_repetition(the_game)) {
             printf("REPETITION 0.5-0.5\n");
@@ -363,12 +366,15 @@ int uci_main()
 	printf ("uciok\n");
 	fflush (stdout);
 
+    HashTable ht;
     game *the_game;
     the_game = malloc(sizeof(game));
     memset(the_game, 0xFF, sizeof(game));
     char is_game_on = 0;
+    /* Initialize ht: */
+    ht_setup(&ht,sizeof(ht_board_struct),sizeof(ht_move_eval_struct),1000000);
 	while(1) {
-        is_game_on = uci_parse(the_game, is_game_on);
+        is_game_on = uci_parse(the_game, is_game_on, &ht);
     }
 
 	return 0;
@@ -377,12 +383,21 @@ int uci_main()
 char line[10000];
 
 /* This function parses the commands. */
-char uci_parse(game *the_game, char is_game_on)
+char uci_parse(game *the_game, char is_game_on, HashTable *ht)
 {   
+    /* check if ht is full: */
+    ht_board_struct t1;
+    ht_move_eval_struct t2;
+    memset(&t1, 0, sizeof(ht_board_struct));
+    memset(&t2, 0, sizeof(ht_move_eval_struct));
+    if (ht_insert(ht, &t1, &t2) == -1) {
+        ht_clear(ht);
+        printf("Hash table cleared.\n");
+    }
+    
     board *init = malloc(sizeof(board));
     memset(init, 0, sizeof(board));
     fgets (line, 8192, stdin);  
-    
 
 	if (!strncmp (line, "isready", 7))
 		printf ("readyok\n");
@@ -427,7 +442,7 @@ char uci_parse(game *the_game, char is_game_on)
 					break;
 
 				posline ++;
-                print_board(the_game->current_position);
+                //print_board(the_game->current_position);
 			}
 		}
         if (!check_endgame(the_game)) {
@@ -438,7 +453,7 @@ char uci_parse(game *the_game, char is_game_on)
 	{
         if (is_game_on) {
             //print_board(the_game->current_position);
-            bot_move(the_game);
+            bot_move(the_game, ht);
             //print_board(the_game->current_position);
             if (!check_endgame(the_game)) {
                 is_game_on = 0;
@@ -448,6 +463,9 @@ char uci_parse(game *the_game, char is_game_on)
             printf("Game not started. (use ucinewgame to start a new game)\n");
         }
 	}
+    if (!strncmp (line, "quit", 4)) {
+        exit(0);
+    }
 
     return is_game_on;
 
@@ -471,7 +489,7 @@ void moves_in_depth(char d,board *b,move *all_moves_last_move, move last_move, i
         }
         if (i == 31) {
             printf("\ngot it!\n");
-            print_board(b);
+            //print_board(b);
         }
     } */
     //print_board(b);

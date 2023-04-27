@@ -4,6 +4,8 @@
 #include <stdbool.h>
 #include <stddef.h>
 
+#include "board_struct.h"
+
 /****************** DEFINTIIONS ******************/
 
 #define HT_MINIMUM_CAPACITY 8
@@ -51,6 +53,19 @@ typedef struct HashTable {
 
 } HashTable;
 
+typedef struct ht_board_struct {
+	board board;
+	char depth;
+	enum node_type type;
+} ht_board_struct;
+
+typedef struct ht_move_eval_struct {
+	move best_move;
+	double eval;
+	enum node_type type;
+} ht_move_eval_struct;
+
+
 /****************** INTERFACE ******************/
 
 /* Setup */
@@ -82,6 +97,12 @@ int ht_is_empty(HashTable* table);
 bool ht_is_initialized(HashTable* table);
 
 int ht_reserve(HashTable* table, size_t minimum_capacity);
+
+/* Search a position in the hash table: */
+const void *_ht_search_pos(HashTable* table, game *key, char depth, enum node_type type);
+
+/* Insert a position into the hash table: */
+int _ht_insert_pos(HashTable* table, game *key, char depth, move best, double eval, enum node_type type);
 
 /****************** PRIVATE ******************/
 

@@ -1117,7 +1117,7 @@ void get_possible_moves(board *the_board, move *new_all_moves ,move *all_moves, 
 
 
     /* If it's a castle: */
-    unsigned char rook_square_after_castle = -1;
+    char rook_square_after_castle = -1;
     if (get_is_short_castle(last_move)) {
         rook_square_after_castle = get_dst_square(last_move) - 1;
     }
@@ -1163,7 +1163,7 @@ void get_possible_moves(board *the_board, move *new_all_moves ,move *all_moves, 
     char pinned_pieces[40];
     get_pinned_pieces(the_board, BLACK, pinned_pieces+ get_pinned_pieces(the_board, WHITE, pinned_pieces));
     /* Recalculates the moves. */
-    for (i = 0, j = 0, n = 0; i + j + n< no_pieces_to_recalculate;) { /* ('i' - the white moves index, 'j' - black, 'n' - number of duplicated moves so far). */
+    for (i = 0, j = 0, n = 0; i + j + n < no_pieces_to_recalculate;) { /* ('i' - the white moves index, 'j' - black, 'n' - number of duplicated moves so far). */
         for (k = 0; k < i + j + n; k++) {
             if (pieces_to_recalculate[i+j+n] == pieces_to_recalculate[k]) { /* If there is a duplicated move. */
                 n++;
