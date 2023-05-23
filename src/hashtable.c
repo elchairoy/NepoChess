@@ -462,6 +462,7 @@ extern long int number_of_ht_inserted; /* The number of positions inserted to th
 int _ht_insert_pos(HashTable* table, game *key, char depth, move best, double eval, enum node_type type) {
 	ht_board_struct *bht = malloc(sizeof(ht_board_struct));
 	ht_move_eval_struct *value = malloc(sizeof(ht_move_eval_struct));
+	void *temp;
 	/* Clear the memory: */
 	memset(bht, 0, sizeof(ht_board_struct));
 	bht->board = *(key->current_position);
@@ -470,8 +471,17 @@ int _ht_insert_pos(HashTable* table, game *key, char depth, move best, double ev
 	value->best_move = best;
 	value->eval = eval;
 	value->type = type;
-	if (ht_contains(table, bht) != NULL) {
-		return HT_ERROR;
+	if ((temp = ht_const_lookup(table, bht)) != NULL) {
+		if (((ht_move_eval_struct*)temp)->type == CUT_NODE && eval >= ((ht_move_eval_struct*)temp)->eval) {
+			/* Replace the node with new one: */
+			ht_erase(table, bht);
+			return ht_insert(table, bht, value);
+		}
+		if (((ht_move_eval_struct*)temp)->type == ALL_NODE && eval <= ((ht_move_eval_struct*)temp)->eval) {
+			/* Replace the node with new one: */
+			ht_erase(table, bht);
+			return ht_insert(table, bht, value);
+		}
 	}
 	number_of_ht_inserted++;
 	return ht_insert(table, bht, value);

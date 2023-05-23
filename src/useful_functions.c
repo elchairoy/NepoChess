@@ -426,8 +426,8 @@ void print_board(board *the_board){
 
 char check_white_long_castle(board *the_board){
     move temp;
-    if(!is_attacked_by_black(the_board, DEAFULT_WHITE_KING_SQUARE)){
-        if(the_board->can_white_castle_long 
+    if(the_board->can_white_castle_long){
+        if(!is_attacked_by_black(the_board, DEAFULT_WHITE_KING_SQUARE)
                 && get_piece_in_square(the_board, DEAFULT_WHITE_KING_SQUARE + LEFT) == empty 
                 && get_piece_in_square(the_board, DEAFULT_WHITE_KING_SQUARE + LEFT*2) == empty 
                 && get_piece_in_square(the_board, DEAFULT_WHITE_KING_SQUARE + LEFT*3) == empty){
@@ -445,8 +445,8 @@ char check_white_long_castle(board *the_board){
 
 char check_white_short_castle(board *the_board){
     move temp;
-    if(!is_attacked_by_black(the_board, DEAFULT_WHITE_KING_SQUARE)){
-        if(the_board->can_white_castle_short 
+    if(the_board->can_white_castle_short){
+        if(!is_attacked_by_black(the_board, DEAFULT_WHITE_KING_SQUARE)
                 && get_piece_in_square(the_board, DEAFULT_WHITE_KING_SQUARE + RIGHT) == empty
                 && get_piece_in_square(the_board, DEAFULT_WHITE_KING_SQUARE + RIGHT*2) == empty){
             create_a_move(temp, DEAFULT_WHITE_KING_SQUARE, DEAFULT_WHITE_KING_SQUARE + RIGHT, 0, 0, 0);
@@ -463,8 +463,8 @@ char check_white_short_castle(board *the_board){
 
 char check_black_long_castle(board *the_board){
     move temp;
-    if(!is_attacked_by_white(the_board, DEAFULT_BLACK_KING_SQUARE)){
-        if(the_board->can_black_castle_long
+    if(the_board->can_black_castle_long){
+        if(!is_attacked_by_white(the_board, DEAFULT_BLACK_KING_SQUARE)
                 && get_piece_in_square(the_board, DEAFULT_BLACK_KING_SQUARE + LEFT) == empty
                 && get_piece_in_square(the_board, DEAFULT_BLACK_KING_SQUARE + LEFT * 2) == empty
                 && get_piece_in_square(the_board, DEAFULT_BLACK_KING_SQUARE + LEFT * 3) == empty){
@@ -482,8 +482,8 @@ char check_black_long_castle(board *the_board){
 
 char check_black_short_castle(board *the_board){
     move temp;
-    if(!is_attacked_by_white(the_board, DEAFULT_BLACK_KING_SQUARE)){
-        if(the_board->can_black_castle_short 
+    if(the_board->can_black_castle_short){
+        if(!is_attacked_by_white(the_board, DEAFULT_BLACK_KING_SQUARE)
                 && get_piece_in_square(the_board, DEAFULT_BLACK_KING_SQUARE + RIGHT) == empty
                 && get_piece_in_square(the_board, DEAFULT_BLACK_KING_SQUARE + RIGHT*2) == empty){
             create_a_move(temp, DEAFULT_BLACK_KING_SQUARE, DEAFULT_BLACK_KING_SQUARE + RIGHT, 0, 0, 0);

@@ -1,6 +1,6 @@
 #include "../include/uci.h"
 
-long int no_of_moves = 0; /* The number of positions scaned. */
+extern long int number_of_moves;
 
 char initial_board[32] = {
         white_rook << 4 | white_knight, white_bishop << 4 | white_queen, white_king << 4 | white_bishop, white_knight << 4 | white_rook,
@@ -99,12 +99,12 @@ char fen_to_board(char *fen, board *b)
     if (b->whos_turn == WHITE)
         if (fen[i] != '-') {
             square = get_square_number(fen[i],fen[i+1]);
-            b->en_passant_pawn = square + DOWN;
+            b->en_passant_pawn = square + UP;
         }
     if (b->whos_turn == BLACK) {
         if (fen[i] != '-') {
             square = get_square_number(fen[i],fen[i+1]);
-            b->en_passant_pawn = square + UP;
+            b->en_passant_pawn = square + DOWN;
         }
     return 1;
     }
@@ -254,21 +254,36 @@ void bot_move(game *the_game, HashTable *ht)
     board *the_board = the_game->current_position;
     move bot_move;
     int depth = 5;
+    int i = 1;
+    long int change_in_no_of_moves = 0, initial_number_of_moves = number_of_moves;
     if (the_board->whos_turn == WHITE)
     {
-        for (int i = 1; i <= 5; i++) {
-            bot_move = get_best_move_white(the_game, i, 0, ht);
+        time_t start = time(NULL);
+        while (change_in_no_of_moves <= 30000){
+            bot_move = get_best_move_white(the_game, i, 0, 1, ht);
+            change_in_no_of_moves = number_of_moves - initial_number_of_moves;
+            printf("change in no of moves: %ld\n", change_in_no_of_moves);
+            i++;
         }
+        printf("knps: %lf\n", change_in_no_of_moves / (difftime(time(NULL), start) * 1000));
         printf("bestmove %s%s%c\n", get_square_loc(get_src_square(bot_move)),get_square_loc(get_dst_square(bot_move)), check_bot_promotion(the_board, bot_move));
-        //printf("Eval: %lf\n",evaluate_minimax_for_white(the_game, 0, the_game->moves[no_of_moves-1],get_irrev_move_info(the_game->current_position, the_game->moves[no_of_moves-1]),depth,-10000,10000));
+        printf("number of moves: %ld\n", number_of_moves);
+        printf("depth = %d\n", i-1);
         commit_a_move_for_white_in_game(the_game, bot_move);
     }
     else
     {
-        for (int i = 1; i <= 5; i++) {
-            bot_move = get_best_move_black(the_game, i, 0, ht);
+        time_t start = time(NULL);
+        while (change_in_no_of_moves <= 30000){
+            bot_move = get_best_move_black(the_game, i, 0, 1, ht);
+            change_in_no_of_moves = number_of_moves - initial_number_of_moves;
+            printf("change in no of moves: %ld\n", change_in_no_of_moves);
+            i++;
         }
+        printf("knps: %lf\n", change_in_no_of_moves / (difftime(time(NULL), start) * 1000));
         printf("bestmove %s%s%c\n", get_square_loc(get_src_square(bot_move)),get_square_loc(get_dst_square(bot_move)), check_bot_promotion(the_board, bot_move));
+        printf("number of moves: %ld\n", number_of_moves);
+        printf("depth = %d\n", i-1);
         //printf("Eval: %lf\n",evaluate_minimax_for_black(the_game, 0, the_game->moves[no_of_moves-1],get_irrev_move_info(the_game->current_position, the_game->moves[no_of_moves-1]),depth,-10000,10000));
         commit_a_move_for_black_in_game(the_game, bot_move);
     }
@@ -371,17 +386,22 @@ int uci_main()
     the_game = malloc(sizeof(game));
     memset(the_game, 0xFF, sizeof(game));
     char is_game_on = 0;
-    /* Initialize ht: */
+    
+    /*board b;
+    char fen[1000] = "r1bqkbnr/pppppppp/8/4n3/2B1P3/8/PPPP1PPP/RNBQK1NR w KQkq - 3 3";
+    fen_to_board(fen, &b);
+    printf("%lf",evaluate_by_points(&b));
+    */
+    /* Initialize ht: */ 
     ht_setup(&ht,sizeof(ht_board_struct),sizeof(ht_move_eval_struct),1000000);
 	while(1) {
         is_game_on = uci_parse(the_game, is_game_on, &ht);
     }
-
+    
 	return 0;
 }
 
 char line[10000];
-
 /* This function parses the commands. */
 char uci_parse(game *the_game, char is_game_on, HashTable *ht)
 {   
@@ -421,6 +441,7 @@ char uci_parse(game *the_game, char is_game_on, HashTable *ht)
 		else if (!strncmp (posline, "fen", 3))
 		{
 			fen_to_board(posline + 4, init);
+            print_board(init);
             create_game(the_game,init);
             is_game_on = 1;
 		}
@@ -493,10 +514,6 @@ void moves_in_depth(char d,board *b,move *all_moves_last_move, move last_move, i
         }
     } */
     //print_board(b);
-    if (d == 0) {
-        no_of_moves++;
-        return;
-    }
     get_possible_moves(b,all_moves,all_moves_last_move, last_move, inf);
     get_all_moves(b,all_moves2);
     for (i = 0; i<100; i++) {
@@ -545,9 +562,6 @@ void moves_in_depth(char d,board *b,move *all_moves_last_move, move last_move, i
         }
         i++;
         m = all_moves[i];
-    }
-    if (d == 4) {
-        printf("%ld",no_of_moves);
     }
     return;
 }

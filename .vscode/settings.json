@@ -24,7 +24,8 @@
         "uci.h": "c",
         "stdio.h": "c",
         "random": "c",
-        "make_move.h": "c"
+        "make_move.h": "c",
+        "limits": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

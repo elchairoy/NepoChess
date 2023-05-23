@@ -1,6 +1,7 @@
 #ifndef AFD0BF27_C006_46B4_89E6_171B4DC00121
 #define AFD0BF27_C006_46B4_89E6_171B4DC00121
 
+#include <time.h>
 #include "string.h"
 #include "board_struct.h"
 #include "possible_moves.h"
