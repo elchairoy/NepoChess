@@ -376,7 +376,7 @@ void copy_boards(board *board1, board *board2){
 }
 
 void print_move(move the_move){
-    printf("%c%d%c%d\n",get_column(get_src_square(the_move)) + 'a',get_row(get_src_square(the_move)) + 1,get_column(get_dst_square(the_move)) + 'a',get_row(get_dst_square(the_move)) + 1);
+    printf("%c%d%c%d",get_column(get_src_square(the_move)) + 'a',get_row(get_src_square(the_move)) + 1,get_column(get_dst_square(the_move)) + 'a',get_row(get_dst_square(the_move)) + 1);
 }
 
 void print_line(){
@@ -388,7 +388,6 @@ void print_line(){
     }
     printf("+\n");
 }
-
 
 void print_board(board *the_board){
     int i, x, square_in_line, first_square_in_line, line, piece;
@@ -516,7 +515,7 @@ char *strrev(char *str)
 irreversible_move_info get_irrev_move_info(board *b, move m) {
     char src, dst, piece, piece_taken, en_passant_pawn = b->en_passant_pawn;
     irreversible_move_info inf;
-    if (b->whos_turn == WHITE) {
+    if (b->whose_turn == WHITE) {
             src = get_src_square(m);
             dst = get_dst_square(m);
             piece = get_piece_in_square(b,src);
@@ -528,7 +527,7 @@ irreversible_move_info get_irrev_move_info(board *b, move m) {
                 create_a_irrev_move_info(inf, piece_taken, ((piece == white_pawn && 56 <= dst) ? 1 : 0), 0, en_passant_pawn, b->can_white_castle_short, b->can_white_castle_long, b->can_black_castle_short, b->can_black_castle_long);
             }
         }
-    if (b->whos_turn == BLACK) {
+    if (b->whose_turn == BLACK) {
         src = get_src_square(m);
         dst = get_dst_square(m);
         piece = get_piece_in_square(b,src);
@@ -555,8 +554,8 @@ void unmake_move_in_board(board *the_board, move m, irreversible_move_info inf) 
     char src = get_src_square(m);
     char dst = get_dst_square(m);
     char piece = get_piece_in_square(the_board,dst);
-    if (the_board->whos_turn == WHITE) {
-        the_board->whos_turn = BLACK;
+    if (the_board->whose_turn == WHITE) {
+        the_board->whose_turn = BLACK;
         if (piece == black_king) {
             if (dst == 62 && src == 60) { /* The move was a short castle. */
                 change_the_square(the_board, 60, black_king);
@@ -590,7 +589,7 @@ void unmake_move_in_board(board *the_board, move m, irreversible_move_info inf) 
         }
     }
     else {
-        the_board->whos_turn = WHITE;
+        the_board->whose_turn = WHITE;
         if (piece == white_king) {
             if (dst == 6 && src == 4) { /* The move was a short castle. */
                 change_the_square(the_board, 4, white_king);
@@ -636,7 +635,7 @@ char check_repetition(game *the_game) {
     int i;
     int number_of_repetitions = 0;
     for (i = 0; i < the_game->number_of_moves; i++) {
-        if (temp.whos_turn == WHITE)
+        if (temp.whose_turn == WHITE)
             commit_a_move_for_white_in_position(&temp, the_game->moves[i]);
         else 
             commit_a_move_for_black_in_position(&temp, the_game->moves[i]);
@@ -649,4 +648,22 @@ char check_repetition(game *the_game) {
     }
     else
         return 0;
+}
+
+/* This function gets a number k, an array of moves and an array of values, the function returns the move with the k-best value (*the first k moves are already sorted by values*): */
+void selection_sort_for_moves(move moves[MAX_POSSIBLE_MOVES / 2], int *values, int k) {
+    int i = k, j, max, temp;
+    move temp_move;
+    max = i;
+    for (j = i+1; moves[j] != END; j++) {
+        if (values[j] > values[max]) {
+            max = j;
+        }
+    }
+    temp = values[i];
+    values[i] = values[max];
+    values[max] = temp;
+    temp_move = moves[i];
+    moves[i] = moves[max];
+    moves[max] = temp_move;
 }

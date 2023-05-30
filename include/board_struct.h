@@ -46,7 +46,7 @@ typedef struct {
     unsigned can_white_castle_long : 1; /* 0 if can't, 1 if he can. */
     unsigned can_white_castle_short : 1; /* 0 if can't, 1 if he can. */
 
-    unsigned whos_turn : 1; /* 1 if it's white turn, 0 if it's black turn. */
+    unsigned whose_turn : 1; /* 1 if it's white turn, 0 if it's black turn. */
 
     /* To read about en passant - https://www.chess.com/terms/en-passant. */
     unsigned en_passant_pawn : 7; /* The square of the pawn that can by eaten by en passant. (if no pawns can en passant, it's 0)  */

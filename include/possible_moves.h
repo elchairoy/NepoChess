@@ -99,7 +99,7 @@ char color_of_piece(char square, board *the_board);
 char is_move_valid(board *the_board, move the_move, char color);
 /*main func*/
 
-void get_all_moves(board *the_board,move *all_moves);
+void get_all_moves_by_calculating_everything(board *the_board,move *all_moves);
 void get_possible_moves(board *the_board,move *new_all_moves,move *all_moves_last_move, move last_move, irreversible_move_info inf);
 
 

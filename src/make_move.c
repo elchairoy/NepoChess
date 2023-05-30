@@ -111,7 +111,7 @@ void commit_a_move_for_white_in_position(board *b, move m){
     b->en_passant_pawn = 0; /* The pawns can't en passant anymore. */
 
 
-    b->whos_turn = 0; /* It will be black's turn next. */
+    b->whose_turn = 0; /* It will be black's turn next. */
     if (get_is_short_castle(m) == 1) /* If this move is a short castle. */
         commit_a_short_castle_for_white(b); /* Commit a short castle for white. */
 
@@ -149,7 +149,7 @@ void commit_a_move_for_black_in_position(board *b, move m){
     char piece = get_piece_in_square(b, src_loc); /* It gets the sole in the src square. */
     b->en_passant_pawn = 0; /* The pawns can't en passant anymore. */
 
-    b->whos_turn = 1; /* It will be white's turn next. */
+    b->whose_turn = 1; /* It will be white's turn next. */
     if (get_is_short_castle(m) == 1) /* If this move is a short castle. */
         commit_a_short_castle_for_black(b);
 

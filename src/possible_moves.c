@@ -710,27 +710,28 @@ int blackpawn(char square, board *the_board, move *moves, char *pinned_pieces){
 
 /* This function checks if a square is attacked. */
 char is_move_valid(board *the_board, move the_move, char color){
+    char whose_turn = the_board->whose_turn; /* Whos turn is it? (needed for advanced get_possible_moves). */
+    the_board->whose_turn = color;
     irreversible_move_info inf = get_irrev_move_info(the_board, the_move);
-    char whos_turn = the_board->whos_turn; /* Whos turn is it? (needed for advanced get_possible_moves). */
     if(color){
         commit_a_move_for_white_in_position(the_board, the_move);
         if(is_attacked_by_black(the_board, find_king_square(the_board, WHITE))) {
             unmake_move_in_board(the_board, the_move, inf);
-            the_board->whos_turn = whos_turn;
+            the_board->whose_turn = whose_turn;
             return 0;
         }
         unmake_move_in_board(the_board, the_move, inf);
-        the_board->whos_turn = whos_turn;
+        the_board->whose_turn = whose_turn;
         return 1;
     } 
     commit_a_move_for_black_in_position(the_board, the_move);
     if(is_attacked_by_white(the_board, find_king_square(the_board, BLACK))) {
         unmake_move_in_board(the_board, the_move, inf);
-        the_board->whos_turn = whos_turn;
+        the_board->whose_turn = whose_turn;
         return 0;
     }
     unmake_move_in_board(the_board, the_move, inf);
-    the_board->whos_turn = whos_turn;
+    the_board->whose_turn = whose_turn;
     return 1;  
 }
 
@@ -1026,7 +1027,7 @@ char get_pinned_pieces(board *b, char color, char *pinned_pieces) {
             }
             j = king_square + i * UP_LEFT;
         }
-        else if (colid_with_enemy(king_square + i * UP_LEFT, b, color) && j!=0) {
+        else if (colid_with_enemy(king_squaget_possible_movese + i * UP_LEFT, b, color) && j!=0) {
             if (get_piece_in_square(b, king_square + i * UP_LEFT) == white_queen || get_piece_in_square(b, king_square + i * UP_LEFT) == white_bishop || get_piece_in_square(b, king_square + i * UP_LEFT) == black_queen || get_piece_in_square(b, king_square + i * UP_LEFT) == black_bishop) {
                 pinned_pieces[no_of_pinned_pieces] = j;
                 no_of_pinned_pieces++;
@@ -1076,13 +1077,15 @@ char get_pinned_pieces(board *b, char color, char *pinned_pieces) {
     return no_of_pinned_pieces;
 }
 
+/* This function calculates all possible moves in position based on previous position's array of moves. 
+    The function just recalculates the moves that were changed meanwhile. */
 void get_possible_moves(board *the_board, move *new_all_moves ,move *all_moves, move last_move, irreversible_move_info inf){
     char pieces_to_recalculate[40]; /* The squares of the pieces that needs recalculation. */
     char no_pieces_to_recalculate = 2;
     unsigned char i,j,k,n, src, no_white_moves = 0, no_black_moves = 0;
     move all_moves_copy[MAX_POSSIBLE_MOVES];
     if (all_moves == 0 || all_moves[0] == END) { /* If there aren't any moves in all_moves... */
-        get_all_moves(the_board, new_all_moves); /* Get the moves the long way. */
+        get_all_moves_by_calculating_everything(the_board, new_all_moves); /* Get the moves the long way. */
         return;
     }
 
@@ -1097,23 +1100,22 @@ void get_possible_moves(board *the_board, move *new_all_moves ,move *all_moves, 
     all_moves_copy[k] = END;
 
     /* IS IT CHECK? */
-    if (the_board->whos_turn == WHITE) {
+    if (the_board->whose_turn == WHITE) {
         if (is_attacked_by_black(the_board,find_king_square(the_board, WHITE))) {
-            get_all_moves(the_board, new_all_moves); /* Get the moves the long way. */
+            get_all_moves_by_calculating_everything(the_board, new_all_moves); /* Get the moves the long way. */
             return;
         }
     }
-    if (the_board->whos_turn == BLACK) {
+    if (the_board->whose_turn == BLACK) {
         if (is_attacked_by_white(the_board,find_king_square(the_board, BLACK))) {
-            get_all_moves(the_board, new_all_moves); /* Get the moves the long way. */
+            get_all_moves_by_calculating_everything(the_board, new_all_moves); /* Get the moves the long way. */
             return;
         }
     }
     pieces_to_recalculate[0] = get_dst_square(last_move); /* Adding the moving piece to recalculate. */
-    pieces_to_recalculate[1] = find_king_square(the_board, the_board->whos_turn); /* Adding the king to recalculate. */
+    pieces_to_recalculate[1] = find_king_square(the_board, the_board->whose_turn); /* Adding the king to recalculate. */
 
     no_pieces_to_recalculate += squares_in_directions(the_board, get_dst_square(last_move), pieces_to_recalculate + 2); /* Get the pieces to recalcule from this move.*/
-    
 
 
     /* If it's a castle: */
@@ -1128,32 +1130,31 @@ void get_possible_moves(board *the_board, move *new_all_moves ,move *all_moves, 
         pieces_to_recalculate[no_pieces_to_recalculate] = rook_square_after_castle;
         no_pieces_to_recalculate += squares_in_directions(the_board, rook_square_after_castle, pieces_to_recalculate + no_pieces_to_recalculate); /* Get the pieces to recalcule because of the rook.*/
     }
-
     /* If it's an en passant: */
     if (get_is_en_passant(inf))
-        no_pieces_to_recalculate += squares_in_directions(the_board, get_dst_square(last_move) + (the_board->whos_turn == WHITE ? -8 : 8), pieces_to_recalculate + no_pieces_to_recalculate); /* Get the pieces to recalcule because of the pawn eaten by en passant.*/
+        no_pieces_to_recalculate += squares_in_directions(the_board, get_dst_square(last_move) + (the_board->whose_turn == WHITE ? -8 : 8), pieces_to_recalculate + no_pieces_to_recalculate); /* Get the pieces to recalcule because of the pawn eaten by en passant.*/
 
 
 
     unmake_move_in_board(the_board, last_move, inf); /* UNDO move. */
     /* IS LAST MOVE CHECK? */
-    if (the_board->whos_turn == WHITE) {
+    if (the_board->whose_turn == WHITE) {
         if (is_attacked_by_black(the_board,find_king_square(the_board, WHITE))) {
             commit_a_move_for_white_in_position(the_board,last_move);
-            get_all_moves(the_board, new_all_moves); /* Get the moves the long way. */
+            get_all_moves_by_calculating_everything(the_board, new_all_moves); /* Get the moves the long way. */
             return;
         }
     }
-    if (the_board->whos_turn == BLACK) {
+    if (the_board->whose_turn == BLACK) {
         if (is_attacked_by_white(the_board,find_king_square(the_board, BLACK))) {
             commit_a_move_for_black_in_position(the_board,last_move);
-            get_all_moves(the_board, new_all_moves); /* Get the moves the long way. */
+            get_all_moves_by_calculating_everything(the_board, new_all_moves); /* Get the moves the long way. */
             return;
         }
     }
     no_pieces_to_recalculate += squares_in_directions(the_board, get_src_square(last_move), pieces_to_recalculate + no_pieces_to_recalculate); /* Get the pieces to recalcule from last move.*/
     /* REDO move. */
-    if (the_board->whos_turn == 1)
+    if (the_board->whose_turn == 1)
         commit_a_move_for_white_in_position(the_board,last_move);
     else
         commit_a_move_for_black_in_position(the_board,last_move);
@@ -1186,7 +1187,6 @@ void get_possible_moves(board *the_board, move *new_all_moves ,move *all_moves, 
     no_white_moves += en_passant_and_castle(the_board, new_all_moves+no_white_moves, WHITE);
     no_black_moves += en_passant_and_castle(the_board, new_all_moves+(no_black_moves+MAX_POSSIBLE_MOVES/2), BLACK);
     
-
     i = no_white_moves;
     j = no_black_moves;
     /* COPY ALL WHITE MOVES */
@@ -1239,16 +1239,16 @@ void get_possible_moves(board *the_board, move *new_all_moves ,move *all_moves, 
 }
 
 /* This function gets the move the long way (calculates the moves of everything). */
-void get_all_moves(board *the_board,move *all_moves){
+void get_all_moves_by_calculating_everything(board *the_board,move *all_moves){
     char color = BLACK; /* Needed for the loop, DO NOT TOUCH */
     char piece;
     int i, j, len = 0, move_num = 0;
     char pinned_pieces[65];
 
     /* If it's a check - make all pieces of the checked player pinned: */
-    if ((the_board->whos_turn == WHITE && is_attacked_by_black(the_board, find_king_square(the_board, WHITE))) || (the_board->whos_turn == BLACK && is_attacked_by_white(the_board, find_king_square(the_board, BLACK)))) {
+    if ((the_board->whose_turn == WHITE && is_attacked_by_black(the_board, find_king_square(the_board, WHITE))) || (the_board->whose_turn == BLACK && is_attacked_by_white(the_board, find_king_square(the_board, BLACK)))) {
         for (i = 0, j = 0; i < 64; i++) {
-            if (color_of_piece(i, the_board) == the_board->whos_turn) {
+            if (color_of_piece(i, the_board) == the_board->whose_turn) {
                 pinned_pieces[j] = i;
                 j++;
             }

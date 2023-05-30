@@ -21,5 +21,6 @@ minimax_eval evaluate_minimax_for_black(game *b, move *all_moves_last_move, move
 move get_best_move_white(game *b,char depth, move *all_moves_already_calculated, char use_asw , HashTable *ht);
 move get_best_move_black(game *b,char depth, move *all_moves_already_calculated, char use_asw, HashTable *ht);
 
+void order_moves(game *g, move *all_moves, int *move_values, char depth, HashTable *ht);
 
 #endif /* BE5F1FF0_4F72_47C7_8DFE_407829A022EA */

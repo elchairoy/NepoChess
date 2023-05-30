@@ -1,6 +1,7 @@
 #include "../include/uci.h"
 
 extern long int number_of_moves;
+extern long int number_of_ht_inserted;
 
 char initial_board[32] = {
         white_rook << 4 | white_knight, white_bishop << 4 | white_queen, white_king << 4 | white_bishop, white_knight << 4 | white_rook,
@@ -67,7 +68,7 @@ char fen_to_board(char *fen, board *b)
 
     }
     i += 1;
-    b->whos_turn = (fen[i] == 'w' ? WHITE : BLACK);
+    b->whose_turn = (fen[i] == 'w' ? WHITE : BLACK);
     i += 2;
     while (fen[i] != ' ')
     {
@@ -96,12 +97,12 @@ char fen_to_board(char *fen, board *b)
     }
 
     i++;
-    if (b->whos_turn == WHITE)
+    if (b->whose_turn == WHITE)
         if (fen[i] != '-') {
             square = get_square_number(fen[i],fen[i+1]);
             b->en_passant_pawn = square + UP;
         }
-    if (b->whos_turn == BLACK) {
+    if (b->whose_turn == BLACK) {
         if (fen[i] != '-') {
             square = get_square_number(fen[i],fen[i+1]);
             b->en_passant_pawn = square + DOWN;
@@ -138,7 +139,7 @@ int player_move(game *the_game, char *str)
     {
         dst_square = get_square_number(move_str[2], move_str[3]);
         get_possible_moves(the_board,all_moves, 0 ,0 ,0);
-        if (the_board->whos_turn == WHITE)
+        if (the_board->whose_turn == WHITE)
             i = 0;
         else
             i = MAX_POSSIBLE_MOVES / 2;
@@ -146,7 +147,7 @@ int player_move(game *the_game, char *str)
         {
             if (src_square == get_src_square(all_moves[i]) && dst_square == get_dst_square(all_moves[i]))
             {
-                if (the_board->whos_turn == WHITE)
+                if (the_board->whose_turn == WHITE)
                 {
                     if (get_piece_in_square(the_board, src_square) == white_pawn && get_row(src_square) == 6) {
                         create_a_move(temp, src_square, dst_square, translate_promotion(move_str[4]), 0, 0)
@@ -237,7 +238,7 @@ char check_bot_promotion(board *the_board, move the_move)
     int src_s = get_src_square(the_move);
     int src_r = get_row(src_s);
     int src_p = get_piece_in_square(the_board ,src_s);
-    if(the_board->whos_turn == WHITE){
+    if(the_board->whose_turn == WHITE){
         if(src_p == white_pawn && src_r == 6)
             return translate_promotion(get_promotion_choice(the_move) + '0');
     }
@@ -253,37 +254,83 @@ void bot_move(game *the_game, HashTable *ht)
 {
     board *the_board = the_game->current_position;
     move bot_move;
-    int depth = 5;
+    int max_depth = 16;
     int i = 1;
     long int change_in_no_of_moves = 0, initial_number_of_moves = number_of_moves;
-    if (the_board->whos_turn == WHITE)
+    if (the_board->whose_turn == WHITE)
     {
         time_t start = time(NULL);
-        while (change_in_no_of_moves <= 30000){
+        while (change_in_no_of_moves <= 200000 && i <= max_depth){
             bot_move = get_best_move_white(the_game, i, 0, 1, ht);
             change_in_no_of_moves = number_of_moves - initial_number_of_moves;
-            printf("change in no of moves: %ld\n", change_in_no_of_moves);
+            printf("knps: %lf\n", change_in_no_of_moves / (difftime(time(NULL), start) * 1000));
+            printf("best so far: %s%s%c\n", get_square_loc(get_src_square(bot_move)),get_square_loc(get_dst_square(bot_move)), check_bot_promotion(the_board, bot_move));
+            printf("number of moves: %ld\n", change_in_no_of_moves);
+            printf("depth = %d\n", i);
             i++;
         }
-        printf("knps: %lf\n", change_in_no_of_moves / (difftime(time(NULL), start) * 1000));
         printf("bestmove %s%s%c\n", get_square_loc(get_src_square(bot_move)),get_square_loc(get_dst_square(bot_move)), check_bot_promotion(the_board, bot_move));
-        printf("number of moves: %ld\n", number_of_moves);
-        printf("depth = %d\n", i-1);
+        move m = bot_move;
+        print_move(m);
+        printf(" ");
+        i-=2;
+        game t = *the_game;
+        board b = *the_board;
+        t.current_position = &b;
+        commit_a_move_for_white_in_game(&t, bot_move);
+        while (i > 0) {
+            m = get_best_move_black(&t, i, 0, 1, ht);
+            commit_a_move_for_black_in_game(&t, m);
+            print_move(m);
+            printf(" ");
+            i--;
+            if (i > 0) {
+                m = get_best_move_white(&t, i, 0, 1, ht);
+                commit_a_move_for_white_in_game(&t, m);
+                print_move(m);
+                printf(" ");
+                i--;
+            }
+        }
+        printf("\nEval = %lf\n", evaluate_by_points(t.current_position));
         commit_a_move_for_white_in_game(the_game, bot_move);
     }
     else
     {
         time_t start = time(NULL);
-        while (change_in_no_of_moves <= 30000){
-            bot_move = get_best_move_black(the_game, i, 0, 1, ht);
+        while (change_in_no_of_moves <= 200000 && i <= max_depth){
+            bot_move = get_best_move_black(the_game, i, 0, 0, ht);
             change_in_no_of_moves = number_of_moves - initial_number_of_moves;
-            printf("change in no of moves: %ld\n", change_in_no_of_moves);
+            printf("knps: %lf\n", change_in_no_of_moves / (difftime(time(NULL), start) * 1000));
+            printf("best so far: %s%s%c\n", get_square_loc(get_src_square(bot_move)),get_square_loc(get_dst_square(bot_move)), check_bot_promotion(the_board, bot_move));
+            printf("number of moves: %ld\n", change_in_no_of_moves);
+            printf("depth = %d\n", i);
             i++;
         }
-        printf("knps: %lf\n", change_in_no_of_moves / (difftime(time(NULL), start) * 1000));
         printf("bestmove %s%s%c\n", get_square_loc(get_src_square(bot_move)),get_square_loc(get_dst_square(bot_move)), check_bot_promotion(the_board, bot_move));
-        printf("number of moves: %ld\n", number_of_moves);
-        printf("depth = %d\n", i-1);
+        move m = bot_move;
+        print_move(m);
+        printf(" ");
+        i-=2;
+        game t = *the_game;
+        board b = *the_board;
+        t.current_position = &b;
+        commit_a_move_for_black_in_game(&t, bot_move);
+        while (i > 0) {
+            m = get_best_move_white(&t, i, 0, 1, ht);
+            commit_a_move_for_white_in_game(&t, m);
+            print_move(m);
+            printf(" ");
+            i--;
+            if (i > 0) {
+                m = get_best_move_black(&t, i, 0, 1, ht);
+                commit_a_move_for_black_in_game(&t, m);
+                print_move(m);
+                printf(" ");
+                i--;
+            }
+        }
+        printf("\nEval = %lf\n", evaluate_by_points(t.current_position));
         //printf("Eval: %lf\n",evaluate_minimax_for_black(the_game, 0, the_game->moves[no_of_moves-1],get_irrev_move_info(the_game->current_position, the_game->moves[no_of_moves-1]),depth,-10000,10000));
         commit_a_move_for_black_in_game(the_game, bot_move);
     }
@@ -293,9 +340,9 @@ int check_endgame(game *the_game)
 {
     board *the_board = the_game->current_position;
     move all_moves[MAX_POSSIBLE_MOVES];
-    if (the_board->whos_turn == WHITE)
+    if (the_board->whose_turn == WHITE)
     {
-        get_all_moves(the_board,all_moves);
+        get_all_moves_by_calculating_everything(the_board,all_moves);
         if (all_moves[0] == END)
         {
             if (is_attacked_by_black(the_board, find_king_square(the_board, WHITE))) {}
@@ -311,7 +358,7 @@ int check_endgame(game *the_game)
     }
     else
     {
-        get_all_moves(the_board,all_moves);
+        get_all_moves_by_calculating_everything(the_board,all_moves);
         if (all_moves[MAX_POSSIBLE_MOVES/2] == END)
         {
             if (is_attacked_by_white(the_board, find_king_square(the_board, BLACK))) {}
@@ -332,7 +379,7 @@ int check_src(board *the_board, char src)
 {
     if (get_piece_in_square(the_board, src) == empty)
         return 0;
-    if (color_of_piece(src, the_board) != the_board->whos_turn)
+    if (color_of_piece(src, the_board) != the_board->whose_turn)
         return 0;
     return 1;
 }
@@ -345,7 +392,7 @@ void setup_start_board(board *b)
     b->can_white_castle_long = 1;
     b->can_white_castle_short = 1;
     b->en_passant_pawn = 0;
-    b->whos_turn = WHITE;
+    b->whose_turn = WHITE;
     for (i = 0; i < 32; i++)
         b->squares[i] = initial_board[i];
 }
@@ -368,7 +415,7 @@ void create_game(game *g, board *initial_position) {
     g->initial_position.can_black_castle_short = initial_position->can_black_castle_short;
     g->initial_position.can_black_castle_long = initial_position->can_black_castle_long;
     g->initial_position.en_passant_pawn = initial_position->en_passant_pawn;
-    g->initial_position.whos_turn = initial_position->whos_turn;
+    g->initial_position.whose_turn = initial_position->whose_turn;
 }
 
 int uci_main()
@@ -387,13 +434,20 @@ int uci_main()
     memset(the_game, 0xFF, sizeof(game));
     char is_game_on = 0;
     
-    /*board b;
-    char fen[1000] = "r1bqkbnr/pppppppp/8/4n3/2B1P3/8/PPPP1PPP/RNBQK1NR w KQkq - 3 3";
+    /*
+    board b;
+    char fen[1000] = "K1b5/1P6/8/8/8/8/3k4/8 w - - 3 1";
     fen_to_board(fen, &b);
-    printf("%lf",evaluate_by_points(&b));
-    */
+    move m; irreversible_move_info inf;
+    create_a_move(m,49,58,3,0,0);
+    inf = get_irrev_move_info(&b, m);
+    commit_a_move_for_white_in_position(&b, m);
+    print_board(&b);
+    unmake_move_in_board(&b, m, inf);
+    print_board(&b);*/
+    
     /* Initialize ht: */ 
-    ht_setup(&ht,sizeof(ht_board_struct),sizeof(ht_move_eval_struct),1000000);
+    ht_setup(&ht,sizeof(ht_board_struct),sizeof(ht_move_eval_struct),10000000);
 	while(1) {
         is_game_on = uci_parse(the_game, is_game_on, &ht);
     }
@@ -410,10 +464,10 @@ char uci_parse(game *the_game, char is_game_on, HashTable *ht)
     ht_move_eval_struct t2;
     memset(&t1, 0, sizeof(ht_board_struct));
     memset(&t2, 0, sizeof(ht_move_eval_struct));
-    if (ht_insert(ht, &t1, &t2) == -1) {
+    if (ht->size >= 10000000) {
         ht_clear(ht);
-        printf("Hash table cleared.\n");
     }
+    printf("size of ht: %ld\n", ht->size);
     
     board *init = malloc(sizeof(board));
     memset(init, 0, sizeof(board));
@@ -489,7 +543,6 @@ char uci_parse(game *the_game, char is_game_on, HashTable *ht)
     }
 
     return is_game_on;
-
 }
 
 //irreversible_move_info all_info[10000];
@@ -515,7 +568,7 @@ void moves_in_depth(char d,board *b,move *all_moves_last_move, move last_move, i
     } */
     //print_board(b);
     get_possible_moves(b,all_moves,all_moves_last_move, last_move, inf);
-    get_all_moves(b,all_moves2);
+    get_all_moves_by_calculating_everything(b,all_moves2);
     for (i = 0; i<100; i++) {
         for (j = 0; j<100; j++) {
             if (all_moves[i] == all_moves2[j]) {
@@ -542,7 +595,7 @@ void moves_in_depth(char d,board *b,move *all_moves_last_move, move last_move, i
             break;
         }
     }
-    if (b->whos_turn == WHITE)
+    if (b->whose_turn == WHITE)
         i = 0;
     else
         i = 100;
@@ -550,7 +603,7 @@ void moves_in_depth(char d,board *b,move *all_moves_last_move, move last_move, i
     while (m != END)
     {
         temp = get_irrev_move_info(b,m);
-        if (b->whos_turn == WHITE){
+        if (b->whose_turn == WHITE){
             commit_a_move_for_white_in_position(b,m);
             moves_in_depth(d-1,b,all_moves,m,temp);
             unmake_move_in_board(b,m,temp);

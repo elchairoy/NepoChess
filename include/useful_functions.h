@@ -129,4 +129,6 @@ void unmake_move_in_game(game *the_game, move m, irreversible_move_info inf);
 
 char check_repetition(game *the_game);
 
+void selection_sort_for_moves(move moves[MAX_POSSIBLE_MOVES / 2], int *values, int k);
+
 #endif /* AE5BDBF7_77C4_4AB2_867A_1994FFAC6C77 */

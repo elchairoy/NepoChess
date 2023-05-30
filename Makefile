@@ -23,15 +23,12 @@ all: ${BIN}/${EXECUTABLE}
 
 compile-test: ${BIN}/${TEST_EXECUTABLE}
 
-run: clean all
-	@./${BIN}/${EXECUTABLE}
-
 test: ${BIN}/${TEST_EXECUTABLE}
 
 test2: ${BIN}/${TEST_EXECUTABLE2}
 
-test_run: clean ${BIN}/${TEST_EXECUTABLE}
-	@./${BIN}/${TEST_EXECUTABLE}
+run: clean ${BIN}/${EXECUTABLE}
+	@./${BIN}/${EXECUTABLE}
 
 valgrind: ${BIN}/${EXECUTABLE}
 	${VALGRIND} ${VALGRIND_FLAGS} $<
