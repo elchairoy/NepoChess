@@ -16,7 +16,7 @@ int check_endgame(game *the_game);
 char translate_promotion(char promotion);
 int check_src(board *the_board, char src);
 char uci_parse(game *the_game, char is_game_on, HashTable *ht);
-int uci_main();
+int main();
 int player_move(game *the_game, char *str);
 char translate_piece_symbol(char piece_symbol);
 void moves_in_depth(char d,board *b,move *all_moves_last_move, move last_move, irreversible_move_info inf);

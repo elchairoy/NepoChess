@@ -1027,7 +1027,7 @@ char get_pinned_pieces(board *b, char color, char *pinned_pieces) {
             }
             j = king_square + i * UP_LEFT;
         }
-        else if (colid_with_enemy(king_squaget_possible_movese + i * UP_LEFT, b, color) && j!=0) {
+        else if (colid_with_enemy(king_square + i * UP_LEFT, b, color) && j!=0) {
             if (get_piece_in_square(b, king_square + i * UP_LEFT) == white_queen || get_piece_in_square(b, king_square + i * UP_LEFT) == white_bishop || get_piece_in_square(b, king_square + i * UP_LEFT) == black_queen || get_piece_in_square(b, king_square + i * UP_LEFT) == black_bishop) {
                 pinned_pieces[no_of_pinned_pieces] = j;
                 no_of_pinned_pieces++;

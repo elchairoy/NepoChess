@@ -254,13 +254,13 @@ void bot_move(game *the_game, HashTable *ht)
 {
     board *the_board = the_game->current_position;
     move bot_move;
-    int max_depth = 16;
+    int min_depth = 5;
     int i = 1;
     long int change_in_no_of_moves = 0, initial_number_of_moves = number_of_moves;
     if (the_board->whose_turn == WHITE)
     {
         time_t start = time(NULL);
-        while (change_in_no_of_moves <= 200000 && i <= max_depth){
+        while (i <= min_depth || change_in_no_of_moves <= 30000){
             bot_move = get_best_move_white(the_game, i, 0, 1, ht);
             change_in_no_of_moves = number_of_moves - initial_number_of_moves;
             printf("knps: %lf\n", change_in_no_of_moves / (difftime(time(NULL), start) * 1000));
@@ -298,7 +298,7 @@ void bot_move(game *the_game, HashTable *ht)
     else
     {
         time_t start = time(NULL);
-        while (change_in_no_of_moves <= 200000 && i <= max_depth){
+        while (i <= min_depth || change_in_no_of_moves <= 30000){
             bot_move = get_best_move_black(the_game, i, 0, 0, ht);
             change_in_no_of_moves = number_of_moves - initial_number_of_moves;
             printf("knps: %lf\n", change_in_no_of_moves / (difftime(time(NULL), start) * 1000));
@@ -418,7 +418,7 @@ void create_game(game *g, board *initial_position) {
     g->initial_position.whose_turn = initial_position->whose_turn;
 }
 
-int uci_main()
+int main()
 {
 	setbuf (stdin, NULL);
 	setbuf (stdout, NULL);
@@ -433,18 +433,7 @@ int uci_main()
     the_game = malloc(sizeof(game));
     memset(the_game, 0xFF, sizeof(game));
     char is_game_on = 0;
-    
-    /*
-    board b;
-    char fen[1000] = "K1b5/1P6/8/8/8/8/3k4/8 w - - 3 1";
-    fen_to_board(fen, &b);
-    move m; irreversible_move_info inf;
-    create_a_move(m,49,58,3,0,0);
-    inf = get_irrev_move_info(&b, m);
-    commit_a_move_for_white_in_position(&b, m);
-    print_board(&b);
-    unmake_move_in_board(&b, m, inf);
-    print_board(&b);*/
+
     
     /* Initialize ht: */ 
     ht_setup(&ht,sizeof(ht_board_struct),sizeof(ht_move_eval_struct),10000000);
@@ -477,6 +466,7 @@ char uci_parse(game *the_game, char is_game_on, HashTable *ht)
 		printf ("readyok\n");
 
     if (!strncmp (line, "ucinewgame", 10)){
+        ht_clear(ht);
         setup_start_board(init);
         create_game(the_game,init);
         is_game_on = 1;

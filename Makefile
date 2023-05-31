@@ -53,7 +53,7 @@ ${BIN}/${TEST_EXECUTABLE2}: ${TESTS_SOURCES} ${SOURCES} ${HEADERS}
 
 ${BIN}/${EXECUTABLE}: ${SOURCES} ${HEADERS}
 	mkdir bin -p
-	${CC} ${SOURCES} ${CC_FLAGS} -o $@ 
+	${CC} ${SOURCES} ${CC_TESTS_FLAGS} -o $@ 
 
 clean:
 	rm -f ${BIN}/*
