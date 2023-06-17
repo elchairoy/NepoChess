@@ -3,15 +3,17 @@
 extern long int number_of_moves;
 extern long int number_of_ht_inserted;
 
-char initial_board[32] = {
-        white_rook << 4 | white_knight, white_bishop << 4 | white_queen, white_king << 4 | white_bishop, white_knight << 4 | white_rook,
-        white_pawn << 4 | white_pawn, white_pawn << 4 | white_pawn, white_pawn << 4 | white_pawn, white_pawn << 4 | white_pawn,
-        empty, empty, empty, empty,
-        empty, empty, empty, empty,
-        empty, empty, empty, empty,
-        empty, empty, empty, empty,
-        black_pawn << 4 | black_pawn, black_pawn << 4 | black_pawn, black_pawn << 4 | black_pawn, black_pawn << 4 | black_pawn,
-        black_rook << 4 | black_knight, black_bishop << 4 | black_queen, black_king << 4 | black_bishop, black_knight << 4 | black_rook};
+long long int number_of_moves_test = 0;
+
+char initial_board[64] = {
+        white_rook, white_knight, white_bishop, white_queen, white_king, white_bishop, white_knight, white_rook,
+        white_pawn, white_pawn, white_pawn, white_pawn, white_pawn , white_pawn, white_pawn, white_pawn,
+        empty, empty, empty, empty, empty, empty, empty, empty,
+        empty, empty, empty, empty, empty, empty, empty, empty,
+        empty, empty, empty, empty, empty, empty, empty, empty,
+        empty, empty, empty, empty, empty, empty, empty, empty,
+        black_pawn, black_pawn, black_pawn , black_pawn, black_pawn, black_pawn, black_pawn, black_pawn,
+        black_rook, black_knight, black_bishop , black_queen, black_king, black_bishop, black_knight, black_rook};
 
 /* From location (e2) to number (12): */
 #define get_square_number(column, row) ((row - '0' - 1) * 8 + (column - 'a'))
@@ -61,11 +63,9 @@ char fen_to_board(char *fen, board *b)
     fen = modified_fen;
     while (fen[i]!=' ')
     {   
-        c1 = translate_piece_symbol(fen[i]); c2 = translate_piece_symbol(fen[i+1]);
-
-        b->squares[mirrored_square(i)/2] = c1 << 4 | c2;
-        i+=2;
-
+        c1 = translate_piece_symbol(fen[i]);
+        b->squares[mirrored_square(i)] = c1;
+        i++;
     }
     i += 1;
     b->whose_turn = (fen[i] == 'w' ? WHITE : BLACK);
@@ -255,12 +255,13 @@ void bot_move(game *the_game, HashTable *ht)
     board *the_board = the_game->current_position;
     move bot_move;
     int min_depth = 5;
+    int max_depth = 30;
     int i = 1;
     long int change_in_no_of_moves = 0, initial_number_of_moves = number_of_moves;
     if (the_board->whose_turn == WHITE)
     {
         time_t start = time(NULL);
-        while (i <= min_depth || change_in_no_of_moves <= 30000){
+        while (i <= min_depth || (change_in_no_of_moves <= 30000 && i <= max_depth)){
             bot_move = get_best_move_white(the_game, i, 0, 1, ht);
             change_in_no_of_moves = number_of_moves - initial_number_of_moves;
             printf("knps: %lf\n", change_in_no_of_moves / (difftime(time(NULL), start) * 1000));
@@ -269,6 +270,8 @@ void bot_move(game *the_game, HashTable *ht)
             printf("depth = %d\n", i);
             i++;
         }
+        //moves_in_depth(i-1, the_board, 0, 0 ,0);
+        //printf("number of all possible positions: %lld\n", number_of_moves_test);
         printf("bestmove %s%s%c\n", get_square_loc(get_src_square(bot_move)),get_square_loc(get_dst_square(bot_move)), check_bot_promotion(the_board, bot_move));
         move m = bot_move;
         print_move(m);
@@ -298,7 +301,7 @@ void bot_move(game *the_game, HashTable *ht)
     else
     {
         time_t start = time(NULL);
-        while (i <= min_depth || change_in_no_of_moves <= 30000){
+        while (i <= min_depth || (change_in_no_of_moves <= 30000 && i <= max_depth)){
             bot_move = get_best_move_black(the_game, i, 0, 0, ht);
             change_in_no_of_moves = number_of_moves - initial_number_of_moves;
             printf("knps: %lf\n", change_in_no_of_moves / (difftime(time(NULL), start) * 1000));
@@ -307,6 +310,8 @@ void bot_move(game *the_game, HashTable *ht)
             printf("depth = %d\n", i);
             i++;
         }
+        //moves_in_depth(i-1, the_board, 0, 0 ,0);
+        //printf("number of all possible positions: %lld\n", number_of_moves_test);
         printf("bestmove %s%s%c\n", get_square_loc(get_src_square(bot_move)),get_square_loc(get_dst_square(bot_move)), check_bot_promotion(the_board, bot_move));
         move m = bot_move;
         print_move(m);
@@ -393,7 +398,7 @@ void setup_start_board(board *b)
     b->can_white_castle_short = 1;
     b->en_passant_pawn = 0;
     b->whose_turn = WHITE;
-    for (i = 0; i < 32; i++)
+    for (i = 0; i < 64; i++)
         b->squares[i] = initial_board[i];
 }
 
@@ -408,7 +413,7 @@ void create_game(game *g, board *initial_position) {
     g->result = -1;
 
     /* Copy the initial position; */
-    for (int i = 0; i < 32; i++)
+    for (int i = 0; i < 64; i++)
         g->initial_position.squares[i] = initial_position->squares[i];
     g->initial_position.can_white_castle_short = initial_position->can_white_castle_short;
     g->initial_position.can_white_castle_long = initial_position->can_white_castle_long;
@@ -535,56 +540,20 @@ char uci_parse(game *the_game, char is_game_on, HashTable *ht)
     return is_game_on;
 }
 
-//irreversible_move_info all_info[10000];
-//long int top = 0;
 
 void moves_in_depth(char d,board *b,move *all_moves_last_move, move last_move, irreversible_move_info inf) {
     move all_moves[200];
     move m;
-    int i, j, temp2;
-    move all_moves2[200];
-    //board b2;
-    //char fen[100] = "rnbqkbnr/ppp1pppp/8/3p4/Q1P5/8/PP1PPPPP/RNB1KBNR b KQkq - 1 2";
+    int i;
     irreversible_move_info temp;
-    /*fen_to_board(fen, &b2);
-    for (i = 0; i <= 31; i++) {
-        if (b->squares[i] != b2.squares[i]) {
-            break;
-        }
-        if (i == 31) {
-            printf("\ngot it!\n");
-            //print_board(b);
-        }
-    } */
-    //print_board(b);
+
+    number_of_moves_test++;
+
+    if (d == 0)
+        return;
+
     get_possible_moves(b,all_moves,all_moves_last_move, last_move, inf);
-    get_all_moves_by_calculating_everything(b,all_moves2);
-    for (i = 0; i<100; i++) {
-        for (j = 0; j<100; j++) {
-            if (all_moves[i] == all_moves2[j]) {
-                all_moves2[j] = -1;
-                temp2 = 1;
-                break;
-            }
-        }
-        if (!temp2) {
-            printf("moves not equal!\n\n\n");
-            //print_board(b);
-            for (j = 0; all_moves[j] != END; j++) {
-                printf("%c%d%c%d ", get_column(get_src_square(all_moves[j])) + 'a',get_row(get_src_square(all_moves[j])),get_column(get_dst_square(all_moves[j])) + 'a',get_row(get_dst_square(all_moves[j])) + 'a');
-            }
-            for (j = 100; all_moves[j] != END; j++) {
-                printf("%c%d%c%d ", get_column(get_src_square(all_moves[j])) + 'a',get_row(get_src_square(all_moves[j])),get_column(get_dst_square(all_moves[j])) + 'a',get_row(get_dst_square(all_moves[j])) + 'a');
-            }
-            for (j = 0; all_moves2[j] != END; j++) {
-                printf("%c%d%c%d ", get_column(get_src_square(all_moves2[j])) + 'a',get_row(get_src_square(all_moves2[j])),get_column(get_dst_square(all_moves2[j])) + 'a',get_row(get_dst_square(all_moves2[j])) + 'a');
-            }
-            for (j = 100; all_moves2[j] != END; j++) {
-                printf("%c%d%c%d ", get_column(get_src_square(all_moves2[j])) + 'a',get_row(get_src_square(all_moves2[j])),get_column(get_dst_square(all_moves2[j])) + 'a',get_row(get_dst_square(all_moves2[j])) + 'a');
-            }
-            break;
-        }
-    }
+    
     if (b->whose_turn == WHITE)
         i = 0;
     else

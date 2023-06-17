@@ -4,25 +4,6 @@
 #include "../include/useful_functions.h"
 char * PIECES1[13] = {" " , "\u265E", "\u265C", "\u265B", "\u265A", "\u265F", "\u265D", "\u2658", "\u2656", "\u2655", "\u2654", "\u2659", "\u2657"};
 
-/* Gives the piece in the given square. */
-char get_piece_in_square(board *b ,unsigned char square_number) {
-    if (square_number % 2 == 1) /* If the square is in the first half a byte: */
-        return (b->squares[square_number/2] & MASK_FOR_A_HALF) /* - clears the second half. */;
-        
-    else /* If the square is in the second half a byte: */
-        return (b->squares[square_number/2] & (MASK_FOR_A_HALF << 4)) /* - clears the first half */ >> 4 /* - shifts it to the first half. */;
-}
-
-/* Change the piece in the given square to the given piece.
-   If there is an error - returns -1. */
-void change_the_square(board *b,unsigned char square_number ,char new_piece) {
-    if (square_number % 2 == 1) /* If the square is in the first half a byte: */
-        b->squares[square_number / 2] = (b->squares[square_number / 2] & (MASK_FOR_A_HALF << (4))) /* - clears the first half */ | (new_piece); /* - places the new piece in the first half */
-    
-    else /* If the square is in the second half a byte: */
-        b->squares[square_number / 2] = (b->squares[square_number / 2] & MASK_FOR_A_HALF) /* - clears the second half */ | (new_piece << 4); /* - places the new piece in the second half */
-}
-
 char is_attacked_by_black(board *the_board, char square) {
     char piece;
     int i = 0;

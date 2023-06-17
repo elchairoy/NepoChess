@@ -91,11 +91,14 @@
 
 /* Gives the piece in the given square.
    If there is an error - returns -1. */
-char get_piece_in_square(board *b ,unsigned char square_number);
+#define get_piece_in_square(b,s) (b->squares[s])
+
+#define change_the_square(b,s,n) (b->squares[s] = n)
 
 /* Change the piece in the given square to the given piece.
    If there is an error - returns -1. */
-void change_the_square(board *b,unsigned char square_number ,char new_piece);
+#define change_the_square(b,s,n) (b->squares[s] = n)
+
 
 char is_attacked_by_black(board *the_board, char square);
 

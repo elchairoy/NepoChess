@@ -38,7 +38,7 @@ typedef unsigned int irreversible_move_info;
 
 /* The struct of a position. */
 typedef struct {
-    char squares[NUMBER_OF_SQUARES / 2]; /* List of all the squares in the board.
+    char squares[NUMBER_OF_SQUARES]; /* List of all the squares in the board.
                                                         Each square represented by half a char. */
 
     unsigned can_black_castle_long : 1; /* 0 if can't, 1 if he can. */
